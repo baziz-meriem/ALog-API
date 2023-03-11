@@ -5,6 +5,10 @@ const { validateAgent } = require('../../validators/profileValidation');
 const getAllHandler = async (req, res) => {
     // call the service to get all acs
     const acs = await getAllAcs();
+    // if there is an error, return a 500 status code
+    if (!acs) {
+        return res.status(500).json({ status: 'Internal Server Error', message: 'An error occured while retrieving the ACs' });
+    }
     // return the acs
     return res.status(200).json({ status: 'success', data: acs });
 }
@@ -43,7 +47,7 @@ const postHandler = async (req, res) => {
         return res.status(400).json({ status: 'Bad Request', message: "provided ac is not valid" });
     }
     // return the new ac
-    return res.status(201).json({ status: 'success', data: newAc });
+    return res.status(201).json({ status: 'OK', data: newAc });
 
 }
 
