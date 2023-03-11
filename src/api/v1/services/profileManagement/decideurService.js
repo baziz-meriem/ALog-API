@@ -129,7 +129,7 @@ const updateDecideur = async (id, decideur) => {
                 prenom: decideur.prenom,
                 email: decideur.email,
                 numTel: decideur.numTel,
-                password: decideur.password,
+                mot_de_passe: decideur.password,
                 idClient: decideur.idClient
             },
             select: {
@@ -148,14 +148,14 @@ const updateDecideur = async (id, decideur) => {
     }
 }
 
-const deleteDecideur = (id) => {
+const deleteDecideur = async (id) => {
     /**
      * @description delete the Decideur with ID from the database and return it as an object or null if there is an error
      * @param {number} id
      * @returns {Promise<null| import('@prisma/client').Decideur>} decideur
     */
     try {
-        const deletedDecideur = prisma.decideur.delete({
+        const deletedDecideur =await prisma.decideur.delete({
             where: {
                 id: id
             },
