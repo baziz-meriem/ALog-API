@@ -1,2 +1,5 @@
 node_modules
 .env
+logger/access.log
+logger/error.log
+```

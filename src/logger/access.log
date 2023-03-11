@@ -1,9 +1,8 @@
-[0mGET / [32m200[0m 6.861 ms - 44[0m
-[0mGET /favicon.ico [33m404[0m 1.002 ms - 36[0m
-[0mGET /api/v1/docs [36m301[0m 2.942 ms - 189[0m
-[0mGET /api/v1/docs/ [32m200[0m 1.261 ms - 3106[0m
-[0mGET /api/v1/docs/swagger-ui-init.js [32m200[0m 0.246 ms - 1721[0m
-[0mGET /api/v1/docs/swagger-ui.css [32m200[0m 7.008 ms - 144598[0m
-[0mGET /api/v1/docs/swagger-ui-standalone-preset.js [32m200[0m 4.418 ms - 322863[0m
-[0mGET /api/v1/docs/swagger-ui-bundle.js [32m200[0m 6.816 ms - 1069712[0m
-[0mGET /api/v1/docs/favicon-32x32.png [32m200[0m 1.442 ms - 628[0m
+::1 - - [11/Mar/2023:11:31:01 +0000] "POST /api/v1/profileManagement/consommateur/ HTTP/1.1" 400 67 "-" "PostmanRuntime/7.31.1"
+::1 - - [11/Mar/2023:11:32:12 +0000] "POST /api/v1/profileManagement/consommateur/ HTTP/1.1" 201 118 "-" "PostmanRuntime/7.31.1"
+::1 - - [11/Mar/2023:11:32:21 +0000] "GET /api/v1/profileManagement/consommateur/ HTTP/1.1" 200 120 "-" "PostmanRuntime/7.31.1"
+::1 - - [11/Mar/2023:11:32:26 +0000] "GET /api/v1/profileManagement/consommateur/1 HTTP/1.1" 200 118 "-" "PostmanRuntime/7.31.1"
+::1 - - [11/Mar/2023:11:32:33 +0000] "DELETE /api/v1/profileManagement/consommateur/1 HTTP/1.1" 200 196 "-" "PostmanRuntime/7.31.1"
+::1 - - [11/Mar/2023:11:32:41 +0000] "GET /api/v1/profileManagement/consommateur/1 HTTP/1.1" 404 53 "-" "PostmanRuntime/7.31.1"
+::1 - - [11/Mar/2023:12:20:26 +0000] "GET /api/v1/profileManagement/decideur/1 HTTP/1.1" 404 53 "-" "PostmanRuntime/7.31.1"
+::1 - - [11/Mar/2023:12:20:29 +0000] "GET /api/v1/profileManagement/decideur/ HTTP/1.1" 200 30 "-" "PostmanRuntime/7.31.1"
