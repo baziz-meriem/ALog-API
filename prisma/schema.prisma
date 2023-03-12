@@ -14,7 +14,7 @@ model Client {
   id                     Int                      @id @default(autoincrement())
   nom                    String
   email                  String                   @unique
-  numTel                 Int
+  numTel                 String
   Distributeur           Distributeur[]
   Decideur               Decideur[]
   AC                     AC[]
@@ -66,7 +66,7 @@ model Decideur {
   prenom       String
   email        String @unique
   mot_de_passe String
-  numTel       Int
+  numTel       String
   idClient     Int
   client       Client @relation(fields: [idClient], references: [id])
 }
@@ -77,7 +77,7 @@ model AC {
   prenom       String
   email        String @unique
   mot_de_passe String
-  numTel       Int
+  numTel       String
   idClient     Int
   client       Client @relation(fields: [idClient], references: [id])
 }
@@ -88,7 +88,7 @@ model AM {
   prenom            String
   email             String         @unique
   mot_de_passe      String
-  numTel            Float
+  numTel            String
   codeDeverouillage String         @unique
   idClient          Int
   client            Client         @relation(fields: [idClient], references: [id])
@@ -101,7 +101,7 @@ model ADM {
   prenom       String
   email        String @unique
   mot_de_passe String
-  numTel       Int
+  numTel       String
   idClient     Int
   client       Client @relation(fields: [idClient], references: [id])
 }
@@ -112,7 +112,7 @@ model SADM {
   prenom       String
   email        String @unique
   mot_de_passe String
-  numTel       Int
+  numTel       String
 }
 
 model Consommateur {
@@ -121,7 +121,7 @@ model Consommateur {
   prenom       String
   email        String     @unique
   mot_de_passe String
-  numTel       Int
+  numTel       String
   Commande     Commande[]
 }
 
