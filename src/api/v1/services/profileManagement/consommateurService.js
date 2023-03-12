@@ -78,7 +78,7 @@ const createCostumer = async ({ nom, prenom, email, password, numTel }) => {
                 prenom: prenom,
                 email: email,
                 mot_de_passe: hashPassword,
-                numTel: Number(numTel),
+                numTel: numTel,
             },
             select: {
                 id: true,
@@ -113,7 +113,7 @@ const updateCostumer = async (id, ac) => {
                 nom: ac.nom,
                 prenom: ac.prenom,
                 email: ac.email,
-                numTel: Number(ac.numTel),
+                numTel: ac.numTel,
                 mot_de_passe: ac.password,
             },
             select: {
