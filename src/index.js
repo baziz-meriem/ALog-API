@@ -12,20 +12,15 @@ require('dotenv').config();
 const app = express();
 
 // Middlewares
-app.use(morgan('dev',{stream:fs.createWriteStream(path.join(__dirname, 'logger/access.log'), { flags: 'a' })}));
+app.use(morgan('combined',{stream:fs.createWriteStream(path.join(__dirname, 'logger/access.log'), { flags: 'a' })}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors({
     origin: '*'
 }));
-
 app.use('/api/v1/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 // Routes
-const ClientsRouter = require('./api/v1/routes/ClientRoutes');// Importing the clientRoutes module
-app.use('/client', ClientsRouter); // Adding the clientRoutes middleware to the '/client' route
-
-
 app.get('/', (req, res) => {
     res.status(200).json({
         status: 'success',
@@ -33,6 +28,7 @@ app.get('/', (req, res) => {
     });
 });
 
+app.use('/api/v1', require('./api/v1/routes'));
 
 app.use((req, res, next) => {
   next(createError.NotFound());

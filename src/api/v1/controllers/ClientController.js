@@ -1,105 +1,97 @@
+const { getAll, createClient,deleteClient ,updateClient,getClientById} = require('../services/clientService');
+const { validateClient } = require('../validators/profileValidation');
+const {  validateId } = require('../validators/inputValidation');
 
-const { PrismaClient } = require('@prisma/client')
-const prisma = new PrismaClient()
 
 
-async function addClient(req, res, next) {
-  try {
-    const newClient = await prisma.Client.create({
-      data: req.body,
-    });
-    res.json(newClient);
-  } catch (error) {
-    console.log('addClient error:', error);
-    if (error.statusCode && error.statusCode >= 400 && error.statusCode < 500) {
-      next(error);
-    } else {
-      next(new Error('Internal server error'));
-    }
+const postHandler = async (req, res) => {
+  // retrieve the Client from the request
+  const { nom,email,numTel} = req.body;
+  // call the validateClient function
+  const valideClient = validateClient({ nom, email,numTel});
+  // if there is an error, return a 400 status code
+  if (!valideClient) {
+      return res.status(400).json({ status: 'Bad Request', message: "provided client is not valid" });
   }
+  // call the service to create the client
+  const newClient = await createClient(valideClient);
+  // if there is an error, return a 400 status code
+  if(!newClient){
+      return res.status(400).json({ status: 'Bad Request', message: "provided client is not valid",data:newClient });
+  }
+  // return the new client
+  return res.status(200).json({ status: 'OK', data: newClient });
+
+}
+const getOneHandler = async (req, res) => {
+  // retrieve the id from the request
+  const { id } = req.params;
+  // call the validateId function
+  const valideId = validateId(id);
+  // if there is an error, return a 400 status code
+  if (!valideId) {
+      return res.status(400).json({ status: 'Bad Request', message: "provided id is not valid" });
+  }
+  // call the service to get the client
+  const client = await getClientById(valideId);
+  // return the client
+  if (!client) {
+      return res.status(404).json({ status: 'Not Found', message: 'Client not found' });
+  }
+  return res.status(200).json({ status: 'success', data: client });
+}
+const getAllHandler = async (req, res) => {
+    // call the service to get all acs
+    const clients = await getAll();
+    // if there is an error, return a 500 status code
+    if (!clients) {
+        return res.status(500).json({ status: 'Internal Server Error', message: 'An error occured while retrieving the Clients' });
+    }
+    // return the clients
+    return res.status(200).json({ status: 'success', data: clients });
 }
 
-const getClients = async (req, res, next) => {
-    try {
-      const clients = await prisma.Client.findMany();
-      res.status(200).json({
-        status: 'success',
-        data: clients,
-      });
-    } catch (error) {
-      console.log('addClient error:', error);
-      if (error.statusCode && error.statusCode >= 400 && error.statusCode < 500) {
-        next(error);
-      } else {
-        next(new Error('Internal server error'));
-      }
-    }
-  };
-
-  async function updateClient(req, res, next) {
-    try {
-      const { id } = req.params;
-      const updatedClient = await prisma.client.update({
-        where: {
-          id: parseInt(id),
-        },
-        data: {
-          ...req.body,
-        },
-      });
-      res.status(200).json({
-        status: 'success',
-        data: updatedClient,
-      });
-    } catch (error) {
-      console.log('addClient error:', error);
-      if (error.statusCode && error.statusCode >= 400 && error.statusCode < 500) {
-        next(error);
-      } else {
-        next(new Error('Internal server error'));
-      }
-    }
+const putHandler = async (req, res) => {
+  // retrieve the id from the request
+  const { id } = req.params;
+  // call the validateId function
+  const valideId = validateId(id);
+  // if there is an error, return a 400 status code
+  if (!valideId) {
+      return res.status(400).json({ status: 'Bad Request', message: "provided id is not valid" });
   }
-  async function deleteClient(req, res, next) {
+  // retrieve the client from the request
+  const { nom,email,numTel} = req.body;
+  // call the validateClient function
+  const valideClient = validateClient({ nom,email,numTel});
+  if (!valideClient) {
+      return res.status(400).json({ status: 'Bad Request', message: "provided client is not valid" });
+  }
+  // call the service to update the client
+  const updatedClient = await updateClient(valideId, valideClient);
+  // return the updated ac
+  return res.status(200).json({ status: 'success', data: updatedClient });
+}
+
+  const deleteHandler = async (req, res) => {
+    // retrieve the id from the request
     const { id } = req.params;
-
-    try {
-      const deletedClient = await prisma.client.delete({
-        where: {
-          id: parseInt(id),
-        },
-      });
-
-      res.status(200).json({
-        status: 'success',
-        message: 'Client deleted',
-        data: deletedClient,
-      });
-    } catch (error) {
-      console.log('addClient error:', error);
-      if (error.statusCode && error.statusCode >= 400 && error.statusCode < 500) {
-        next(error);
-      } else {
-        next(new Error('Internal server error'));
-      }
+    // call the validateId function
+    const valideId = validateId(id);
+    // if there is an error, return a 400 status code
+    if (!valideId) {
+        return res.status(400).json({ status: 'Bad Request', message: "provided id is not valid" });
     }
-  }
-
-  function errorHandler(err, req, res, next) {
-    console.error('Error:', err);
-    if (err.status === 400) {
-      res.status(400).json({
-        message: err.message || 'Invalid Request'
-      });
-    } else if (err.status === 500) {
-      res.status(500).json({
-        message: err.message || 'Internal Server Error'
-      });
-    } else {
-      res.status(500).json({
-        message: 'Internal Server Error'
-      });
+    // call the service to delete the Client
+    const deletedClient = await deleteClient(valideId);
+   
+    if(!deletedClient){
+      return res.status(400).json({ status: 'Bad Request', message: "provided id is not valid" });
     }
-  }
+     // return the deleted Client
+    return res.status(200).json({ status: 'Client deleted', data: deletedClient });
 
-module.exports = {addClient,getClients,updateClient,deleteClient,errorHandler};
+}
+
+
+module.exports = {postHandler,getAllHandler,putHandler,deleteHandler,getOneHandler};

@@ -1,6 +1,6 @@
 
-const router = require('express').Router();
-const { addClient,getClients, updateClient ,deleteClient,errorHandler} = require('../controllers/ClientController');
+const route = require('express').Router();
+const { postHandler,getAllHandler, getOneHandler,putHandler ,deleteHandler} = require('../controllers/ClientController');
 
 
 /**
@@ -27,7 +27,7 @@ const { addClient,getClients, updateClient ,deleteClient,errorHandler} = require
  */
 /**
  * @swagger
- * /client/add:
+ * /api/v1/client/add:
  *    post:
  *      summary: Creates a new client
  *      requestBody:
@@ -44,15 +44,13 @@ const { addClient,getClients, updateClient ,deleteClient,errorHandler} = require
  *              schema:
  *                $ref: '#/components/schemas/Client'
  *        400:
- *          description: Invalid input data
- *        500:
- *          description: Internal server error
+ *          description: provided client is not valid
  * 
  */
-router.post('/add',addClient);
+route.post('/add',postHandler);
 /**
  * @swagger
- * /client/get:
+ * /api/v1/client/get:
  *   get:
  *     summary: Returns the list of all the clients
  *     responses:
@@ -61,19 +59,65 @@ router.post('/add',addClient);
  *         content:
  *           application/json:
  *             schema:
- *               type: array
+ *               type: object
  *               items:
  *                 $ref: '#/components/schemas/Client'
- *       400:
- *         description: Invalid input data
  *       500:
- *         description: Internal server error
+ *         description: An error occured while retrieving the Clients
  */
 
-router.get('/get', getClients);
+route.get('/get', getAllHandler);
 /**
  * @swagger
- * /client/update/{id}:
+ * /api/v1/client/get/{id}:
+ *   get:
+ *     summary: Returns the requested client
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID of the client to retrieve
+ *     responses:
+ *       200:
+ *         description: The requested client
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Client'
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "Bad Request"
+ *                 message:
+ *                   type: string
+ *                   example: "Provided id is not valid"
+ *       404:
+ *         description: Client not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "Not Found"
+ *                 message:
+ *                   type: string
+ *                   example: "Client not found"
+ */
+
+route.get('/get/:id', getOneHandler);
+/**
+ * @swagger
+ * /api/v1/client/update/{id}:
  *   put:
  *     summary: Update a client by ID
  *     parameters:
@@ -98,17 +142,13 @@ router.get('/get', getClients);
  *             schema:
  *               $ref: '#/components/schemas/Client'
  *       400:
- *         description: Invalid input data
- *       404:
- *         description: Client not found
- *       500:
- *         description: Internal server error
+ *         description: provided id is not valid
  */
 
-router.put('/update/:id', updateClient);
+route.put('/update/:id', putHandler);
 /**
  * @swagger
- * /client/delete/{id}:
+ * /api/v1/client/delete/{id}:
  *   delete:
  *     summary: Deletes a client by ID
  *     parameters:
@@ -125,14 +165,10 @@ router.put('/update/:id', updateClient);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Client'
- *       404:
- *         description: Client not found
- *       500:
- *        description: Internal server error
+ *       400:
+ *         description: provided id is not valid
  */
-router.delete('/delete/:id', deleteClient);
+route.delete('/delete/:id', deleteHandler);
 
-//error handling middelware
-router.use(errorHandler);
 
-module.exports = router;
+module.exports = route;
