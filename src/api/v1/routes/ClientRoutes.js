@@ -22,7 +22,7 @@ const { postHandler,getAllHandler, getOneHandler,putHandler ,deleteHandler} = re
  *          type: string
  *          description: The client's email
  *        numTel:
- *          type: integer
+ *          type: string
  *          description: The client's phone number
  */
 /**
@@ -82,36 +82,10 @@ route.get('/get', getAllHandler);
  *     responses:
  *       200:
  *         description: The requested client
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Client'
  *       400:
  *         description: Bad Request
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: "Bad Request"
- *                 message:
- *                   type: string
- *                   example: "Provided id is not valid"
  *       404:
  *         description: Client not found
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: "Not Found"
- *                 message:
- *                   type: string
- *                   example: "Client not found"
  */
 
 route.get('/get/:id', getOneHandler);
@@ -160,7 +134,7 @@ route.put('/update/:id', putHandler);
  *         description: ID of the client to delete
  *     responses:
  *       200:
- *         description: The deleted client
+ *         description: The updated client
  *         content:
  *           application/json:
  *             schema:

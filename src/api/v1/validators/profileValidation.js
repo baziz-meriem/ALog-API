@@ -51,13 +51,13 @@ const validateClient = (Client)=> {
     const valideNom = validateInput(nom);
     const valideEmail = validateEmail(email);
     const valideNumTel = validatePhoneNumber(numTel);
-    if (!valideNom || !valideEmail ) {
+    /*if (!valideNom || !valideEmail || valideNumTel) {
         return null;
-    }
+    }*/
     return {
-        nom: valideNom,
-        email: valideEmail,
-        numTel: valideNumTel
+        nom: nom,
+        email: email,
+        numTel: numTel
     };
 }
 module.exports = {

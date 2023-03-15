@@ -20,14 +20,14 @@ describe('Client Routes', () => {
         .send({
           nom: 'John Doe',
           email: 'johndoe@example.com',//should be unique email
-          numTel: 5285
+          numTel: '5285'
         });
 
       expect(res.statusCode).toEqual(200);
       expect(res.body.data).toBeDefined();
       expect(res.body.data.nom).toBe('John Doe');
       expect(res.body.data.email).toBe('johndoe@example.com');
-      expect(res.body.data.numTel).toBe(5285);
+      expect(res.body.data.numTel).toBe('5285');
 
       newClientId = res.body.id; // save the newly created client id for later tests
       
@@ -38,13 +38,11 @@ describe('Client Routes', () => {
   // Test the get clients endpoint
   describe('GET /api/v1/client/get', () => {
     it('should get all clients', async () => {
-        if (true) {
       const res = await request(app)
         .get('/api/v1/client/get');
 
       expect(res.statusCode).toEqual(200);
       console.log('response body',res.body);
-  }
 
 });
   });
@@ -62,14 +60,14 @@ describe('Client Routes', () => {
           .send({
             nom: 'Jane Doe',
             email: 'janedoe@example.com',
-            numTel: 21354
+            numTel: '21354'
           });
 
         expect(res.statusCode).toEqual(200);
         expect(res.body.data).toBeDefined();
         expect(res.body.data.nom).toBe('Jane Doe');
         expect(res.body.data.email).toBe('janedoe@example.com');
-        expect(res.body.data.numTel).toBe(21354);
+        expect(res.body.data.numTel).toBe('21354');
         console.log('response body',res.body);
         console.log('id value',newClientId);
       }, 1000);

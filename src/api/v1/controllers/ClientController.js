@@ -17,7 +17,7 @@ const postHandler = async (req, res) => {
   const newClient = await createClient(valideClient);
   // if there is an error, return a 400 status code
   if(!newClient){
-      return res.status(400).json({ status: 'Bad Request', message: "provided client is not valid",data:newClient });
+      return res.status(400).json({ status: 'Bad Request', message: "client not created" });
   }
   // return the new client
   return res.status(200).json({ status: 'OK', data: newClient });
@@ -69,6 +69,7 @@ const putHandler = async (req, res) => {
   }
   // call the service to update the client
   const updatedClient = await updateClient(valideId, valideClient);
+  
   // return the updated ac
   return res.status(200).json({ status: 'success', data: updatedClient });
 }

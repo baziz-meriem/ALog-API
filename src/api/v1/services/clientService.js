@@ -90,11 +90,6 @@ const updateClient = async (id, client) => {
 }
 
 const deleteClient = async(id) => {
-    /**
-     * @description delete the AC with ID from the database and return it as an object or null if there is an error
-     * @param {number} id
-     * @returns {Promise<null| import('@prisma/client').AC>} ac
-    */
     try {
         const deletedClient = await prisma.Client.delete({
             where: {
