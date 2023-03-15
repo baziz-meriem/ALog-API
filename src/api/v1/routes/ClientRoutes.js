@@ -1,6 +1,6 @@
 
 const route = require('express').Router();
-const { postHandler,getAllHandler, getOneHandler,putHandler ,deleteHandler} = require('../controllers/ClientController');
+const { postHandler, getAllHandler, getOneHandler, putHandler, deleteHandler } = require('../controllers/ClientController');
 
 
 /**
@@ -27,7 +27,7 @@ const { postHandler,getAllHandler, getOneHandler,putHandler ,deleteHandler} = re
  */
 /**
  * @swagger
- * /api/v1/client/add:
+ * /api/v1/client/:
  *    post:
  *      summary: Creates a new client
  *      requestBody:
@@ -47,10 +47,10 @@ const { postHandler,getAllHandler, getOneHandler,putHandler ,deleteHandler} = re
  *          description: provided client is not valid
  * 
  */
-route.post('/add',postHandler);
+route.post('/', postHandler);
 /**
  * @swagger
- * /api/v1/client/get:
+ * /api/v1/client/:
  *   get:
  *     summary: Returns the list of all the clients
  *     responses:
@@ -66,10 +66,10 @@ route.post('/add',postHandler);
  *         description: An error occured while retrieving the Clients
  */
 
-route.get('/get', getAllHandler);
+route.get('/', getAllHandler);
 /**
  * @swagger
- * /api/v1/client/get/{id}:
+ * /api/v1/client/{id}:
  *   get:
  *     summary: Returns the requested client
  *     parameters:
@@ -88,10 +88,10 @@ route.get('/get', getAllHandler);
  *         description: Client not found
  */
 
-route.get('/get/:id', getOneHandler);
+route.get('/:id', getOneHandler);
 /**
  * @swagger
- * /api/v1/client/update/{id}:
+ * /api/v1/client/{id}:
  *   put:
  *     summary: Update a client by ID
  *     parameters:
@@ -119,10 +119,10 @@ route.get('/get/:id', getOneHandler);
  *         description: provided id is not valid
  */
 
-route.put('/update/:id', putHandler);
+route.put('/:id', putHandler);
 /**
  * @swagger
- * /api/v1/client/delete/{id}:
+ * /api/v1/client/{id}:
  *   delete:
  *     summary: Deletes a client by ID
  *     parameters:
@@ -142,7 +142,7 @@ route.put('/update/:id', putHandler);
  *       400:
  *         description: provided id is not valid
  */
-route.delete('/delete/:id', deleteHandler);
+route.delete('/:id', deleteHandler);
 
 
 module.exports = route;
