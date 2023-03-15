@@ -44,7 +44,25 @@ const validateCostumer = (Costumer) => {
         numTel: valideNumTel
     };
 }
+
+
+const validateClient = (Client)=> {
+    const { nom,email,numTel } = Client;
+    const valideNom = validateInput(nom);
+    const valideEmail = validateEmail(email);
+    const valideNumTel = validatePhoneNumber(numTel);
+    /*if (!valideNom || !valideEmail || valideNumTel) {
+        return null;
+    }*/
+    return {
+        nom: nom,
+        email: email,
+        numTel: numTel
+    };
+}
 module.exports = {
     validateAgent,
-    validateCostumer
+    validateCostumer,
+    validateClient
+
 }

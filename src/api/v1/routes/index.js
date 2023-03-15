@@ -1,7 +1,12 @@
 const route = require('express').Router();
 
-const profileManagement = require('./profileManagement');
+//client routes
+const ClientRoutes = require('./ClientRoutes');
 
+route.use('/client', ClientRoutes);
+
+//profile routes
+const profileManagement = require('./profileManagement');
 
 route.use('/profileManagement', profileManagement);
 
