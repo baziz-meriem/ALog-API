@@ -21,7 +21,6 @@ model Client {
   AM                     AM[]
   ADM                    ADM[]
   Annonceur              Annonceur[]
-  ClientSupplement       ClientSupplement[]
   DistributeurSupplement DistributeurSupplement[]
   BoissonClient          BoissonClient[]
 }
@@ -38,6 +37,7 @@ model Distributeur {
   etat                String
   type                String
   position            String
+  codeDeverouillage   String                @unique
   idClient            Int
   client              Client                @relation(fields: [idClient], references: [id])
   idRegion            Int
@@ -83,16 +83,16 @@ model AC {
 }
 
 model AM {
-  id                Int            @id @default(autoincrement())
-  nom               String
-  prenom            String
-  email             String         @unique
-  mot_de_passe      String
-  numTel            String
-  codeDeverouillage String         @unique
-  idClient          Int
-  client            Client         @relation(fields: [idClient], references: [id])
-  Distributeur      Distributeur[]
+  id           Int            @id @default(autoincrement())
+  nom          String
+  prenom       String
+  email        String         @unique
+  mot_de_passe String
+  numTel       String
+  idClient     Int
+  client       Client         @relation(fields: [idClient], references: [id])
+  Distributeur Distributeur[]
+  Tache        Tache[]
 }
 
 model ADM {
@@ -148,7 +148,7 @@ model BoissonDistributeur {
   boisson        Boisson      @relation(fields: [idBoisson], references: [id])
   idDistributeur Int
   distributeur   Distributeur @relation(fields: [idDistributeur], references: [id])
-
+  prix           Float        @default(0)
   @@id([idBoisson, idDistributeur])
 }
 
@@ -271,7 +271,6 @@ model Supplement {
   id                     Int                      @id @default(autoincrement())
   label                  String
   BoissonSupplement      BoissonSupplement[]
-  ClientSupplement       ClientSupplement[]
   DistributeurSupplement DistributeurSupplement[]
 }
 
@@ -282,16 +281,6 @@ model BoissonSupplement {
   supplement   Supplement @relation(fields: [idSupplement], references: [id])
 
   @@id([idBoisson, idSupplement])
-}
-
-model ClientSupplement {
-  idClient     Int
-  client       Client     @relation(fields: [idClient], references: [id])
-  idSupplement Int
-  supplement   Supplement @relation(fields: [idSupplement], references: [id])
-  prix         Float
-
-  @@id([idClient, idSupplement])
 }
 
 model DistributeurSupplement {
@@ -313,6 +302,8 @@ model Tache {
   dateTraitement DateTime     @default(now())
   idDistributeur Int
   distributeur   Distributeur @relation(fields: [idDistributeur], references: [id])
+  idAM           Int
+  am             AM           @relation(fields: [idAM], references: [id])
 }
 
 model BoissonClient {
@@ -321,5 +312,6 @@ model BoissonClient {
   idClient  Int
   client    Client  @relation(fields: [idClient], references: [id])
   prix      Float
+
   @@id([idBoisson, idClient])
 }

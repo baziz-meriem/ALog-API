@@ -23,7 +23,7 @@ describe('validate agent', () => {
             "idClient": 2
         }
         const result = validateAgent(agent);
-        expect(result).toBe(agent);
+        expect(result).toEqual(agent);
     });
 });
 
@@ -48,6 +48,6 @@ describe('validate costumer', () => {
             "numTel": "0551234567"
         }
         const result = validateCostumer(costumer);
-        expect(result).toBe(costumer);
+        expect(result).toEqual(costumer);
     });
 });

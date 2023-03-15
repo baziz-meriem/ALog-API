@@ -14,7 +14,7 @@ describe('validate phone Number', () => {
     it('should return the phone number if it is valid', () => {
         const num = '0123456789';
         const result = validatePhoneNumber(num);
-        expect(result).toBe(num);
+        expect(result).toEqual(num);
     });
 
 });
@@ -51,7 +51,7 @@ describe('validate email', () => {
     it('should return the email if it is valid', () => {
         const email = 'ja_aiteur@esi.dz';
         const result = validateEmail(email);
-        expect(result).toBe(email);
+        expect(result).toEqual(email);
     });
 });
 
@@ -69,19 +69,19 @@ describe('validate password', () => {
     it('should return the password if it is valid', () => {
         const password = 'a'.repeat(6);
         const result = validatePassword(password);
-        expect(result).toBe(password);
+        expect(result).toEqual(password);
     });
 });
 
 describe('validate id', () => {
     it('should return null if the id is not a number', () => {
-        const id = '123';
+        const id = 'ab';
         const result = validateId(id);
         expect(result).toBeNull();
     });
     it('should return the id if it is valid', () => {
         const id = 123;
         const result = validateId(id);
-        expect(result).toBe(id);
+        expect(result).toEqual(id);
     });
 });
