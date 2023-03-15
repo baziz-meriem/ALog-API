@@ -45,6 +45,7 @@ const validateCostumer = (Costumer) => {
     };
 }
 
+
 const validateClient = (Client)=> {
     const { nom,email,numTel } = Client;
     const valideNom = validateInput(nom);
@@ -56,11 +57,12 @@ const validateClient = (Client)=> {
     return {
         nom: valideNom,
         email: valideEmail,
-        numTel: numTel//temporary i didnt change schema  
+        numTel: valideNumTel
     };
 }
 module.exports = {
     validateAgent,
     validateCostumer,
     validateClient
+
 }
