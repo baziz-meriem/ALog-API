@@ -1,4 +1,4 @@
-const { createAM, deleteAM, getAMById, getAllAMs, updateAM  } = require('../../services/ADManagement/amService');
+const { createAM, deleteAM, getAMById, getAllAMs, updateAM  } = require('../../services/profileManagement/amService');
 const { validateId } = require('../../validators/inputValidation');
 const { validateAM } = require('../../validators/profileValidation');
 

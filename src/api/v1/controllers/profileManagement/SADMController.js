@@ -1,10 +1,9 @@
-const { createSADM, deleteSADM, getSADMById, getAllSADMs, updateSADM  } = require('../../services/ADManagement/sadmService');
+const { createSADM, deleteSADM, getSADMById, getAllSADMs, updateSADM  } = require('../../services/profileManagement/sadmService');
 const { validateId } = require('../../validators/inputValidation');
 const { validateSADM } = require('../../validators/profileValidation');
 
 const getAllHandler = async (req, res) => {
     const SADMS = await getAllSADMs();
-    console.log("dans get all");
     return res.status(200).json({ status: 'success', data: SADMS });
 }
 
@@ -24,8 +23,6 @@ const getOneHandler = async (req, res) => {
 
 const postHandler = async (req, res) => {
 
-    console.log( "req:body " );
-    console.log( req.body );
     const { nom, prenom, email, password, numTel } = req.body;
     const valideSADM = validateSADM({ nom, prenom, email, password, numTel });
 

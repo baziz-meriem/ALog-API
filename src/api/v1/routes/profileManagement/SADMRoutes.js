@@ -1,21 +1,20 @@
 const route = require('express').Router();
-const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } = require('../../controllers/ADManagement/ADMController');
-
+const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } = require('../../controllers/profileManagement/SADMController');
 
 /**
  * @swagger
- * /api/v1/profileManagement/ADM:
+ * /api/v1/profileManagement/SADM:
  *    get:
  *      tags:
- *       - ADM
- *      summary: get all ADMs'
+ *       - SADM
+ *      summary: get all SADMs'
  *      responses:
  *        200:
  *          description: sucess
  *          content:
  *            application/json:
  *              schema:
- *                $ref: '#/components/schemas/ADM'
+ *                $ref: '#/components/schemas/SADM'
  *        500:
  *          description: Internal Server Error
  * 
@@ -23,11 +22,11 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
  route.get('/', getAllHandler);
  /**
   * @swagger
-  * /api/v1/profileManagement/ADM/{id}:
+  * /api/v1/profileManagement/SADM/{id}:
   *    get:
   *      tags:
-  *       - ADM
-  *      summary: get single ADM by id'
+  *       - SADM
+  *      summary: get single SADM by id'
   *      parameters:
   *       - in: path
   *         name: id
@@ -40,44 +39,44 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
   *          content:
   *            application/json:
   *              schema:
-  *                $ref: '#/components/schemas/ADM'
+  *                $ref: '#/components/schemas/SADM'
   *        404:
-  *          description: ADM not found
+  *          description: SADM not found
   *        400:
   *          description: provided id is not valid
   */
  route.get('/:id', getOneHandler);
  /**
   * @swagger
-  * /api/v1/profileManagement/ADM/:
+  * /api/v1/profileManagement/SADM/:
   *    post:
   *      tags:
-  *       - ADM
-  *      summary: add new ADM'
+  *       - SADM
+  *      summary: add new SADM'
   *      requestBody:
   *          required: true
   *          content:
   *              application/json:
   *                  schema:
-  *                      $ref: '#/components/schemas/ADM'
+  *                      $ref: '#/components/schemas/SADM'
   *      responses:
   *        201:
   *          description: OK
   *          content:
   *            application/json:
   *              schema:
-  *                $ref: '#/components/schemas/ADM'
+  *                $ref: '#/components/schemas/SADM'
   *        400:
   *          description: provided id is not valid
   */
  route.post('/', postHandler);
  /**
   * @swagger
-  * /api/v1/profileManagement/sSADM/{id}:
+  * /api/v1/profileManagement/sSSADM/{id}:
   *    put:
   *      tags:
-  *       - SSADM
-  *      summary: update SSADM with id'
+  *       - SSSADM
+  *      summary: update SSSADM with id'
   *      parameters:
   *        - in: path
   *          name: id
@@ -89,25 +88,25 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
   *          content:
   *              application/json:
   *                  schema:
-  *                      $ref: '#/components/schemas/ADM'
+  *                      $ref: '#/components/schemas/SADM'
   *      responses:
   *        200:
   *          description: sucess
   *          content:
   *            application/json:
   *              schema:
-  *                $ref: '#/components/schemas/ADM'
+  *                $ref: '#/components/schemas/SADM'
   *        400:
   *          description: provided id is not valid
   */
  route.put('/:id', putHandler);
  /**
   * @swagger
-  * /api/v1/profileManagement/ADM/{id}:
+  * /api/v1/profileManagement/SADM/{id}:
   *    delete:
   *      tags:
-  *       - ADM
-  *      summary: delete ADM with id'
+  *       - SADM
+  *      summary: delete SADM with id'
   *      parameters:
   *        - in: path
   *          name: id
@@ -120,7 +119,7 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
   *          content:
   *            application/json:
   *              schema:
-  *                $ref: '#/components/schemas/ADM'
+  *                $ref: '#/components/schemas/SADM'
   *        400:
   *          description: provided id is not valid
   */

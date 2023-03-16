@@ -10,9 +10,5 @@ const profileManagement = require('./profileManagement');
 
 route.use('/profileManagement', profileManagement);
 
-//SADM, ADM, AM routes
-const ADRoutes = require('./ADRoutes');
-route.use('/ADRoutes', ADRoutes);
-
 
 module.exports = route;

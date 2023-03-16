@@ -1,4 +1,4 @@
-const { createADM, deleteADM, getADMById, getAllADMs, updateADM  } = require('../../services/ADManagement/admService');
+const { createADM, deleteADM, getADMById, getAllADMs, updateADM  } = require('../../services/profileManagement/admService');
 const { validateId } = require('../../validators/inputValidation');
 const { validateADM } = require('../../validators/profileValidation');
 

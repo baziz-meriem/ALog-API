@@ -24,3 +24,5 @@
 ::ffff:127.0.0.1 - - [16/Mar/2023:17:06:06 +0000] "GET /api/v1/ADRoutes/sadm/ HTTP/1.1" 200 116 "-" "Thunder Client (https://www.thunderclient.com)"
 ::ffff:127.0.0.1 - - [16/Mar/2023:17:06:17 +0000] "GET /api/v1/ADRoutes/adm/ HTTP/1.1" 200 30 "-" "Thunder Client (https://www.thunderclient.com)"
 ::ffff:127.0.0.1 - - [16/Mar/2023:17:06:22 +0000] "GET /api/v1/ADRoutes/am/ HTTP/1.1" 200 121 "-" "Thunder Client (https://www.thunderclient.com)"
+::ffff:127.0.0.1 - - [16/Mar/2023:20:19:18 +0000] "GET /api/v1/ADRoutes/am/ HTTP/1.1" 200 121 "-" "Thunder Client (https://www.thunderclient.com)"
+::ffff:127.0.0.1 - - [16/Mar/2023:20:19:54 +0000] "GET /api/v1/ADRoutes/sadm/ HTTP/1.1" 200 116 "-" "Thunder Client (https://www.thunderclient.com)"

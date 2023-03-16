@@ -9,7 +9,6 @@ const getAllSADMs = async () => {
      * @returns {Promise<null| import('@prisma/client').AC>} acs
      */
     try {
-        console.log("dans servce get allsdams");
         const sadms = await prisma.SADM.findMany({
             select:{
                 id: true,
@@ -22,7 +21,6 @@ const getAllSADMs = async () => {
         });
         return sadms;
     } catch (error) {
-        console.log("dans catch y'a err", error);
         return null;
     }
 }
@@ -64,7 +62,6 @@ const createSADM = async ({ nom, prenom, email, password, numTel}) => {
      * @throws {Error} if the email already exists
     */
     try {
-        console.log("les donnes = ",{ nom, prenom, email, password, numTel})
         const sadmExists = await prisma.SADM.findUnique({
             where: {
                 email: email
@@ -100,7 +97,6 @@ const createSADM = async ({ nom, prenom, email, password, numTel}) => {
         PrismaClientInitializationError: err configuration ou initialisation de base donné
         PrismaClientUnknownError : reste unkown
         */
-        console.log(" dans catch y'a err : ",error);
         return null;
     }
 }
