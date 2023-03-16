@@ -1,0 +1,326 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgres://devlift:hqnSy5nAOBCnaoeZGfxslHsCxj3cJKrs@dpg-cg4c9bvdvk4st73b1cd0-a.frankfurt-postgres.render.com/sitsip"
+
+}
+
+model Client {
+  id                     Int                      @id @default(autoincrement())
+  nom                    String
+  email                  String                   @unique
+  numTel                 String
+  Distributeur           Distributeur[]
+  Decideur               Decideur[]
+  AC                     AC[]
+  AM                     AM[]
+  ADM                    ADM[]
+  Annonceur              Annonceur[]
+  ClientSupplement       ClientSupplement[]
+  DistributeurSupplement DistributeurSupplement[]
+  BoissonClient          BoissonClient[]
+}
+
+model Region {
+  id           Int            @id @default(autoincrement())
+  nom          String
+  Distributeur Distributeur[]
+  Annonce      Annonce[]
+}
+
+model Distributeur {
+  id                  Int                   @id @default(autoincrement())
+  etat                String
+  type                String
+  position            String
+  idClient            Int
+  client              Client                @relation(fields: [idClient], references: [id])
+  idRegion            Int
+  region              Region                @relation(fields: [idRegion], references: [id])
+  idAM                Int
+  AM                  AM                    @relation(fields: [idAM], references: [id])
+  TentativeVol        TentativeVol[]
+  BoissonDistributeur BoissonDistributeur[]
+  ProduitDistributeur ProduitDistributeur[]
+  Commande            Commande[]
+  Anomalie            Anomalie[]
+  Tache               Tache[]
+}
+
+model TentativeVol {
+  id             Int          @id @default(autoincrement())
+  date           DateTime     @default(now())
+  type           String
+  idDistributeur Int
+  distributeur   Distributeur @relation(fields: [idDistributeur], references: [id])
+}
+
+model Decideur {
+  id           Int    @id @default(autoincrement())
+  nom          String
+  prenom       String
+  email        String @unique
+  mot_de_passe String
+  numTel       String
+  idClient     Int
+  client       Client @relation(fields: [idClient], references: [id])
+}
+
+model AC {
+  id           Int    @id @default(autoincrement())
+  nom          String
+  prenom       String
+  email        String @unique
+  mot_de_passe String
+  numTel       String
+  idClient     Int
+  client       Client @relation(fields: [idClient], references: [id])
+}
+
+model AM {
+  id                Int            @id @default(autoincrement())
+  nom               String
+  prenom            String
+  email             String         @unique
+  mot_de_passe      String
+  numTel            String
+  codeDeverouillage String         @unique
+  idClient          Int
+  client            Client         @relation(fields: [idClient], references: [id])
+  Distributeur      Distributeur[]
+}
+
+model ADM {
+  id           Int    @id @default(autoincrement())
+  nom          String
+  prenom       String
+  email        String @unique
+  mot_de_passe String
+  numTel       String
+  idClient     Int
+  client       Client @relation(fields: [idClient], references: [id])
+}
+
+model SADM {
+  id           Int    @id @default(autoincrement())
+  nom          String
+  prenom       String
+  email        String @unique
+  mot_de_passe String
+  numTel       String
+}
+
+model Consommateur {
+  id           Int        @id @default(autoincrement())
+  nom          String
+  prenom       String
+  email        String     @unique
+  mot_de_passe String
+  numTel       String
+  Commande     Commande[]
+}
+
+model Produit {
+  id                  Int                   @id @default(autoincrement())
+  label               String
+  BoissonProduit      BoissonProduit[]
+  ProduitDistributeur ProduitDistributeur[]
+}
+
+model Boisson {
+  id                  Int                   @id @default(autoincrement())
+  label               String
+  BoissonDistributeur BoissonDistributeur[]
+  BoissonProduit      BoissonProduit[]
+  Commande            Commande[]
+  Annonce             Annonce[]
+  BoissonSupplement   BoissonSupplement[]
+  BoissonClient       BoissonClient[]
+}
+
+model BoissonDistributeur {
+  idBoisson      Int
+  boisson        Boisson      @relation(fields: [idBoisson], references: [id])
+  idDistributeur Int
+  distributeur   Distributeur @relation(fields: [idDistributeur], references: [id])
+
+  @@id([idBoisson, idDistributeur])
+}
+
+model BoissonProduit {
+  idBoisson Int
+  boisson   Boisson @relation(fields: [idBoisson], references: [id])
+  idProduit Int
+  produit   Produit @relation(fields: [idProduit], references: [id])
+  quantite  Float   @default(0)
+
+  @@id([idBoisson, idProduit])
+}
+
+model ProduitDistributeur {
+  idProduit      Int
+  produit        Produit      @relation(fields: [idProduit], references: [id])
+  idDistributeur Int
+  distributeur   Distributeur @relation(fields: [idDistributeur], references: [id])
+  quantite       Float        @default(0)
+
+  @@id([idProduit, idDistributeur])
+}
+
+model Commande {
+  id             Int          @id @default(autoincrement())
+  date           DateTime     @default(now())
+  etat           String
+  idConsommateur Int
+  consommateur   Consommateur @relation(fields: [idConsommateur], references: [id])
+  idDistributeur Int
+  distributeur   Distributeur @relation(fields: [idDistributeur], references: [id])
+  idBoisson      Int
+  boisson        Boisson      @relation(fields: [idBoisson], references: [id])
+  Payment        Payment[]
+}
+
+model Payment {
+  id          Int           @id @default(autoincrement())
+  montant     Float
+  date        DateTime      @default(now())
+  etat        String
+  typeCarte   String
+  monnaie     String
+  idCommande  Int
+  commande    Commande      @relation(fields: [idCommande], references: [id])
+  Reclamation Reclamation[]
+}
+
+model Reclamation {
+  id          Int       @id @default(autoincrement())
+  description String
+  date        DateTime  @default(now())
+  idPayment   Int
+  payment     Payment   @relation(fields: [idPayment], references: [id])
+  Reponse     Reponse[]
+}
+
+model Reponse {
+  id            Int         @id @default(autoincrement())
+  description   String
+  date          DateTime    @default(now())
+  idReclamation Int
+  reclamation   Reclamation @relation(fields: [idReclamation], references: [id])
+}
+
+model Annonceur {
+  id       Int       @id @default(autoincrement())
+  nom      String
+  idClient Int
+  client   Client    @relation(fields: [idClient], references: [id])
+  Annonce  Annonce[]
+}
+
+model Annonce {
+  id               Int                @id @default(autoincrement())
+  video            String
+  periodeAffichage String
+  prixAnnonce      Float
+  idRegion         Int
+  region           Region             @relation(fields: [idRegion], references: [id])
+  idBoisson        Int
+  boisson          Boisson            @relation(fields: [idBoisson], references: [id])
+  idAnnonceur      Int
+  annonceur        Annonceur          @relation(fields: [idAnnonceur], references: [id])
+  AnnonceCategorie AnnonceCategorie[]
+}
+
+model AnnonceCategorie {
+  idAnnonce   Int
+  annonce     Annonce   @relation(fields: [idAnnonce], references: [id])
+  idCategorie Int
+  categorie   Categorie @relation(fields: [idCategorie], references: [id])
+
+  @@id([idAnnonce, idCategorie])
+}
+
+model Categorie {
+  id               Int                @id @default(autoincrement())
+  label            String
+  AnnonceCategorie AnnonceCategorie[]
+}
+
+model TypeAnomalie {
+  id          Int        @id @default(autoincrement())
+  type        String
+  description String
+  Anomalie    Anomalie[]
+}
+
+model Anomalie {
+  id             Int          @id @default(autoincrement())
+  date           DateTime     @default(now())
+  idTypeAnomalie Int
+  typeAnomalie   TypeAnomalie @relation(fields: [idTypeAnomalie], references: [id])
+  idDistributeur Int
+  distributeur   Distributeur @relation(fields: [idDistributeur], references: [id])
+}
+
+model Supplement {
+  id                     Int                      @id @default(autoincrement())
+  label                  String
+  BoissonSupplement      BoissonSupplement[]
+  ClientSupplement       ClientSupplement[]
+  DistributeurSupplement DistributeurSupplement[]
+}
+
+model BoissonSupplement {
+  idBoisson    Int
+  boisson      Boisson    @relation(fields: [idBoisson], references: [id])
+  idSupplement Int
+  supplement   Supplement @relation(fields: [idSupplement], references: [id])
+
+  @@id([idBoisson, idSupplement])
+}
+
+model ClientSupplement {
+  idClient     Int
+  client       Client     @relation(fields: [idClient], references: [id])
+  idSupplement Int
+  supplement   Supplement @relation(fields: [idSupplement], references: [id])
+  prix         Float
+
+  @@id([idClient, idSupplement])
+}
+
+model DistributeurSupplement {
+  idClient     Int
+  client       Client     @relation(fields: [idClient], references: [id])
+  idSupplement Int
+  supplement   Supplement @relation(fields: [idSupplement], references: [id])
+
+  @@id([idClient, idSupplement])
+}
+
+model Tache {
+  id             Int          @id @default(autoincrement())
+  description    String
+  etat           Float
+  type           String
+  chargement     Float
+  dateDebut      DateTime     @default(now())
+  dateTraitement DateTime     @default(now())
+  idDistributeur Int
+  distributeur   Distributeur @relation(fields: [idDistributeur], references: [id])
+}
+
+model BoissonClient {
+  idBoisson Int
+  boisson   Boisson @relation(fields: [idBoisson], references: [id])
+  idClient  Int
+  client    Client  @relation(fields: [idClient], references: [id])
+  prix      Float
+  @@id([idBoisson, idClient])
+}
