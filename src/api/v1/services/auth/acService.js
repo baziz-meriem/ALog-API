@@ -9,7 +9,7 @@ const getAllAcs = async () => {
      * @returns {Promise<null| import('@prisma/client').AC>} acs
      */
     try {
-        const acs = await prisma.aC.findMany({
+        const acs = await prisma.AC.findMany({
             select:{
                 id: true,
                 nom: true,
@@ -33,7 +33,7 @@ const getAcById = async (id) => {
      * @returns {Promise<null| import('@prisma/client').AC>} ac
     */
     try {
-        const ac = await prisma.aC.findUnique({
+        const ac = await prisma.AC.findUnique({
             where: {
                 id: id
             },
@@ -60,7 +60,7 @@ const getAcByEmail = async (email) => {
      * @returns {Promise<null| import('@prisma/client').AC>} ac
     */
     try {
-        const ac = await prisma.aC.findUnique({
+        const ac = await prisma.AC.findUnique({
             where: {
                 email: email
             },
@@ -82,12 +82,12 @@ const getAcByEmail = async (email) => {
 
 const getAcByResetToken = async (resetPasswordToken) => {
     /**
-     * @description get the AC with email from the database and return it as an object or null if there is an error
+     * @description get the AC with resetPassword token from the database and return it as an object or null if there is an error
      * @param {number} id
      * @returns {Promise<null| import('@prisma/client').AC>} ac
     */
     try {
-        const ac = await prisma.aC.findFirst({
+        const ac = await prisma.AC.findFirst({
             where: {
                 resetPasswordToken:resetPasswordToken,
                 resetPasswordExpire: { $gt: Date.now() },
@@ -122,7 +122,7 @@ const createAc = async ({ nom, prenom, email, password, numTel, idClient }) => {
      * @throws {Error} if the idClient does not exist
     */
     try {
-        const acExists = await prisma.aC.findUnique({
+        const acExists = await prisma.AC.findUnique({
             where: {
                 email: email
             }
@@ -130,7 +130,7 @@ const createAc = async ({ nom, prenom, email, password, numTel, idClient }) => {
         if (acExists) {
             throw new Error('AC already exists');
         }
-        const clientExists = await prisma.client.findUnique({
+        const clientExists = await prisma.Client.findUnique({
             where: {
                 id: idClient
             }
@@ -139,7 +139,7 @@ const createAc = async ({ nom, prenom, email, password, numTel, idClient }) => {
             throw new Error('Client does not exist');
         }
         const hashPassword = await bcrypt.hash(password, 10);
-        const ac = await prisma.aC.create({
+        const ac = await prisma.AC.create({
             data: {
                 nom: nom,
                 prenom: prenom,
@@ -175,7 +175,7 @@ const updateAc = async (id, ac) => {
      * @throws {Error} if the AC does not exist
      */
     try {
-        const updatedAc = await prisma.aC.update({
+        const updatedAc = await prisma.AC.update({
             where: {
                 id: id
             },
@@ -205,16 +205,14 @@ const updateAc = async (id, ac) => {
 
 const updateAcResetToken = async (email, ac) => {
     /**
-     * @description update the AC with ID in the database and return it as an object or null if there is an error
+     * @description update the AC with reset password Token in the database and return it as an object or null if there is an error
      * @param {number} id
      * @param {import('@prisma/client').AC} ac
      * @returns {Promise<null| import('@prisma/client').AC>} ac
-     * @throws {Error} if the idClient does not exist
-     * @throws {Error} if the email already exists
-     * @throws {Error} if the AC does not exist
+     * @throws {Error} if the token does not exist
      */
     try {
-        const updatedAc = await prisma.aC.update({
+        const updatedAc = await prisma.AC.update({
             where: {
                 email: email
             },
@@ -246,13 +244,11 @@ const resetAcPassword = async (id, ac) => {
      * @param {number} id
      * @param {import('@prisma/client').AC} ac
      * @returns {Promise<null| import('@prisma/client').AC>} ac
-     * @throws {Error} if the idClient does not exist
-     * @throws {Error} if the email already exists
-     * @throws {Error} if the AC does not exist
+     * @throws {Error} if the id does not exist
      */
     try {
         const hashPassword = await bcrypt.hash(password, 10);
-        const updatedAc = await prisma.aC.update({
+        const updatedAc = await prisma.AC.update({
             where: {
                 id: id
             },

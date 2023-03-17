@@ -6,7 +6,7 @@ const {  validateEmail, validatePassword } = require('../../validators/inputVali
 const login = async (req, res) => {
     // retrieve the ac from the request
     const { email, password } = req.body;
-    // checking if ac has given password and email both
+    // checking if ac has given password and email bo,m,,,,,,,,,,mmkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk,,mth
     if (!email || !password) {
         return res.status(400).json({ status: 'Bad Request', message: 'Please Enter Email & Password' });
     }

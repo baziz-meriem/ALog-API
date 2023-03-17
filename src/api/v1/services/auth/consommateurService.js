@@ -6,10 +6,10 @@ const getAllCostumers = async () => {
     /**
      * @description get all Costumers from the database and return them as an array of objects or null if there is an error
      * @params
-     * @returns {Promise<null| import('@prisma/client').consommateur>} consommateurs
+     * @returns {Promise<null| import('@prisma/client').Consommateur>} consommateurs
      */
     try {
-        const costumers = await prisma.consommateur.findMany({
+        const costumers = await prisma.Consommateur.findMany({
             select: {
                 id: true,
                 nom: true,
@@ -27,12 +27,12 @@ const getAllCostumers = async () => {
 
 const getCostumerById = async (id) => {
     /**
-     * @description get the Costumer with ID from the database and return it as an object or null if there is an error
+     * @description get the Customer with ID from the database and return it as an object or null if there is an error
      * @param {number} id
-     * @returns {Promise<null| import('@prisma/client').consommateur>} ac
+     * @returns {Promise<null| import('@prisma/client').Consommateur>} customer
     */
     try {
-        const costumer = await prisma.consommateur.findUnique({
+        const costumer = await prisma.Consommateur.findUnique({
             where: {
                 id: id
             },
@@ -53,12 +53,12 @@ const getCostumerById = async (id) => {
 
 const getCostumerByEmail = async (email) => {
     /**
-     * @description get the Costumer with ID from the database and return it as an object or null if there is an error
+     * @description get the Customer with email from the database and return it as an object or null if there is an error
      * @param {number} id
-     * @returns {Promise<null| import('@prisma/client').consommateur>} ac
+     * @returns {Promise<null| import('@prisma/client').Consommateur>} Customer
     */
     try {
-        const costumer = await prisma.Consommateur.findUnique({
+        const customer = await prisma.Consommateur.findUnique({
             where: {
                 email: email
             },
@@ -71,7 +71,7 @@ const getCostumerByEmail = async (email) => {
                 mot_de_passe: true
             }
         });
-        return costumer;
+        return customer;
     } catch (error) {
         return null;
     }
@@ -85,21 +85,21 @@ const createCostumer = async ({ nom, prenom, email, password, numTel }) => {
      * @param {string} email
      * @param {string} password
      * @param {string} numTel
-     * @returns {Promise<null| import('@prisma/client').consommateur>} ac
+     * @returns {Promise<null| import('@prisma/client').Consommateur>} customer
      * @throws {Error} if the email already exists
     */
     try {
-        const costumerExists = await prisma.Consommateur.findUnique({
+        const customerExists = await prisma.Consommateur.findUnique({
             where: {
                 email: email
             }
         });
 
-        if (costumerExists) {
+        if (customerExists) {
             throw new Error('Costumer already exists');
         }
         const hashPassword = await bcrypt.hash(password, 10);
-        const costumer = await prisma.Consommateur.create({
+        const customer = await prisma.Consommateur.create({
             data: {
                 nom: nom,
                 prenom: prenom,
@@ -116,32 +116,31 @@ const createCostumer = async ({ nom, prenom, email, password, numTel }) => {
                 mot_de_passe: false
             }
         });
-        return costumer;
+        return customer;
     } catch (error) {
         return null;
     }
 }
 
-const updateCostumer = async (id, ac) => {
+const updateCostumer = async (id, customer) => {
     /**
-     * @description update the costumer with ID in the database and return it as an object or null if there is an error
+     * @description update the customer with ID in the database and return it as an object or null if there is an error
      * @param {number} id
-     * @param {import('@prisma/client').Consommateur} ac
-     * @returns {Promise<null| import('@prisma/client').Consommateur>} ac
-     * @throws {Error} if the email already exists
-     * @throws {Error} if the Costumer does not exist
+     * @param {import('@prisma/client').Consommateur} customer
+     * @returns {Promise<null| import('@prisma/client').Consommateur>} customer
+     * @throws {Error} if the id doeasn t exists
      */
     try {
-        const updatedCostumer = await prisma.consommateur.update({
+        const updatedCustomer = await prisma.Consommateur.update({
             where: {
                 id: id
             },
             data: {
-                nom: ac.nom,
-                prenom: ac.prenom,
-                email: ac.email,
-                numTel: Number(ac.numTel),
-                mot_de_passe: ac.password,
+                nom: customer.nom,
+                prenom: customer.prenom,
+                email: customer.email,
+                numTel: Number(customer.numTel),
+                mot_de_passe: customer.password,
             },
             select: {
                 id: true,
@@ -152,7 +151,7 @@ const updateCostumer = async (id, ac) => {
                 mot_de_passe: false
             }
         });
-        return updatedCostumer;
+        return updatedCustomer;
     } catch (error) {
         return null;
     }
@@ -160,12 +159,12 @@ const updateCostumer = async (id, ac) => {
 
 const deleteCostumer =async (id) => {
     /**
-     * @description delete the costumer with ID from the database and return it as an object or null if there is an error
+     * @description delete the customer with ID from the database and return it as an object or null if there is an error
      * @param {number} id
-     * @returns {Promise<null| import('@prisma/client').consommateur>} ac
+     * @returns {Promise<null| import('@prisma/client').Consommateur>} customer
     */
     try {
-        const deletedCostumer =await prisma.consommateur.delete({
+        const deletedCustomer =await prisma.Consommateur.delete({
             where: {
                 id: id
             },
@@ -175,7 +174,7 @@ const deleteCostumer =async (id) => {
                 mot_de_passe: false
             }
         });
-        return deletedCostumer;
+        return deletedCustomer;
     } catch (error) {
         return null;
     }
@@ -184,16 +183,15 @@ const deleteCostumer =async (id) => {
 
 const updateCostumerResetToken = async (email, costumer) => {
     /**
-     * @description update the AC with ID in the database and return it as an object or null if there is an error
-     * @param {number} id
-     * @param {import('@prisma/client').AC} ac
-     * @returns {Promise<null| import('@prisma/client').AC>} ac
-     * @throws {Error} if the idClient does not exist
-     * @throws {Error} if the email already exists
-     * @throws {Error} if the AC does not exist
+     * @description update the customer with email in the database and return it as an object or null if there is an error
+     * @param {string} email
+     * @param {import('@prisma/client').Consommateur} customer
+     * @returns {Promise<null| import('@prisma/client').Consommateur>} customer
+     * @throws {Error} if the email does not exist
+
      */
     try {
-        const updatedCostumer = await prisma.Consommateur.update({
+        const updatedCustomer = await prisma.Consommateur.update({
             where: {
                 email: email
             },
@@ -212,7 +210,7 @@ const updateCostumerResetToken = async (email, costumer) => {
                 mot_de_passe: false
             }
         });
-        return updatedCostumer;
+        return updatedCustomer;
     } catch (error) {
         return null;
     }
@@ -220,12 +218,12 @@ const updateCostumerResetToken = async (email, costumer) => {
 
 const getCostumerByResetToken = async (resetPasswordToken) => {
     /**
-     * @description get the AC with email from the database and return it as an object or null if there is an error
-     * @param {number} id
-     * @returns {Promise<null| import('@prisma/client').AC>} ac
+     * @description get the customer with resetPasswordToken from the database and return it as an object or null if there is an error
+     * @param {string} resetPasswordToken
+     * @returns {Promise<null| import('@prisma/client').Consommateur>} customer
     */
     try {
-        const costumer = await prisma.Consommateur.findFirst({
+        const customer = await prisma.Consommateur.findFirst({
             where: {
                 resetPasswordToken:resetPasswordToken,
                 resetPasswordExpire: { $gt: Date.now() },
@@ -239,7 +237,7 @@ const getCostumerByResetToken = async (resetPasswordToken) => {
                 mot_de_passe: false
             }
         });
-        return costumer;
+        return customer;
     } catch (error) {
         return null;
     }
@@ -247,13 +245,11 @@ const getCostumerByResetToken = async (resetPasswordToken) => {
 
 const resetCustomerPassword = async (id, customer) => {
     /**
-     * @description update the AC with ID in the database and return it as an object or null if there is an error
+     * @description update the customer with ID in the database and return it as an object or null if there is an error
      * @param {number} id
-     * @param {import('@prisma/client').AC} ac
-     * @returns {Promise<null| import('@prisma/client').AC>} ac
-     * @throws {Error} if the idClient does not exist
-     * @throws {Error} if the email already exists
-     * @throws {Error} if the AC does not exist
+     * @param {import('@prisma/client').Consommateur} customer
+     * @returns {Promise<null| import('@prisma/client').Consommateur>} customer
+     * @throws {Error} if the id does not exist
      */
     try {
         const hashPassword = await bcrypt.hash(password, 10);
@@ -263,8 +259,8 @@ const resetCustomerPassword = async (id, customer) => {
             },
             data: {
                 password:hashPassword,
-                resetPasswordToken: costumer.resetPasswordToken,
-                resetPasswordExpire: costumer.resetPasswordExpire,              
+                resetPasswordToken: customer.resetPasswordToken,
+                resetPasswordExpire: customer.resetPasswordExpire,              
             },
             select: {
                 id: true,
@@ -277,7 +273,7 @@ const resetCustomerPassword = async (id, customer) => {
                 mot_de_passe: false
             }
         });
-        return updatedCostumer;
+        return updatedCustomer;
     } catch (error) {
         return null;
     }

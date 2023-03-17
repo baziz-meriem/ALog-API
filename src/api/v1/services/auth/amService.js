@@ -4,9 +4,9 @@ const bcrypt = require('bcrypt');
 
 const getAllAms = async () => {
     /**
-     * @description get all ACs from the database and return them as an array of objects or null if there is an error
+     * @description get all AMs from the database and return them as an array of objects or null if there is an error
      * @params
-     * @returns {Promise<null| import('@prisma/client').AC>} acs
+     * @returns {Promise<null| import('@prisma/client').AM>} ams
      */
     try {
         const ams = await prisma.AM.findMany({
@@ -28,9 +28,9 @@ const getAllAms = async () => {
 
 const getAmById = async (id) => {
     /**
-     * @description get the AC with ID from the database and return it as an object or null if there is an error
+     * @description get the AM with ID from the database and return it as an object or null if there is an error
      * @param {number} id
-     * @returns {Promise<null| import('@prisma/client').AC>} ac
+     * @returns {Promise<null| import('@prisma/client').AM>} am
     */
     try {
         const am = await prisma.AM.findUnique({
@@ -55,9 +55,9 @@ const getAmById = async (id) => {
 
 const getAmByEmail = async (email) => {
     /**
-     * @description get the AC with email from the database and return it as an object or null if there is an error
+     * @description get the AM with email from the database and return it as an object or null if there is an error
      * @param {number} id
-     * @returns {Promise<null| import('@prisma/client').AC>} ac
+     * @returns {Promise<null| import('@prisma/client').AM>} am
     */
     try {
         const am = await prisma.AM.findUnique({
@@ -82,9 +82,9 @@ const getAmByEmail = async (email) => {
 
 const getAmByResetToken = async (resetPasswordToken) => {
     /**
-     * @description get the AC with email from the database and return it as an object or null if there is an error
+     * @description get the AM with resetPasswordToken from the database and return it as an object or null if there is an error
      * @param {number} id
-     * @returns {Promise<null| import('@prisma/client').AC>} ac
+     * @returns {Promise<null| import('@prisma/client').AM>} am
     */
     try {
         const am = await prisma.AM.findFirst({
@@ -110,14 +110,14 @@ const getAmByResetToken = async (resetPasswordToken) => {
 
 const createAm = async ({ nom, prenom, email, password, numTel, idClient }) => {
     /**
-     * @description create a new AC in the database and return it as an object or null if there is an error
+     * @description create a new AM in the database and return it as an object or null if there is an error
      * @param {string} nom
      * @param {string} prenom
      * @param {string} email
      * @param {string} password
      * @param {string} numTel
      * @param {number} idClient
-     * @returns {Promise<null| import('@prisma/client').AC>} ac
+     * @returns {Promise<null| import('@prisma/client').AM>} am
      * @throws {Error} if the email already exists
      * @throws {Error} if the idClient does not exist
     */
@@ -166,16 +166,14 @@ const createAm = async ({ nom, prenom, email, password, numTel, idClient }) => {
 
 const updateAm = async (id, am) => {
     /**
-     * @description update the AC with ID in the database and return it as an object or null if there is an error
+     * @description update the AM with ID in the database and return it as an object or null if there is an error
      * @param {number} id
-     * @param {import('@prisma/client').AC} ac
-     * @returns {Promise<null| import('@prisma/client').AC>} ac
-     * @throws {Error} if the idClient does not exist
-     * @throws {Error} if the email already exists
-     * @throws {Error} if the AC does not exist
+     * @param {import('@prisma/client').AM} am
+     * @returns {Promise<null| import('@prisma/client').AM>} am
+     * @throws {Error} if the id does not exist
      */
     try {
-        const updatedAm = await prisma.AC.update({
+        const updatedAm = await prisma.AM.update({
             where: {
                 id: id
             },
@@ -205,13 +203,11 @@ const updateAm = async (id, am) => {
 
 const updateAmResetToken = async (email, am) => {
     /**
-     * @description update the AC with ID in the database and return it as an object or null if there is an error
-     * @param {number} id
-     * @param {import('@prisma/client').AC} ac
-     * @returns {Promise<null| import('@prisma/client').AC>} ac
-     * @throws {Error} if the idClient does not exist
-     * @throws {Error} if the email already exists
-     * @throws {Error} if the AC does not exist
+     * @description update the AM with email in the database and return it as an object or null if there is an error
+     * @param {string} email
+     * @param {import('@prisma/client').AM} am
+     * @returns {Promise<null| import('@prisma/client').AM>} am
+     * @throws {Error} if the email does not exist
      */
     try {
         const updatedAm = await prisma.AM.update({
@@ -242,13 +238,11 @@ const updateAmResetToken = async (email, am) => {
 
 const resetAmPassword = async (id, am) => {
     /**
-     * @description update the AC with ID in the database and return it as an object or null if there is an error
+     * @description update the AM with ID in the database and return it as an object or null if there is an error
      * @param {number} id
-     * @param {import('@prisma/client').AC} ac
-     * @returns {Promise<null| import('@prisma/client').AC>} ac
-     * @throws {Error} if the idClient does not exist
-     * @throws {Error} if the email already exists
-     * @throws {Error} if the AC does not exist
+     * @param {import('@prisma/client').AM} am
+     * @returns {Promise<null| import('@prisma/client').AM>} am
+     * @throws {Error} if the id does not exist
      */
     try {
         const hashPassword = await bcrypt.hash(password, 10);
@@ -281,9 +275,9 @@ const resetAmPassword = async (id, am) => {
 
 const deleteAm = async(id) => {
     /**
-     * @description delete the AC with ID from the database and return it as an object or null if there is an error
+     * @description delete the AM with ID from the database and return it as an object or null if there is an error
      * @param {number} id
-     * @returns {Promise<null| import('@prisma/client').AC>} ac
+     * @returns {Promise<null| import('@prisma/client').AM>} am
     */
     try {
         const deletedAm = await prisma.AM.delete({

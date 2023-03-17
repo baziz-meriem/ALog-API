@@ -4,9 +4,9 @@ const bcrypt = require('bcrypt');
 
 const getAllSadms = async () => {
     /**
-     * @description get all Decideurs from the database and return them as an array of objects or null if there is an error
+     * @description get all sadms from the database and return them as an array of objects or null if there is an error
      * @params
-     * @returns {Promise<null| import('@prisma/client').Decideur>} decideurs
+     * @returns {Promise<null| import('@prisma/client').SADM>} sadms
      */
     try {
         const sadms = await prisma.SADM.findMany({
@@ -27,9 +27,9 @@ const getAllSadms = async () => {
 
 const getSadmById = async (id) => {
     /**
-     * @description get the Decideur with ID from the database and return it as an object or null if there is an error
+     * @description get the sadm with ID from the database and return it as an object or null if there is an error
      * @param {number} id
-     * @returns {Promise<null| import('@prisma/client').Decideur>} decideur
+     * @returns {Promise<null| import('@prisma/client').SADM>} sadm
     */
     try {
         const sadm = await prisma.SADM.findUnique({
@@ -53,9 +53,9 @@ const getSadmById = async (id) => {
 
 const getSadmByEmail = async (email) => {
     /**
-     * @description get the Decideur with ID from the database and return it as an object or null if there is an error
-     * @param {number} id
-     * @returns {Promise<null| import('@prisma/client').Decideur>} decideur
+     * @description get the sadm with email from the database and return it as an object or null if there is an error
+     * @param {string} email
+     * @returns {Promise<null| import('@prisma/client').SADM>} sadm
     */
     try {
         const sadm = await prisma.SADM.findUnique({
@@ -77,18 +77,16 @@ const getSadmByEmail = async (email) => {
     }
 }
 
-const createSadm = async ({ nom, prenom, email, password, numTel, idClient }) => {
+const createSadm = async ({ nom, prenom, email, password, numTel }) => {
     /**
-     * @description create a new Decideur in the database and return it as an object or null if there is an error
+     * @description create a new sadm in the database and return it as an object or null if there is an error
      * @param {string} nom
      * @param {string} prenom
      * @param {string} email
      * @param {string} password
      * @param {string} numTel
-     * @param {number} idClient
-     * @returns {Promise<null| import('@prisma/client').Decideur>} decideur
+     * @returns {Promise<null| import('@prisma/client').SADM>} sadm
      * @throws {Error} if the email already exists
-     * @throws {Error} if the idClient does not exist
     */
     try {
         const sadmExists = await prisma.SADM.findUnique({
@@ -96,17 +94,10 @@ const createSadm = async ({ nom, prenom, email, password, numTel, idClient }) =>
                 email: email
             }
         });
-        if (admExists) {
-            throw new Error('Adm already exists');
+        if (sadmExists) {
+            throw new Error('SAdm already exists');
         }
-        const clientExists = await prisma.Client.findUnique({
-            where: {
-                id: idClient
-            }
-        });
-        if (!clientExists) {
-            throw new Error('Client does not exist');
-        }
+
         const hashPassword = await bcrypt.hash(password, 10);
         const sadm = await prisma.SADM.create({
             data: {
@@ -133,13 +124,12 @@ const createSadm = async ({ nom, prenom, email, password, numTel, idClient }) =>
 
 const updateSadm = async (id, sadm) => {
     /**
-     * @description update the Decideur with ID in the database and return it as an object or null if there is an error
+     * @description update the sadm with ID in the database and return it as an object or null if there is an error
      * @param {number} id
-     * @param {import('@prisma/client').Decideur} decideur
-     * @returns {Promise<null| import('@prisma/client').Decideur>} decideur
-     * @throws {Error} if the idClient does not exist
-     * @throws {Error} if the email already exists
-     * @throws {Error} if the Decideur does not exist
+     * @param {import('@prisma/client').SADM} sadm
+     * @returns {Promise<null| import('@prisma/client').SADM>} sadm
+     * @throws {Error} if the id does not exist
+
      */
     try {
         const updatedSadm = await prisma.SADM.update({
@@ -170,9 +160,9 @@ const updateSadm = async (id, sadm) => {
 
 const deleteSadm = async (id) => {
     /**
-     * @description delete the Decideur with ID from the database and return it as an object or null if there is an error
+     * @description delete the sadm with ID from the database and return it as an object or null if there is an error
      * @param {number} id
-     * @returns {Promise<null| import('@prisma/client').Decideur>} decideur
+     * @returns {Promise<null| import('@prisma/client').SADM>} sadm
     */
     try {
         const deletedSadm =await prisma.SADM.delete({
@@ -192,13 +182,11 @@ const deleteSadm = async (id) => {
 }
 const resetSadmPassword = async (id, sadm) => {
     /**
-     * @description update the AC with ID in the database and return it as an object or null if there is an error
+     * @description update the sadm with ID in the database and return it as an object or null if there is an error
      * @param {number} id
-     * @param {import('@prisma/client').AC} ac
-     * @returns {Promise<null| import('@prisma/client').AC>} ac
-     * @throws {Error} if the idClient does not exist
-     * @throws {Error} if the email already exists
-     * @throws {Error} if the AC does not exist
+     * @param {import('@prisma/client').SADM} sadm
+     * @returns {Promise<null| import('@prisma/client').SADM>} sadm
+     * @throws {Error} if the id does not exist
      */
     try {
         const hashPassword = await bcrypt.hash(password, 10);
@@ -208,8 +196,8 @@ const resetSadmPassword = async (id, sadm) => {
             },
             data: {
                 password: hashPassword,
-                resetPasswordToken: adm.resetPasswordToken,
-                resetPasswordExpire: adm.resetPasswordExpire,              
+                resetPasswordToken: sadm.resetPasswordToken,
+                resetPasswordExpire: sadm.resetPasswordExpire,              
             },
             select: {
                 id: true,
@@ -229,9 +217,9 @@ const resetSadmPassword = async (id, sadm) => {
 }
 const getSadmByResetToken = async (resetPasswordToken) => {
     /**
-     * @description get the AC with email from the database and return it as an object or null if there is an error
-     * @param {number} id
-     * @returns {Promise<null| import('@prisma/client').AC>} ac
+     * @description get the sadm with resetPasswordToken from the database and return it as an object or null if there is an error
+     * @param {string} resetPasswordToken
+     * @returns {Promise<null| import('@prisma/client').SADM>} sadm
     */
     try {
         const sadm = await prisma.SADM.findFirst({
@@ -255,13 +243,11 @@ const getSadmByResetToken = async (resetPasswordToken) => {
 }
 const updateSadmResetToken = async (email, sadm) => {
     /**
-     * @description update the AC with ID in the database and return it as an object or null if there is an error
-     * @param {number} id
-     * @param {import('@prisma/client').AC} ac
-     * @returns {Promise<null| import('@prisma/client').AC>} ac
-     * @throws {Error} if the idClient does not exist
-     * @throws {Error} if the email already exists
-     * @throws {Error} if the AC does not exist
+     * @description update the sadm with email in the database and return it as an object or null if there is an error
+     * @param {string} email
+     * @param {import('@prisma/client').SADM} sadm
+     * @returns {Promise<null| import('@prisma/client').SADM>} sadm
+     * @throws {Error} if the email does not exist
      */
     try {
         const updatedSadm = await prisma.SADM.update({

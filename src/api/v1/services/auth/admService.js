@@ -4,9 +4,9 @@ const bcrypt = require('bcrypt');
 
 const getAllAdms = async () => {
     /**
-     * @description get all Decideurs from the database and return them as an array of objects or null if there is an error
+     * @description get all ADMS from the database and return them as an array of objects or null if there is an error
      * @params
-     * @returns {Promise<null| import('@prisma/client').Decideur>} decideurs
+     * @returns {Promise<null| import('@prisma/client').ADM>} adms
      */
     try {
         const adms = await prisma.ADM.findMany({
@@ -28,9 +28,9 @@ const getAllAdms = async () => {
 
 const getAdmById = async (id) => {
     /**
-     * @description get the Decideur with ID from the database and return it as an object or null if there is an error
+     * @description get the adm with ID from the database and return it as an object or null if there is an error
      * @param {number} id
-     * @returns {Promise<null| import('@prisma/client').Decideur>} decideur
+     * @returns {Promise<null| import('@prisma/client').ADM>} adm
     */
     try {
         const adm = await prisma.ADM.findUnique({
@@ -55,12 +55,12 @@ const getAdmById = async (id) => {
 
 const getAdmByEmail = async (email) => {
     /**
-     * @description get the Decideur with ID from the database and return it as an object or null if there is an error
+     * @description get the adm with email from the database and return it as an object or null if there is an error
      * @param {number} id
-     * @returns {Promise<null| import('@prisma/client').Decideur>} decideur
+     * @returns {Promise<null| import('@prisma/client').ADM>} adm
     */
     try {
-        const adm = await prisma.Adm.findUnique({
+        const adm = await prisma.AdM.findUnique({
             where: {
                 email: email
             },
@@ -82,14 +82,14 @@ const getAdmByEmail = async (email) => {
 
 const createAdm = async ({ nom, prenom, email, password, numTel, idClient }) => {
     /**
-     * @description create a new Decideur in the database and return it as an object or null if there is an error
+     * @description create a new adm in the database and return it as an object or null if there is an error
      * @param {string} nom
      * @param {string} prenom
      * @param {string} email
      * @param {string} password
      * @param {string} numTel
      * @param {number} idClient
-     * @returns {Promise<null| import('@prisma/client').Decideur>} decideur
+     * @returns {Promise<null| import('@prisma/client').ADM>} adm
      * @throws {Error} if the email already exists
      * @throws {Error} if the idClient does not exist
     */
@@ -138,13 +138,13 @@ const createAdm = async ({ nom, prenom, email, password, numTel, idClient }) => 
 
 const updateAdm = async (id, adm) => {
     /**
-     * @description update the Decideur with ID in the database and return it as an object or null if there is an error
+     * @description update the adm with ID in the database and return it as an object or null if there is an error
      * @param {number} id
-     * @param {import('@prisma/client').Decideur} decideur
-     * @returns {Promise<null| import('@prisma/client').Decideur>} decideur
+     * @param {import('@prisma/client').ADM} adm
+     * @returns {Promise<null| import('@prisma/client').ADM>} adm
      * @throws {Error} if the idClient does not exist
      * @throws {Error} if the email already exists
-     * @throws {Error} if the Decideur does not exist
+     * @throws {Error} if the adm does not exist
      */
     try {
         const updatedAdm = await prisma.ADM.update({
@@ -177,9 +177,9 @@ const updateAdm = async (id, adm) => {
 
 const deleteAdm = async (id) => {
     /**
-     * @description delete the Decideur with ID from the database and return it as an object or null if there is an error
+     * @description delete the adm with ID from the database and return it as an object or null if there is an error
      * @param {number} id
-     * @returns {Promise<null| import('@prisma/client').Decideur>} decideur
+     * @returns {Promise<null| import('@prisma/client').ADM>} adm
     */
     try {
         const deletedAdm =await prisma.ADM.delete({
@@ -199,17 +199,15 @@ const deleteAdm = async (id) => {
 }
 const resetAdmPassword = async (id, adm) => {
     /**
-     * @description update the AC with ID in the database and return it as an object or null if there is an error
+     * @description update the adm with id in the database and return it as an object or null if there is an error
      * @param {number} id
      * @param {import('@prisma/client').AC} ac
      * @returns {Promise<null| import('@prisma/client').AC>} ac
-     * @throws {Error} if the idClient does not exist
-     * @throws {Error} if the email already exists
-     * @throws {Error} if the AC does not exist
+     * @throws {Error} if the id doesn t exist
      */
     try {
         const hashPassword = await bcrypt.hash(password, 10);
-        const updatedDecideur = await prisma.ADM.update({
+        const updatedAdm = await prisma.ADM.update({
             where: {
                 id: id
             },
@@ -237,9 +235,9 @@ const resetAdmPassword = async (id, adm) => {
 }
 const getAdmByResetToken = async (resetPasswordToken) => {
     /**
-     * @description get the AC with email from the database and return it as an object or null if there is an error
+     * @description get the adm with reset password token from the database and return it as an object or null if there is an error
      * @param {number} id
-     * @returns {Promise<null| import('@prisma/client').AC>} ac
+     * @returns {Promise<null| import('@prisma/client').ADM>} adm
     */
     try {
         const adm = await prisma.ADM.findFirst({
@@ -264,13 +262,11 @@ const getAdmByResetToken = async (resetPasswordToken) => {
 }
 const updateAdmResetToken = async (email, adm) => {
     /**
-     * @description update the AC with ID in the database and return it as an object or null if there is an error
+     * @description update the adm with email in the database and return it as an object or null if there is an error
      * @param {number} id
-     * @param {import('@prisma/client').AC} ac
-     * @returns {Promise<null| import('@prisma/client').AC>} ac
-     * @throws {Error} if the idClient does not exist
-     * @throws {Error} if the email already exists
-     * @throws {Error} if the AC does not exist
+     * @param {import('@prisma/client').ADM} adm
+     * @returns {Promise<null| import('@prisma/client').ADM>} adm
+     * @throws {Error} if the email does not exist
      */
     try {
         const updatedAdm = await prisma.ADM.update({

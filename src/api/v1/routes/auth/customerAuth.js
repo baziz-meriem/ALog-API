@@ -72,7 +72,7 @@ route.post('/register', register);
  *              schema:
  *                $ref: '#/components/schemas/Consommateur'
  *        400:
- *          description: 
+ *          description: provided email invalid
  */
 route.post('/forgotPassword', forgotPassword);
 /**
@@ -96,7 +96,7 @@ route.post('/forgotPassword', forgotPassword);
  *              schema:
  *                $ref: '#/components/schemas/Consommateur'
  *        400:
- *          description: 
+ *          description: token corresponding to email invalid
  */
 route.post('/resetPassword', resetPassword);
 

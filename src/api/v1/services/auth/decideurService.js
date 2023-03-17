@@ -9,7 +9,7 @@ const getAllDecideurs = async () => {
      * @returns {Promise<null| import('@prisma/client').Decideur>} decideurs
      */
     try {
-        const decideurs = await prisma.decideur.findMany({
+        const decideurs = await prisma.Decideur.findMany({
             select:{
                 id: true,
                 nom: true,
@@ -94,7 +94,7 @@ const createDecideur = async ({ nom, prenom, email, password, numTel, idClient }
      * @throws {Error} if the idClient does not exist
     */
     try {
-        const decideurExists = await prisma.decideur.findUnique({
+        const decideurExists = await prisma.Decideur.findUnique({
             where: {
                 email: email
             }
@@ -111,7 +111,7 @@ const createDecideur = async ({ nom, prenom, email, password, numTel, idClient }
             throw new Error('Client does not exist');
         }
         const hashPassword = await bcrypt.hash(password, 10);
-        const decideur = await prisma.decideur.create({
+        const decideur = await prisma.Decideur.create({
             data: {
                 nom: nom,
                 prenom: prenom,
@@ -147,7 +147,7 @@ const updateDecideur = async (id, decideur) => {
      * @throws {Error} if the Decideur does not exist
      */
     try {
-        const updatedDecideur = await prisma.decideur.update({
+        const updatedDecideur = await prisma.Decideur.update({
             where: {
                 id: id
             },
@@ -182,7 +182,7 @@ const deleteDecideur = async (id) => {
      * @returns {Promise<null| import('@prisma/client').Decideur>} decideur
     */
     try {
-        const deletedDecideur =await prisma.decideur.delete({
+        const deletedDecideur =await prisma.Decideur.delete({
             where: {
                 id: id
             },
@@ -199,13 +199,11 @@ const deleteDecideur = async (id) => {
 }
 const resetDecideurPassword = async (id, decideur) => {
     /**
-     * @description update the AC with ID in the database and return it as an object or null if there is an error
+     * @description update the decideur with ID in the database and return it as an object or null if there is an error
      * @param {number} id
-     * @param {import('@prisma/client').AC} ac
-     * @returns {Promise<null| import('@prisma/client').AC>} ac
-     * @throws {Error} if the idClient does not exist
-     * @throws {Error} if the email already exists
-     * @throws {Error} if the AC does not exist
+     * @param {import('@prisma/client').Decideur} decideur
+     * @returns {Promise<null| import('@prisma/client').Decideur>} decideur
+     * @throws {Error} if the id does not exist
      */
     try {
         const hashPassword = await bcrypt.hash(password, 10);
@@ -215,8 +213,8 @@ const resetDecideurPassword = async (id, decideur) => {
             },
             data: {
                 password: hashPassword,
-                resetPasswordToken: ac.resetPasswordToken,
-                resetPasswordExpire: ac.resetPasswordExpire,              
+                resetPasswordToken: decideur.resetPasswordToken,
+                resetPasswordExpire: decideur.resetPasswordExpire,              
             },
             select: {
                 id: true,
@@ -237,9 +235,9 @@ const resetDecideurPassword = async (id, decideur) => {
 }
 const getDecideurByResetToken = async (resetPasswordToken) => {
     /**
-     * @description get the AC with email from the database and return it as an object or null if there is an error
-     * @param {number} id
-     * @returns {Promise<null| import('@prisma/client').AC>} ac
+     * @description get the decideur with resetPasswordToken from the database and return it as an object or null if there is an error
+     * @param {string} resetPasswordToken
+     * @returns {Promise<null| import('@prisma/client').Decideur>} decideur
     */
     try {
         const decideur = await prisma.Decideur.findFirst({
@@ -262,15 +260,13 @@ const getDecideurByResetToken = async (resetPasswordToken) => {
         return null;
     }
 }
-const updateDecideurResetToken = async (email, ac) => {
+const updateDecideurResetToken = async (email, decideur) => {
     /**
-     * @description update the AC with ID in the database and return it as an object or null if there is an error
-     * @param {number} id
-     * @param {import('@prisma/client').AC} ac
-     * @returns {Promise<null| import('@prisma/client').AC>} ac
-     * @throws {Error} if the idClient does not exist
-     * @throws {Error} if the email already exists
-     * @throws {Error} if the AC does not exist
+     * @description update the decideur with ID in the database and return it as an object or null if there is an error
+     * @param {string} email
+     * @param {import('@prisma/client').Decideur} decideur
+     * @returns {Promise<null| import('@prisma/client').Decideur>} decideur
+     * @throws {Error} if the email does not exist
      */
     try {
         const updatedDecideur = await prisma.Decideur.update({
@@ -278,8 +274,8 @@ const updateDecideurResetToken = async (email, ac) => {
                 email: email
             },
             data: {
-                resetPasswordToken: ac.resetPasswordToken,
-                resetPasswordExpire: ac.resetPasswordExpire,              
+                resetPasswordToken: decideur.resetPasswordToken,
+                resetPasswordExpire: decideur.resetPasswordExpire,              
             },
             select: {
                 id: true,

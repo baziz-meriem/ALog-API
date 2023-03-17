@@ -46,7 +46,7 @@ route.post('/login', login);
  *              schema:
  *                $ref: '#/components/schemas/SADM'
  *        400:
- *          description: 
+ *          description: provided email not valid
  */
 route.post('/forgotPassword', forgotPassword);
 /**
@@ -70,7 +70,7 @@ route.post('/forgotPassword', forgotPassword);
  *              schema:
  *                $ref: '#/components/schemas/SADM'
  *        400:
- *          description: 
+ *          description: token corresponding to email invalid
  */
 route.post('/resetPassword', resetPassword);
 
