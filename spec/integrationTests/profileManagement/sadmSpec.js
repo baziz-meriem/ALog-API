@@ -8,7 +8,7 @@ const SADMTest = {
     "id": 1,
     "nom": "SADM1",
     "prenom": "SADM1",
-    "email": "SADM1@gmail.com",
+    "email": "SADMTest@gmail.com",
     "password": "Test password",
     "numTel": "0123456789",
 };

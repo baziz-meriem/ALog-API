@@ -2,34 +2,22 @@ const superTest = require('supertest');
 const app = require('../../../src/index.js');
 
 const request = superTest(app);
-const route = "/api/v1/profileManagement/decideur";
+const route = "/api/v1/profileManagement/consommateur";
 
 const costumeTest = {
     "id": 1,
-    "nom": "Test",
-    "prenom": "Test",
-    "email": "decideurTest@esi.dz",
-    "password": "Test status",
+    "nom": "AC1",
+    "prenom": "AC1 description",
+    "email": "consommateurTest@esi.dz",
+    "password": "AC1 status",
     "numTel": "0123456789",
-    "idClient": 1
 };
-describe('Decideur test', () => {
-    beforeAll(async () => {
-        const res = await request.post("/api/v1/profileManagement/client").send({
-            nom: 'John Doe',
-            email: 'decideurTest@example.com',//should be unique email
-            numTel: '0123456789'
-        });
-        costumeTest.idClient = res.body.data.id
-    });
-    afterAll(async () => {
-        await request.delete(`/api/v1/profileManagement/client/${costumeTest.idClient}`).send();
-    });
+describe('Consommateur test', () => {
     describe(`POST ${route}`, () => {
         // send post request to route with body
         it('should return 201', async () => {
             const response = await request.post(route).send(costumeTest);
-            costumeTest.id = response.body.data.id
+            costumeTest.id = response.body.data?.id
             expect(response.status).toBe(201);
         });
         it('should return 400', async () => {
@@ -71,7 +59,7 @@ describe('Decideur test', () => {
             expect(response.status).toBe(200);
         });
         it('should return 400', async () => {
-            const response = await request.delete(`${route}/1`).send({});
+            const response = await request.delete(`${route}/1`).send();
             expect(response.status).toBe(400);
         });
     })
