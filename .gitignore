@@ -1,5 +1,5 @@
 node_modules
 .env
-logger/access.log
-logger/error.log
+src/logger
+.nyc_output
 ```
