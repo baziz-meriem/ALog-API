@@ -1,30 +1,8 @@
 
 const route = require('express').Router();
-const { postHandler, getAllHandler, getOneHandler, putHandler, deleteHandler } = require('../controllers/ClientController');
+const { postHandler, getAllHandler, getOneHandler, putHandler, deleteHandler } = require('../../controllers/profileManagement/ClientController');
 
 
-/**
- * @swagger
- * components:
- *  schemas:
- *    Client:
- *      type: object
- *      required:
- *        - email
- *      properties:
- *        id:
- *          type: integer
- *          description: The auto-generated ID of the client
- *        nom:
- *          type: string
- *          description: The client's name
- *        email:
- *          type: string
- *          description: The client's email
- *        numTel:
- *          type: string
- *          description: The client's phone number
- */
 /**
  * @swagger
  * /api/v1/client/:

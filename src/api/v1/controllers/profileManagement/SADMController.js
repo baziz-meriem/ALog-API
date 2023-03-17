@@ -53,6 +53,9 @@ const putHandler = async (req, res) => {
     }
 
     const updatedSADM = await updateSADM(valideId, valideSADM);
+    if(!updatedSADM){
+        return res.status(400).json({ status: 'Bad Request', message: 'Error while updating the SADM, provided SADM is not valid' });
+    }
     return res.status(200).json({ status: 'success', data: updatedSADM });
 }
 
@@ -63,6 +66,9 @@ const deleteHandler = async (req, res) => {
         return res.status(400).json({ status: 'Bad Request', message: "provided id is not valid" });
     }
     const deletedSADM = await deleteSADM(valideId);
+    if(!deletedSADM){
+        return res.status(400).json({ status: 'Bad Request', message: 'Error while deleting the SADM, provided id is not valid' });
+    }
     return res.status(200).json({ status: 'success', data: deletedSADM });
 }
 

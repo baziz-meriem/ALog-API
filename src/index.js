@@ -27,7 +27,6 @@ app.get('/', (req, res) => {
         message: 'Hello World'
     });
 });
-
 app.use('/api/v1', require('./api/v1/routes'));
 
 app.use((req, res, next) => {

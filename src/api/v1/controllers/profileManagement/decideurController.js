@@ -65,6 +65,10 @@ const putHandler = async (req, res) => {
     }
     // call the service to update the Decideur
     const updatedDecideur = await updateDecideur(valideId, valideDecideur);
+    // if there is an error, return a 400 status code
+    if (!updatedDecideur) {
+        return res.status(400).json({ status: 'Bad Request', message: "Error while updating Decideur, provided id is not valid" });
+    }
     // return the updated Decideur
     return res.status(200).json({ status: 'success', data: updatedDecideur });
 }
@@ -80,6 +84,10 @@ const deleteHandler = async (req, res) => {
     }
     // call the service to delete the Decideur
     const deletedDecideur = await deleteDecideur(valideId);
+    // if there is an error, return a 400 status code
+    if (!deletedDecideur) {
+        return res.status(400).json({ status: 'Bad Request', message: "Error while deleting Decideur, provided id is not valid" });
+    }
     // return the deleted Decideur
     return res.status(200).json({ status: 'success', data: deletedDecideur });
 }

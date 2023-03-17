@@ -8,6 +8,8 @@ const sadmRoute = require('./SADMRoutes');
 const admRoute = require('./ADMRoutes');
 const amRoute = require('./AMRoutes');
 
+const clientRoute = require('./ClientRoutes');
+
 /**
  * @swagger
  * components:
@@ -183,5 +185,28 @@ route.use('/consommateur', costumerRoute);
  *          description: Decideur's client id
  */
 route.use('/decideur',decideurRoute)
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    Client:
+ *      type: object
+ *      required:
+ *        - email
+ *      properties:
+ *        id:
+ *          type: integer
+ *          description: The auto-generated ID of the client
+ *        nom:
+ *          type: string
+ *          description: The client's name
+ *        email:
+ *          type: string
+ *          description: The client's email
+ *        numTel:
+ *          type: string
+ *          description: The client's phone number
+ */
+route.use('/client',clientRoute)
 
 module.exports = route;

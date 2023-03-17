@@ -1,11 +1,11 @@
-const prisma = require('../../../config/dbConfig')
+const prisma = require('../../../../config/dbConfig')
 
 
 
 const getAll = async () => {
 
     try {
-        const clients = await prisma.Client.findMany({
+        const clients = await prisma.client.findMany({
             select:{
                 id: true,
                 nom: true,
@@ -22,7 +22,7 @@ const getAll = async () => {
 const getClientById = async (id) => {
 
     try {
-        const Client = await prisma.Client.findUnique({
+        const Client = await prisma.client.findUnique({
             where: {
                 id: id
             },
@@ -42,7 +42,7 @@ const getClientById = async (id) => {
 const createClient = async (data) => {
 
     try {
-        const clientExists = await prisma.Client.findUnique({
+        const clientExists = await prisma.client.findUnique({
             where: {
                 email: data.email
             }
@@ -51,7 +51,7 @@ const createClient = async (data) => {
             throw new Error('Client already exists');
         }
 
-        const client = await prisma.Client.create({
+        const client = await prisma.client.create({
             data: {
                 nom: data.nom,
                 email: data.email,
@@ -60,6 +60,7 @@ const createClient = async (data) => {
         });
         return client;
     } catch (error) {
+        console.log(error);
         return null;
     }
 }
@@ -67,7 +68,7 @@ const createClient = async (data) => {
 const updateClient = async (id, client) => {
 
     try {
-        const updatedClient = await prisma.Client.update({
+        const updatedClient = await prisma.client.update({
             where: {
                 id: id
             },
@@ -91,7 +92,7 @@ const updateClient = async (id, client) => {
 
 const deleteClient = async(id) => {
     try {
-        const deletedClient = await prisma.Client.delete({
+        const deletedClient = await prisma.client.delete({
             where: {
                 id: id
             },

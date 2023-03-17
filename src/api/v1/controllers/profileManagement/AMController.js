@@ -1,4 +1,4 @@
-const { createAM, deleteAM, getAMById, getAllAMs, updateAM  } = require('../../services/profileManagement/amService');
+const { createAM, deleteAM, getAMById, getAllAMs, updateAM } = require('../../services/profileManagement/amService');
 const { validateId } = require('../../validators/inputValidation');
 const { validateAM } = require('../../validators/profileValidation');
 
@@ -29,8 +29,8 @@ const postHandler = async (req, res) => {
     }
 
     const newAM = await createAM(valideAM);
-    if(!newAM){
-        return res.status(400).json({ status: 'Bad Request', message: "provided AM is not valid" });
+    if (!newAM) {
+        return res.status(400).json({ status: 'Bad Request', message: "Error while creating AM,provided AM is not valid" });
     }
 
     return res.status(201).json({ status: 'success', data: newAM });
@@ -51,6 +51,10 @@ const putHandler = async (req, res) => {
     }
 
     const updatedAM = await updateAM(valideId, valideAM);
+    if (!updatedAM) {
+        return res.status(400).json({ status: 'Bad Request', message: "Error while updating AM, provided AM is not valid" });
+    }
+
     return res.status(200).json({ status: 'success', data: updatedAM });
 }
 
@@ -61,6 +65,9 @@ const deleteHandler = async (req, res) => {
         return res.status(400).json({ status: 'Bad Request', message: "provided id is not valid" });
     }
     const deletedAM = await deleteAM(valideId);
+    if (!deletedAM) {
+        return res.status(400).json({ status: 'Bad Request', message: 'Error while deleting AM, provided id is not valid' });
+    }
     return res.status(200).json({ status: 'success', data: deletedAM });
 }
 

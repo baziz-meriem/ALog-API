@@ -75,7 +75,7 @@ const createAc = async ({ nom, prenom, email, password, numTel, idClient }) => {
         if (acExists) {
             throw new Error('AC already exists');
         }
-        const clientExists = await prisma.client.findUnique({
+        const clientExists = await prisma.client.findFirst({
             where: {
                 id: idClient
             }

@@ -1,6 +1,6 @@
-const { getAll, createClient,deleteClient ,updateClient,getClientById} = require('../services/clientService');
-const { validateClient } = require('../validators/profileValidation');
-const {  validateId } = require('../validators/inputValidation');
+const { getAll, createClient,deleteClient ,updateClient,getClientById} = require('../../services/profileManagement/clientService');
+const { validateClient } = require('../../validators/profileValidation');
+const {  validateId } = require('../../validators/inputValidation');
 
 
 
@@ -69,7 +69,10 @@ const putHandler = async (req, res) => {
   }
   // call the service to update the client
   const updatedClient = await updateClient(valideId, valideClient);
-  
+  if(!updatedClient){
+    return res.status(400).json({ status: 'Bad Request', message: "Error while Updating Client, provided client is not valid" });
+  }
+
   // return the updated ac
   return res.status(200).json({ status: 'success', data: updatedClient });
 }
