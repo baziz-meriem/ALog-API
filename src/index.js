@@ -8,6 +8,9 @@ const path= require('path');
 const swaggerUI = require('swagger-ui-express');
 const swaggerDocs = require('./config/swagger');
 require('dotenv').config();
+// Route Imports
+const acAuth = require("./api/v1/routes/auth/acAuth");
+const customerAuth = require("./api/v1/routes/auth/customerAuth");
 
 const app = express();
 
@@ -18,10 +21,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors({
     origin: '*'
 }));
+
 app.use('/api/v1/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+app.use("/api/v1/auth/ac/",acAuth );
+app.use("/api/v1/auth/customer/",customerAuth );
 
 // Routes
-app.get('/', (req, res) => {
+app.get('/api/v1', (req, res) => {
     res.status(200).json({
         status: 'success',
         message: 'Hello World'
@@ -41,10 +47,12 @@ app.use((err, req, res, next) => {
   });
 });
 
+
 // if the route is not found
 app.use('*', (req, res) => {
   res.status(404).json({ message: 'Not Found' });
 });
+
 
 // Starting the server
 const port= process.env.PORT || 8080;
