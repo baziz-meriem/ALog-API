@@ -4,18 +4,18 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
 
 /**
  * @swagger
- * /api/v1/profileManagement/AM:
+ * /api/v1/profileManagement/am:
  *    get:
  *      tags:
- *       - AM
- *      summary: get all AMs'
+ *       - am
+ *      summary: get all ams'
  *      responses:
  *        200:
  *          description: sucess
  *          content:
  *            application/json:
  *              schema:
- *                $ref: '#/components/schemas/AM'
+ *                $ref: '#/components/schemas/am'
  *        500:
  *          description: Internal Server Error
  * 
@@ -23,11 +23,11 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
  route.get('/', getAllHandler);
  /**
   * @swagger
-  * /api/v1/profileManagement/AM/{id}:
+  * /api/v1/profileManagement/am/{id}:
   *    get:
   *      tags:
-  *       - AM
-  *      summary: get single AM by id'
+  *       - am
+  *      summary: get single am by id'
   *      parameters:
   *       - in: path
   *         name: id
@@ -40,26 +40,26 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
   *          content:
   *            application/json:
   *              schema:
-  *                $ref: '#/components/schemas/AM'
+  *                $ref: '#/components/schemas/am'
   *        404:
-  *          description: AM not found
+  *          description: am not found
   *        400:
   *          description: provided id is not valid
   */
  route.get('/:id', getOneHandler);
  /**
   * @swagger
-  * /api/v1/profileManagement/AM/:
+  * /api/v1/profileManagement/am/:
   *    post:
   *      tags:
-  *       - AM
-  *      summary: add new AM'
+  *       - am
+  *      summary: add new am'
   *      requestBody:
   *          required: true
   *          content:
   *              application/json:
   *                  schema:
-  *                      $ref: '#/components/schemas/AM'
+  *                      $ref: '#/components/schemas/am'
   *      responses:
   *        201:
   *          description: OK
@@ -73,11 +73,11 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
  route.post('/', postHandler);
  /**
   * @swagger
-  * /api/v1/profileManagement/sSAM/{id}:
+  * /api/v1/profileManagement/am/{id}:
   *    put:
   *      tags:
-  *       - AM
-  *      summary: update SSAM with id'
+  *       - am
+  *      summary: update am with id'
   *      parameters:
   *        - in: path
   *          name: id
@@ -89,25 +89,25 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
   *          content:
   *              application/json:
   *                  schema:
-  *                      $ref: '#/components/schemas/AM'
+  *                      $ref: '#/components/schemas/am'
   *      responses:
   *        200:
   *          description: sucess
   *          content:
   *            application/json:
   *              schema:
-  *                $ref: '#/components/schemas/AM'
+  *                $ref: '#/components/schemas/am'
   *        400:
   *          description: provided id is not valid
   */
  route.put('/:id', putHandler);
  /**
   * @swagger
-  * /api/v1/profileManagement/AM/{id}:
+  * /api/v1/profileManagement/am/{id}:
   *    delete:
   *      tags:
-  *       - AM
-  *      summary: delete AM with id'
+  *       - am
+  *      summary: delete am with id'
   *      parameters:
   *        - in: path
   *          name: id
@@ -120,7 +120,7 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
   *          content:
   *            application/json:
   *              schema:
-  *                $ref: '#/components/schemas/AM'
+  *                $ref: '#/components/schemas/am'
   *        400:
   *          description: provided id is not valid
   */
