@@ -112,7 +112,7 @@ const resetPassword = async (req, res) => {
       .update(req.params.token)
       .digest("hex");
   // get customer from the reset password token
-    const customer = await getCostumerByResetToken({resetPasswordToken});
+    const customer = await getCostumerByResetToken(resetPasswordToken);
   
     if (!costumer) {
         return res.status(400).json({ status: 'Bad request', message: "Reset Password Token is invalid or has been expired" });

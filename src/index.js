@@ -15,7 +15,7 @@ const customerAuth = require("./api/v1/routes/auth/customerAuth");
 const app = express();
 
 // Middlewares
-app.use(morgan('dev',{stream:fs.createWriteStream(path.join(__dirname, 'logger/access.log'), { flags: 'a' })}));
+app.use(morgan('combined',{stream:fs.createWriteStream(path.join(__dirname, 'logger/access.log'), { flags: 'a' })}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors({
@@ -33,6 +33,7 @@ app.get('/api/v1', (req, res) => {
         message: 'Hello World'
     });
 });
+app.use('/api/v1', require('./api/v1/routes'));
 
 app.use((req, res, next) => {
   next(createError.NotFound());

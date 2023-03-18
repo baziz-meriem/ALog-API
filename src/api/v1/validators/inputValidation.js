@@ -65,7 +65,9 @@ const validatePhoneNumber = (num) => {
     if (typeof num !== 'string') {
         return null;
     }
-    if (num.length > 10) {
+
+    if (num.length !== 10) {
+
         return null;
     }
     const numRegex = /^[0-9]+$/;
