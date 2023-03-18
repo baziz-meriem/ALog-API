@@ -1,4 +1,4 @@
-const { getDistributeurById, getAllDistributeurs, createDistributeur, deleteDistributeur , updateDistributeur} = require('../../services/resourceManagement/DistributeurService');
+const { getDistributeurById, getAllDistributeurs, createDistributeur, deleteDistributeur , updateDistributeur} = require('../../services/resourceManagement/distributeurService');
 
 const getAllHandler = async (req, res) => {
    
