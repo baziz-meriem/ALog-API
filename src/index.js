@@ -8,9 +8,7 @@ const path= require('path');
 const swaggerUI = require('swagger-ui-express');
 const swaggerDocs = require('./config/swagger');
 require('dotenv').config();
-// Route Imports
-const acAuth = require("./api/v1/routes/auth/acAuth");
-const customerAuth = require("./api/v1/routes/auth/customerAuth");
+
 
 const app = express();
 
@@ -23,8 +21,6 @@ app.use(cors({
 }));
 
 app.use('/api/v1/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
-app.use("/api/v1/auth/ac/",acAuth );
-app.use("/api/v1/auth/customer/",customerAuth );
 
 // Routes
 app.get('/api/v1', (req, res) => {

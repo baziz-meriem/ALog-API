@@ -1,4 +1,3 @@
-const prisma = require('../../../../config/dbConfig');
 const { sendToken, getResetPasswordToken, comparePassword, sendEmail } = require('../../middlewares/utils');
 const { getSadmByResetToken, resetSadmPassword, updateSadmResetToken, getSadmByEmail } = require('../../services/auth/sadmService');
 const {  validateEmail, validatePassword } = require('../../validators/inputValidation');

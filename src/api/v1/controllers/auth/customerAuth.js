@@ -1,8 +1,7 @@
 const { sendToken, comparePassword, getResetPasswordToken, sendEmail } = require('../../middlewares/utils');
-const { getAcByEmail } = require('../../services/auth/acService');
 const { createCostumer, getCostumerByEmail, updateCostumerResetToken, getCostumerByResetToken, resetCustomerPassword } = require('../../services/auth/consommateurService');
 const {   validateEmail, validatePassword } = require('../../validators/inputValidation');
-const { validateAgent, validateCostumer } = require('../../validators/profileValidation');
+const {  validateCostumer } = require('../../validators/profileValidation');
 const crypto = require("crypto");
 
 const login = async (req, res) => {
