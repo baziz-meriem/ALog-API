@@ -1,5 +1,5 @@
 const route = require('express').Router();
-const { getAllHandler, getOneHandler, postHandler, deleteHandler, putHandler } = require('../../controllers/resourceManagement/DistributeurController');
+const { getAllHandler, getOneHandler, postHandler, deleteHandler, putHandler } = require('../../controllers/resourceManagement/distributeurController');
 
 /**
  * @swagger
