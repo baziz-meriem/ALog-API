@@ -1660,3 +1660,4 @@
 ::ffff:127.0.0.1 - - [17/Mar/2023:15:47:58 +0000] "DELETE /api/v1/profileManagement/sadm/28 HTTP/1.1" 200 66 "-" "-"
 ::ffff:127.0.0.1 - - [17/Mar/2023:15:47:58 +0000] "DELETE /api/v1/profileManagement/sadm/1 HTTP/1.1" 400 92 "-" "-"
 ::ffff:127.0.0.1 - - [17/Mar/2023:15:47:58 +0000] "GET / HTTP/1.1" 200 44 "-" "-"
+::1 - - [17/Mar/2023:15:59:52 +0000] "GET /api/v1/profileManagement/decideur HTTP/1.1" 200 30 "-" "PostmanRuntime/7.31.3"

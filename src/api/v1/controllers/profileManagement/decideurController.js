@@ -1,4 +1,4 @@
-const { createDecideur, deleteDecideur, getDecideurById, getAllDecideurs, updateDecideur } = require('../../services/profileManagement/DecideurService');
+const { createDecideur, deleteDecideur, getDecideurById, getAllDecideurs, updateDecideur } = require('../../services/profileManagement/decideurService');
 const {  validateId } = require('../../validators/inputValidation');
 const { validateAgent } = require('../../validators/profileValidation');
 
