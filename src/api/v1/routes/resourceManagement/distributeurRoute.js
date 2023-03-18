@@ -3,7 +3,7 @@ const { getAllHandler, getOneHandler, postHandler, deleteHandler, putHandler } =
 
 /**
  * @swagger
- * /api/v1/profileManagement/distributeurs:
+ * /api/v1/resourceManagement/distributeurs:
  *   get:
  *     tags:
  *       - distributeur
@@ -21,7 +21,7 @@ const { getAllHandler, getOneHandler, postHandler, deleteHandler, putHandler } =
 route.get('/', getAllHandler);
 /**
  * @swagger
- * /api/v1/profileManagement/distributeur/{id}:
+ * /api/v1/resourceManagement/distributeur/{id}:
  *   get:
  *     tags:
  *       - distributeur
@@ -47,7 +47,7 @@ route.get('/', getAllHandler);
 route.get('/:id', getOneHandler);
 /**
  * @swagger
- * /api/v1/profileManagement/distributeur/:
+ * /api/v1/resourceManagement/distributeur/:
  *    post:
  *      tags:
  *       - distributeur
@@ -71,7 +71,7 @@ route.get('/:id', getOneHandler);
 route.post('/', postHandler);
 /**
  * @swagger
- * /api/v1/profileManagement/distributeur/{id}:
+ * /api/v1/resourceManagement/distributeur/{id}:
  *    put:
  *      tags:
  *       - distributeur
@@ -101,7 +101,7 @@ route.post('/', postHandler);
 route.put('/:id', putHandler);
 /**
  * @swagger
- * /api/v1/profileManagement/distributeur/{id}:
+ * /api/v1/resourceManagement/distributeur/{id}:
  *   delete:
  *     tags:
  *       - distributeur
