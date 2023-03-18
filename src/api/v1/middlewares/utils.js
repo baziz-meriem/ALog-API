@@ -22,6 +22,8 @@ const sendEmail = async (options) => {
   };
 
   await transporter.sendMail(mailOptions);
+  console.log("milo")
+
 };
 
 const getJWTToken =(user)=>{

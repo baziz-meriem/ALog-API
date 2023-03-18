@@ -37,10 +37,8 @@ const login = async (req, res) => {
 }
 
 const register = async (req, res) => {
-      // retrieve the costumer from the request
-      const { nom, prenom, email, password, numTel } = req.body;
       // call the validateCostumer function to validate the input
-      const valideCostumer = validateCostumer({ nom, prenom, email, password, numTel });
+      const valideCostumer = validateCostumer(req.body);
       // if there is an error, return a 400 status code
       if (!valideCostumer) {
           return res.status(400).json({ status: 'Bad Request', message: "provided costumer is not valid" });
@@ -49,7 +47,7 @@ const register = async (req, res) => {
       const newCostumer = await createCostumer(valideCostumer);
       // if there is an error, return a 400 status code
       if (!newCostumer) {
-          return res.status(400).json({ status: 'Bad Request', message: "provided costumerrr is not valid" });
+          return res.status(400).json({ status: 'Bad Request', message: "provided costumer is not valid" });
       }
       // return the new costumer with a token
       sendToken(newCostumer, 201, res);
@@ -70,25 +68,24 @@ const forgotPassword = async (req, res) => {
       let costumer = await getCostumerByEmail(req.body.email);
       // return the ac
       if (!costumer) {
-          return res.status(404).json({ status: 'Not Found', message: 'Costumer not found, Invalid Email' });
+          return res.status(404).json({ status: 'Not Found', message: 'Costumerrr not found, Invalid Email' });
       }  
   
     
       // Get ResetPassword Token
-      const {resetToken , user:costumerUpdated } = getResetPasswordToken(costumer);
+      let {resetToken , user:costumerUpdated } = getResetPasswordToken(costumer);
       // save the reset token of the customer
+
       costumerUpdated = await updateCostumerResetToken(req.body.email, costumerUpdated);
-    
-      const resetPasswordUrl = `${req.protocol}://${req.get(
-        "host"
-      )}/password/reset/${resetToken}`;
+
+      const resetPasswordUrl = `http://localhost:8080/password/reset/${resetToken}`;
     
       const message = `Your password reset token is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
     
       try {
         await sendEmail({
           email: costumerUpdated.email,
-          subject: `Ecommerce Password Recovery`,
+          subject: `Password Recovery`,
           message,
         });
         return res.status(200).json({   
@@ -99,7 +96,7 @@ const forgotPassword = async (req, res) => {
       } catch (error) {
         //delete the reset pwd token
           costumerUpdated.resetPasswordToken = undefined;
-          costumerUpdated.resetPasswordExpire = undefined;
+         costumerUpdated.resetPasswordExpire = undefined;
     
           costumerUpdated = await updateCostumerResetToken(req.body.email, costumerUpdated);
     
