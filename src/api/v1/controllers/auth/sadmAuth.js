@@ -4,7 +4,7 @@ const { getSadmByResetToken, resetSadmPassword, updateSadmResetToken, getSadmByE
 const {  validateEmail, validatePassword } = require('../../validators/inputValidation');
 
 const login = async (req, res) => {
-    // retrieve the ac from the request
+    // retrieve the sadm from the request
     const { email, password } = req.body;
     // checking if ac has given password and email both
     if (!email || !password) {
@@ -14,19 +14,19 @@ const login = async (req, res) => {
     const valideSadm = validateEmail(email) && validatePassword(password) ;
     // if there is an error, return a 400 status code
     if (!valideSadm) {
-        return res.status(400).json({ status: 'Bad Request', message: "provided ac is not valid" });
+        return res.status(400).json({ status: 'Bad Request', message: "provided sadm is not valid" });
     }
   
-    // call the service to get the ac by email
+    // call the service to get the sadm by email
     const sadm = await getSadmByEmail(email);
     // return the ac
     if (!sadm) {
-        return res.status(404).json({ status: 'Not Found', message: 'AC not found, Invalid Email or Password' });
+        return res.status(404).json({ status: 'Not Found', message: 'SADM not found, Invalid Email or Password' });
     }
     //compare between entered password and the one retrieved
-    const isPasswordMatched = await comparePassword(password,sadm.password)
+    const isPasswordMatched = await comparePassword(password,sadm.mot_de_passe)
     if (!isPasswordMatched) {
-        return res.status(401).json({ status: 'Not Found', message: 'AC not found, Invalid Password' });
+        return res.status(401).json({ status: 'Not Found', message: 'SADM not found, Invalid Password' });
     }
     //send auth token
     sendToken(sadm, 200, res);

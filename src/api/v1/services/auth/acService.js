@@ -71,7 +71,7 @@ const getAcByEmail = async (email) => {
                 email: true,
                 numTel: true,
                 idClient: true,
-                mot_de_passe: false
+                mot_de_passe: true
             }
         });
         return ac;
@@ -122,6 +122,7 @@ const createAc = async ({ nom, prenom, email, password, numTel, idClient }) => {
      * @throws {Error} if the idClient does not exist
     */
     try {
+        console.log(email)
         const acExists = await prisma.AC.findUnique({
             where: {
                 email: email
@@ -138,6 +139,7 @@ const createAc = async ({ nom, prenom, email, password, numTel, idClient }) => {
         if (!clientExists) {
             throw new Error('Client does not exist');
         }
+        console.log("password "+password)
         const hashPassword = await bcrypt.hash(password, 10);
         const ac = await prisma.AC.create({
             data: {
@@ -155,11 +157,12 @@ const createAc = async ({ nom, prenom, email, password, numTel, idClient }) => {
                 email: true,
                 numTel: true,
                 idClient: true,
-                mot_de_passe: false
+                mot_de_passe: true
             }
         });
         return ac;
     } catch (error) {
+        console.log(error)
         return null;
     }
 }

@@ -66,7 +66,14 @@ const sendToken = (user, statusCode, res) => {
   };
 
   const comparePassword = async function (addedPassword , userPassword) {
-    return await bcrypt.compare(addedPassword, userPassword);
+    try {
+      return await bcrypt.compare(addedPassword, userPassword);
+
+    } catch (error) {
+      console.error(error);
+      throw new Error('Error comparing passwords');
+    }
+
   };
   
   
