@@ -5,7 +5,7 @@ const { postHandler, getAllHandler, getOneHandler, putHandler, deleteHandler } =
 
 /**
  * @swagger
- * /api/v1/client/:
+ * /api/v1/profileManagement/client/:
  *    post:
  *      summary: Creates a new client
  *      requestBody:
@@ -28,7 +28,7 @@ const { postHandler, getAllHandler, getOneHandler, putHandler, deleteHandler } =
 route.post('/', postHandler);
 /**
  * @swagger
- * /api/v1/client/:
+ * /api/v1/profileManagement/client/:
  *   get:
  *     summary: Returns the list of all the clients
  *     responses:
@@ -47,7 +47,7 @@ route.post('/', postHandler);
 route.get('/', getAllHandler);
 /**
  * @swagger
- * /api/v1/client/{id}:
+ * /api/v1/profileManagement/client/{id}:
  *   get:
  *     summary: Returns the requested client
  *     parameters:
@@ -69,7 +69,7 @@ route.get('/', getAllHandler);
 route.get('/:id', getOneHandler);
 /**
  * @swagger
- * /api/v1/client/{id}:
+ * /api/v1/profileManagement/client/{id}:
  *   put:
  *     summary: Update a client by ID
  *     parameters:
@@ -100,7 +100,7 @@ route.get('/:id', getOneHandler);
 route.put('/:id', putHandler);
 /**
  * @swagger
- * /api/v1/client/{id}:
+ * /api/v1/profileManagement/client/{id}:
  *   delete:
  *     summary: Deletes a client by ID
  *     parameters:
