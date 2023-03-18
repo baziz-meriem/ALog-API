@@ -76,7 +76,7 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
   * /api/v1/profileManagement/sSADM/{id}:
   *    put:
   *      tags:
-  *       - SSADM
+  *       - ADM
   *      summary: update SSADM with id'
   *      parameters:
   *        - in: path

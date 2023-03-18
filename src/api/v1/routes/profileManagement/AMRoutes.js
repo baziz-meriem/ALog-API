@@ -76,7 +76,7 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
   * /api/v1/profileManagement/sSAM/{id}:
   *    put:
   *      tags:
-  *       - SSAM
+  *       - AM
   *      summary: update SSAM with id'
   *      parameters:
   *        - in: path
