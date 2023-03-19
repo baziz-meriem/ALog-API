@@ -3,7 +3,7 @@ const { register, login, forgotPassword, resetPassword, logout } = require('../.
 
 /**
  * @swagger
- * /api/v1/auth/customer/login:
+ * /api/v1/auth/Consommateur/login:
  *    post:
  *      tags:
  *       - Consommateur
@@ -28,7 +28,7 @@ route.post('/login', login);
 
 /**
  * @swagger
- * /api/v1/auth/customer/register:
+ * /api/v1/auth/Consommateur/register:
  *    post:
  *      tags:
  *       - Consommateur
@@ -53,7 +53,7 @@ route.post('/login', login);
 route.post('/register', register);
 /**
  * @swagger
- * /api/v1/auth/customer/forgotPassword:
+ * /api/v1/auth/Consommateur/forgotPassword:
  *    post:
  *      tags:
  *       - Consommateur
@@ -77,7 +77,7 @@ route.post('/register', register);
 route.post('/forgotPassword', forgotPassword);
 /**
  * @swagger
- * /api/v1/auth/customer/resetPassword:
+ * /api/v1/auth/Consommateur/resetPassword:
  *    post:
  *      tags:
  *       - Consommateur
@@ -102,7 +102,7 @@ route.post('/resetPassword', resetPassword);
 
 /**
  * @swagger
- * /api/v1/auth/customer/logout:
+ * /api/v1/auth/Consommateur/logout:
  *    post:
  *      tags:
  *       - Consommateur
