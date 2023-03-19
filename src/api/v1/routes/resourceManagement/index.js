@@ -1,6 +1,8 @@
 const route = require('express').Router();
 
 const distributeurRoute = require('./distributeurRoute');
+const boissonRoute = require('./boissonRoute');
+
 
 /**
  * @swagger
@@ -33,4 +35,19 @@ const distributeurRoute = require('./distributeurRoute');
  */
 route.use('/distributeur',distributeurRoute)
 
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    Boisson:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: integer
+ *          description: boisson's id
+ *        label:
+ *          type: string
+ *          description: boisson's label
+ */
+route.use('/boisson',boissonRoute)
 module.exports = route;
