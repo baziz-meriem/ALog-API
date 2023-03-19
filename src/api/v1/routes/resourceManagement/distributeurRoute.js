@@ -3,7 +3,7 @@ const { getAllHandler, getOneHandler, postHandler, deleteHandler, putHandler } =
 
 /**
  * @swagger
- * /api/v1/resourceManagement/distributeurs:
+ * /api/v1/resourceManagement/distributeur:
  *   get:
  *     tags:
  *       - distributeur
