@@ -15,8 +15,8 @@ const getOneHandler = async (req, res) => {
 }
 
 const postHandler = async (req, res) => {
-    const {etat, type, position,idClient, idRegion, idAM} = req.body;
-    const newDistributeur = await createDistributeur(etat, type, position,idClient, idRegion, idAM);
+    const {etat, type, codeDeverouillage, position,idClient, idRegion, idAM} = req.body;
+    const newDistributeur = await createDistributeur(etat, type,codeDeverouillage, position,idClient, idRegion, idAM);
     return res.status(201).json({ status: 'success', data: newDistributeur });
 }
 
@@ -29,8 +29,8 @@ const deleteHandler = async (req, res) => {
 const putHandler = async (req, res) => {
     const { id } = req.params;
     // retrieve the ac from the request
-    const { etat, type, position,idClient, idRegion, idAM } = req.body;
-    const distributeur = { etat, type, position,idClient, idRegion, idAM }
+    const { etat, type,codeDeverouillage, position,idClient, idRegion, idAM } = req.body;
+    const distributeur = { etat, type,codeDeverouillage, position,idClient, idRegion, idAM }
     const updatedDistributeur = await updateDistributeur(id, distributeur);
     if (!updatedDistributeur) {
         return res.status(400).json({ status: 'Bad Request', message: "provided costumer is not valid" });

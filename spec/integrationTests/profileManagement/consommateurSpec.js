@@ -17,7 +17,7 @@ describe('Consommateur test', () => {
         // send post request to route with body
         it('should return 201', async () => {
             const response = await request.post(route).send(costumeTest);
-            costumeTest.id = response.body.data?.id
+            costumeTest.id = response.body.data.id
             expect(response.status).toBe(201);
         });
         it('should return 400', async () => {
