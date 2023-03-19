@@ -2869,3 +2869,4 @@
 ::ffff:127.0.0.1 - - [19/Mar/2023:07:48:04 +0000] "DELETE /api/v1/profileManagement/sadm/1 HTTP/1.1" 400 92 "-" "-"
 ::ffff:127.0.0.1 - - [19/Mar/2023:07:48:04 +0000] "GET /api/v1 HTTP/1.1" 200 44 "-" "-"
 ::1 - - [19/Mar/2023:07:57:52 +0000] "POST /api/v1/resourceManagement/distributeur HTTP/1.1" 201 32 "-" "PostmanRuntime/7.31.3"
+::1 - - [19/Mar/2023:07:59:00 +0000] "POST /api/v1/resourceManagement/distributeur HTTP/1.1" 201 159 "-" "PostmanRuntime/7.31.3"

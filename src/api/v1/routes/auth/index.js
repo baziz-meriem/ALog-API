@@ -6,7 +6,7 @@ route.use('/adm', require('./admAuth'));
 
 route.use('/am', require('./amAuth'));
 
-route.use('consommateur', require('./customerAuth'));
+route.use('/consommateur', require('./customerAuth'));
 
 route.use('/decideur', require('./decideurAuth'));
 
