@@ -1,6 +1,6 @@
 const { sendToken, comparePassword, getResetPasswordToken, sendEmail } = require('../../middlewares/utils');
 const { getAcByEmail } = require('../../services/auth/acService');
-const { createCostumer, getCostumerByEmail, updateCostumerResetToken, getCostumerByResetToken, resetCustomerPassword } = require('../../services/auth/consommateurService');
+const { createCostumer, getCostumerByEmail, updateCostumerResetToken, getCostumerByResetToken, resetCustomerPassword, getAllCostumers } = require('../../services/auth/consommateurService');
 const {   validateEmail, validatePassword } = require('../../validators/inputValidation');
 const { validateAgent, validateCostumer } = require('../../validators/profileValidation');
 const crypto = require("crypto");
@@ -31,7 +31,7 @@ const login = async (req, res) => {
         return res.status(401).json({ status: 'Not Found', message: 'Customer not found, Invalid Password' });
     }
     //return customer with a token
-    sendToken(customer, 200, res);
+    sendToken(customer, 201, res);
 
    // return res.status(200).json({ status: 'success', data: ac });
 }
@@ -45,6 +45,7 @@ const register = async (req, res) => {
       }
       // call the service to create the costumer
       const newCostumer = await createCostumer(valideCostumer);
+  
       // if there is an error, return a 400 status code
       if (!newCostumer) {
           return res.status(400).json({ status: 'Bad Request', message: "provided costumer is not valid" });

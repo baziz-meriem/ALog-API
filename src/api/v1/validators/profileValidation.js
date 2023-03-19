@@ -27,7 +27,6 @@ const validateAgent = (agent) => {
 }
 
 const validateCostumer = (Costumer) => {
-    console.log(Costumer)
     const { nom, prenom, email, password, numTel } = Costumer;
     const valideNom = validateInput(nom);
     const validePrenom = validateInput(prenom);

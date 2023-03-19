@@ -1,9 +1,19 @@
 const prisma = require('../../../../config/dbConfig');
 const { sendToken, getResetPasswordToken, comparePassword, sendEmail } = require('../../middlewares/utils');
-const { getAmByEmail,  updateAmResetToken, getAmByResetToken, resetAmPassword } = require('../../services/auth/amService');
+const { getAmByEmail, createAm , updateAmResetToken, getAmByResetToken, resetAmPassword } = require('../../services/auth/amService');
 const {  validateEmail, validatePassword } = require('../../validators/inputValidation');
 
 const login = async (req, res) => {
+
+  const m = await createAm({
+    email: "amTest3@gmail.com",
+    password: "meryem12345678910",
+    nom:"am 1",
+    prenom:"am 2",
+    numTel:1234567898,
+    idClient:29
+  })
+  console.log("eh")
     // retrieve the am from the request
     const { email, password } = req.body;
     // checking if am has given password and email both

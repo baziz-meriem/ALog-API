@@ -5,6 +5,9 @@ const {  validateEmail, validatePassword } = require('../../validators/inputVali
 const bcrypt = require('bcrypt');
 
 const login = async (req, res) => {
+
+
+
   const { email, password } = req.body;
     // checking if ac has given password and email both
     if (!email || !password) {
@@ -30,7 +33,7 @@ const login = async (req, res) => {
         return res.status(401).json({ status: 'Not Found', message: 'AC not found, Invalid Password' });
     }
     //send auth token
-    sendToken(ac, 200, res);
+    sendToken(ac, 201, res);
 
    // return res.status(200).json({ status: 'success', data: ac });
 }

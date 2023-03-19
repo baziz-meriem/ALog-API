@@ -71,7 +71,7 @@ const getAmByEmail = async (email) => {
                 email: true,
                 numTel: true,
                 idClient: true,
-                mot_de_passe: false
+                mot_de_passe: true
             }
         });
         return am;
@@ -122,15 +122,23 @@ const createAm = async ({ nom, prenom, email, password, numTel, idClient }) => {
      * @throws {Error} if the idClient does not exist
     */
     try {
+        console.log("test "+email)
+
         const amExists = await prisma.AM.findUnique({
             where: {
                 email: email
+            },
+            select:{
+                id:true
             }
+
         });
+
         if (amExists) {
             throw new Error('AM already exists');
         }
-        const clientExists = await prisma.client.findUnique({
+
+        const clientExists = await prisma.Client.findUnique({
             where: {
                 id: idClient
             }
@@ -139,7 +147,7 @@ const createAm = async ({ nom, prenom, email, password, numTel, idClient }) => {
             throw new Error('Client does not exist');
         }
         const hashPassword = await bcrypt.hash(password, 10);
-        const am = await prisma.AC.create({
+        const am = await prisma.AM.create({
             data: {
                 nom: nom,
                 prenom: prenom,
@@ -158,8 +166,10 @@ const createAm = async ({ nom, prenom, email, password, numTel, idClient }) => {
                 mot_de_passe: false
             }
         });
+        console.log("am "+am)
         return am;
     } catch (error) {
+        console.log(error)
         return null;
     }
 }

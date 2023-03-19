@@ -60,7 +60,7 @@ const getAdmByEmail = async (email) => {
      * @returns {Promise<null| import('@prisma/client').ADM>} adm
     */
     try {
-        const adm = await prisma.AdM.findUnique({
+        const adm = await prisma.ADM.findUnique({
             where: {
                 email: email
             },
@@ -71,11 +71,12 @@ const getAdmByEmail = async (email) => {
                 email: true,
                 numTel: true,
                 idClient: true,
-                mot_de_passe: false
+                mot_de_passe: true
             }
         });
         return adm;
     } catch (error) {
+        console.log(error)
         return null;
     }
 }
@@ -99,6 +100,7 @@ const createAdm = async ({ nom, prenom, email, password, numTel, idClient }) => 
                 email: email
             }
         });
+
         if (admExists) {
             throw new Error('Adm already exists');
         }

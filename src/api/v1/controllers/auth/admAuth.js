@@ -1,6 +1,7 @@
 const prisma = require('../../../../config/dbConfig');
 const { sendToken, getResetPasswordToken, comparePassword, sendEmail } = require('../../middlewares/utils');
-const { resetAdmPassword, getAdmByResetToken, updateAdmResetToken, getAdmByEmail } = require('../../services/auth/admService');
+const { resetAdmPassword, getAdmByResetToken, updateAdmResetToken, getAdmByEmail, createAdm } = require('../../services/auth/admService');
+const { getAllADMs } = require('../../services/profileManagement/admService');
 const {  validateEmail, validatePassword } = require('../../validators/inputValidation');
 
 const login = async (req, res) => {

@@ -139,7 +139,6 @@ const createAc = async ({ nom, prenom, email, password, numTel, idClient }) => {
         if (!clientExists) {
             throw new Error('Client does not exist');
         }
-        console.log("password "+password)
         const hashPassword = await bcrypt.hash(password, 10);
         const ac = await prisma.AC.create({
             data: {
