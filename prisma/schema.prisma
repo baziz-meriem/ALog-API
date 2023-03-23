@@ -1,10 +1,13 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("postgres://devlift:hqnSy5nAOBCnaoeZGfxslHsCxj3cJKrs@dpg-cg4c9bvdvk4st73b1cd0-a.frankfurt-postgres.render.com/sitsip")
 }
 
 model Client {
