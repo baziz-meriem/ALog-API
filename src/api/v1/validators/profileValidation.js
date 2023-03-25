@@ -148,7 +148,7 @@ const validateDistributeur = (Distributeur) => {
      * @param {object} Distributeur
      * @returns {object|null}
     */
-    const { etat, type, position,idClient, idRegion, idAM, codeDeverouillage} = Distributeur;
+    const { etat, type, position, codeDeverouillage, idClient, idRegion, idAM} = Distributeur;
     const valideEtat = validateInput(etat);
     const valideType = validateInput(type);
     const validePosition = validateInput(position);
@@ -171,6 +171,23 @@ const validateDistributeur = (Distributeur) => {
     };
 }
 
+const validateSupplement = (supplement) => {
+    /**
+     * @description validate Supplement and return it or null if it is not valid
+     * @param {object} Supplement
+     * @returns {object|null}
+    */
+    const {label} = supplement;
+    const valideLabel = validateInput(label);
+        if (!valideLabel ) {
+        console.log("y'a err et voila ou: ",valideLabel);
+        return null;
+    }
+    return {
+        label: valideLabel,
+    };
+}
+
 
 module.exports = {
     validateAgent,
@@ -179,5 +196,6 @@ module.exports = {
     validateSADM,
     validateADM,
     validateAM,
-    validateDistributeur
+    validateDistributeur,
+    validateSupplement
 }

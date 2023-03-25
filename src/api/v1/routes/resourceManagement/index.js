@@ -1,6 +1,8 @@
 const route = require('express').Router();
 
 const distributeurRoute = require('./distributeurRoute');
+const supplementRoute = require('./supplementRoute');
+
 
 /**
  * @swagger
@@ -32,5 +34,21 @@ const distributeurRoute = require('./distributeurRoute');
  *          description: Distributeur's AM id
  */
 route.use('/distributeur',distributeurRoute)
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    supplement:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: integer
+ *          description: supplement's id
+ *        label:
+ *          type: string
+ *          description: supplement's label
+ */
+route.use('/supplement',supplementRoute)
 
 module.exports = route;
