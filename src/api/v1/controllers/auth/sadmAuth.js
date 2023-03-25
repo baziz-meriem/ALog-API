@@ -1,9 +1,11 @@
 const prisma = require('../../../../config/dbConfig');
 const { sendToken, getResetPasswordToken, comparePassword, sendEmail } = require('../../middlewares/utils');
-const { getSadmByResetToken, resetSadmPassword, updateSadmResetToken, getSadmByEmail } = require('../../services/auth/sadmService');
+const { getSadmByResetToken, resetSadmPassword, updateSadmResetToken, getSadmByEmail, getAllSadms } = require('../../services/auth/sadmService');
+const { createSADM } = require('../../services/profileManagement/sadmService');
 const {  validateEmail, validatePassword } = require('../../validators/inputValidation');
 
 const login = async (req, res) => {
+
     // retrieve the sadm from the request
     const { email, password } = req.body;
     // checking if ac has given password and email both
@@ -19,7 +21,7 @@ const login = async (req, res) => {
   
     // call the service to get the sadm by email
     const sadm = await getSadmByEmail(email);
-    // return the ac
+    // return the sadm
     if (!sadm) {
         return res.status(404).json({ status: 'Not Found', message: 'SADM not found, Invalid Email or Password' });
     }

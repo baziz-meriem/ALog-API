@@ -138,11 +138,12 @@ const createAm = async ({ nom, prenom, email, password, numTel, idClient }) => {
             throw new Error('AM already exists');
         }
 
-        const clientExists = await prisma.Client.findUnique({
+        const clientExists = await prisma.client.findUnique({
             where: {
                 id: idClient
             }
         });
+        console.log(clientExists)
         if (!clientExists) {
             throw new Error('Client does not exist');
         }
@@ -169,7 +170,6 @@ const createAm = async ({ nom, prenom, email, password, numTel, idClient }) => {
         console.log("am "+am)
         return am;
     } catch (error) {
-        console.log(error)
         return null;
     }
 }

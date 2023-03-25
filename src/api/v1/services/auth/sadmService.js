@@ -68,11 +68,12 @@ const getSadmByEmail = async (email) => {
                 prenom: true,
                 email: true,
                 numTel: true,
-                mot_de_passe: false
+                mot_de_passe: true
             }
         });
         return sadm;
     } catch (error) {
+        console.log(error)
         return null;
     }
 }

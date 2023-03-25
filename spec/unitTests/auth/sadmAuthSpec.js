@@ -6,15 +6,17 @@ const route = "/api/v1/auth/sadm";
 
 
 const sadmLoginTest = {
-    "email": "ja_aiteur@esi.dz",
-    "password": "Test status"
+    "email": "meryemdif@gmail.com",
+    "password":"meryem12345"
 };
+
+
 
 describe(`POST ${route}/login`, () => {
     // send post request to route with body
-    it('should return 201', async () => {
+    it('should return 200', async () => {
         const response = await request.post(`${route}/login`).send(sadmLoginTest);
-        expect(response.status).toBe(201);
+        expect(response.status).toBe(200);
     });
     it('should return 400', async () => {
         const response = await request.post(`${route}/login`).send({});

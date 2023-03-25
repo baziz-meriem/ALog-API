@@ -12,6 +12,7 @@ require('dotenv').config();
 const acAuth = require("./api/v1/routes/auth/acAuth");
 const amAuth = require("./api/v1/routes/auth/amAuth");
 const admAuth = require("./api/v1/routes/auth/admAuth");
+const sadmAuth = require("./api/v1/routes/auth/sadmAuth");
 const customerAuth = require("./api/v1/routes/auth/customerAuth");
 
 const app = express();
@@ -30,6 +31,7 @@ app.use("/api/v1/auth/customer/",customerAuth );
 app.use("/api/v1/auth/am/",amAuth );
 
 app.use("/api/v1/auth/adm/",admAuth );
+app.use("/api/v1/auth/sadm/",sadmAuth );
 
 
 // Routes

@@ -11,10 +11,8 @@ const acLoginTest = {
 };
 
 describe(`POST ${route}/login`, () => {
-    console.log(acLoginTest)
     // send post request to route with body
     it('should return 201', async () => {
-        console.log('I am here')
         const response = await request.post(`${route}/login`).send(acLoginTest);
         expect(response.status).toBe(201);
     });

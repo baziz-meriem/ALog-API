@@ -122,7 +122,6 @@ const createAc = async ({ nom, prenom, email, password, numTel, idClient }) => {
      * @throws {Error} if the idClient does not exist
     */
     try {
-        console.log(email)
         const acExists = await prisma.AC.findUnique({
             where: {
                 email: email
@@ -161,7 +160,6 @@ const createAc = async ({ nom, prenom, email, password, numTel, idClient }) => {
         });
         return ac;
     } catch (error) {
-        console.log(error)
         return null;
     }
 }
