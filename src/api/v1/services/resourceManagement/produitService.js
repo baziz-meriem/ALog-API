@@ -21,7 +21,7 @@ const getAllProducts = async () => {
 const getProductById = async (id) => {
     
     try {
-        const product = await prisma.Product.findUnique({
+        const product = await prisma.Produit.findUnique({
             where: {
                 id: parseInt(id)
             },
@@ -40,7 +40,7 @@ const getProductById = async (id) => {
 const createProduct = async (label) => {
    
     try {
-        const product = await prisma.Product.create({
+        const product = await prisma.Produit.create({
             data: {
                 label: label,
                
@@ -58,7 +58,7 @@ const createProduct = async (label) => {
 
 const deleteProduct = async (id) => {
     try {
-        const deletedProduct =await prisma.Product.delete({
+        const deletedProduct =await prisma.Produit.delete({
             where: {
                 id: parseInt(id)
             },
@@ -75,12 +75,12 @@ const deleteProduct = async (id) => {
 
 const updateProduct = async (id, product) => {
     try {
-        const updatedProduct = await prisma.Product.update({
+        const updatedProduct = await prisma.Produit.update({
             where: {
                 id: parseInt(id)
             },
             data: {
-                etat: product.label,
+                label: product.label,
             },
             select: {
                 id: true,

@@ -1,11 +1,12 @@
 const route = require('express').Router();
-//profile routes
-const profileManagement = require('./profileManagement');
-//resource routes
-const resourceManagement = require('./resourceManagement');
 
-route.use('/profileManagement', profileManagement);
+//authentication routes
+const authentication = require('./auth');
+//product routes
+const ressourceMangement = require('./resourceManagement');
 
-route.use('/resourceManagement', resourceManagement);
+
+route.use('/auth', authentication)
+route.use('/ressourceMangement', ressourceMangement)
 
 module.exports = route;

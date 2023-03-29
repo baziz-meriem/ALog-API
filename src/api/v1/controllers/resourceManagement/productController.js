@@ -1,9 +1,9 @@
-const { getProductById, createProduct, deleteProduct, getAllProducts } = require('../../services/resourceManagement/produitService');
+const { getProductById, createProduct, deleteProduct, getAllProducts, updateProduct } = require('../../services/resourceManagement/produitService');
 
 const getAllHandler = async (req, res) => {
    
     const products = await getAllProducts();
-    return res.status(200).json({ status: 'success', data: distributeurs });
+    return res.status(200).json({ status: 'success', data: products });
 }
 const getOneHandler = async (req, res) => {
     const { id } = req.params;
