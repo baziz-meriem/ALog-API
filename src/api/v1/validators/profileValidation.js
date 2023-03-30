@@ -160,6 +160,53 @@ const validateAnnonceur = (Annonceur) => {
     };
 }
 
+const validateDistributeur = (Distributeur) => {
+    /**
+     * @description validate Distributeur and return it or null if it is not valid
+     * @param {object} Distributeur
+     * @returns {object|null}
+    */
+    const { etat, type, position, codeDeverouillage, idClient, idRegion, idAM} = Distributeur;
+    const valideEtat = validateInput(etat);
+    const valideType = validateInput(type);
+    const validePosition = validateInput(position);
+    const valideIdClient = validateId(idClient);
+    const valideIdRegion = validateId(idRegion);
+    const valideIdAM = validateId(idAM);
+    const valideCodeDeverouillage= validateInput(codeDeverouillage);
+        if (!valideEtat || !valideType || !validePosition || !valideIdClient || !valideIdRegion || !valideIdAM || !valideCodeDeverouillage ) {
+        console.log("y'a err et voila ou: ",valideEtat, valideType,validePosition, valideIdClient,  valideIdRegion,valideIdAM, valideCodeDeverouillage);
+        return null;
+    }
+    return {
+        etat: valideEtat,
+        type: valideType,
+        position: validePosition,
+        idClient: valideIdClient,
+        idRegion: valideIdRegion,
+        idAM: valideIdAM,
+        codeDeverouillage: valideCodeDeverouillage
+    };
+}
+
+const validateSupplement = (supplement) => {
+    /**
+     * @description validate Supplement and return it or null if it is not valid
+     * @param {object} Supplement
+     * @returns {object|null}
+    */
+    const {label} = supplement;
+    const valideLabel = validateInput(label);
+        if (!valideLabel ) {
+        console.log("y'a err et voila ou: ",valideLabel);
+        return null;
+    }
+    return {
+        label: valideLabel,
+    };
+}
+
+
 module.exports = {
     validateAgent,
     validateCostumer,
@@ -167,5 +214,7 @@ module.exports = {
     validateSADM,
     validateADM,
     validateAM,
-    validateAnnonceur
+    validateAnnonceur,
+    validateDistributeur,
+    validateSupplement
 }
