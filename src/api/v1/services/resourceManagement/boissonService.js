@@ -53,6 +53,8 @@ const getAllAvailable = async (id) => {
     }
 }
 
+
+
 const getboissonById = async ( distributeurId,boissonId) => {
     try {
       const boisson = await prisma.BoissonDistributeur.findUnique({
@@ -101,7 +103,7 @@ const getboissonById = async ( distributeurId,boissonId) => {
                 boisson: { connect: { id: parseInt(boisson.id) } },
                 distributeur: { connect: { id: parseInt(distributeurId) } },//establish connection with an existing record
                 prix:parseFloat(prix),
-                disponible:false,
+                disponible:false, //by default 
             },
             select: {
                 idDistributeur: true,
@@ -145,6 +147,26 @@ const deleteboisson = async (distributeurId,boissonId) => {
     }
 }
 
+const deleteAllboisson = async (id) => {
+ 
+    try {
+        const deletedboisson =await prisma.Boisson.delete({
+            where: {
+                id: parseInt(id)
+            },
+            select: {
+                id: true,
+                label:true,
+                description:true
+            }
+        });
+        return deletedboisson;
+    } catch (error) {
+        return null;
+    }
+}
+
+
 const updateboisson = async (distributeurId,boissonId,label,description,prix,disponible) => {
  
     try {
@@ -179,4 +201,5 @@ const updateboisson = async (distributeurId,boissonId,label,description,prix,dis
 }
 
 
-module.exports = { getAll,getAllAvailable, getboissonById, createboisson, deleteboisson, updateboisson }
+
+module.exports = { getAll,getAllAvailable, getboissonById, createboisson, deleteboisson,deleteAllboisson, updateboisson }

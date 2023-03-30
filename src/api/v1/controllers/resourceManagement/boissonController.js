@@ -1,4 +1,4 @@
-const { getAll,getAllAvailable, createboisson, getboissonById,deleteboisson , updateboisson} = require('../../services/resourceManagement/boissonService');
+const { getAll,getAllAvailable, createboisson, getboissonById,deleteboisson ,deleteAllboisson, updateboisson} = require('../../services/resourceManagement/boissonService');
 
 
 const getAllHandler = async (req, res) => { 
@@ -19,8 +19,8 @@ const getAllAvailableHandler = async (req, res) => {
     try {
         const { id } =  req.params;
         const boissons = await getAllAvailable(id);
-        if (boissons.length === 0) {
-          return res.status(404).json({ status: 'Not Found', message: 'no available drink found' });
+        if (!boissons) {
+          return res.status(404).json({ status: 'Not Found', message: 'an error occured no available drink found' });
         }
         return res.status(200).json({ status: 'success', data: boissons });
       } catch (error) {
@@ -41,7 +41,10 @@ const getOneHandler = async (req, res) => {
 // create a new drink for a specific destributor with its label description price availability
 const postHandler = async (req, res) => { 
     const {distributeurId} = req.params;
-    const {prix ,label,description} = req;
+    const {prix ,label,description} = req.body;
+    console.log("request content")
+
+    console.log(req.body)
     const newboisson = await createboisson(distributeurId,prix,label,description);
 
     if (!newboisson) {
@@ -53,6 +56,7 @@ const postHandler = async (req, res) => {
 const deleteHandler = async (req, res) => { 
 
     const { distributeurId,boissonId } = req.params;
+
     const deletedboisson = await deleteboisson(distributeurId,boissonId);
 
     if (!deletedboisson) {
@@ -60,6 +64,20 @@ const deleteHandler = async (req, res) => {
     } else
     return res.status(200).json({ status: 'success', data: deletedboisson });
 }
+//delete boisson from all distributeurs
+const deleteAllHandler = async (req, res) => {
+
+  const deletedboisson = await deleteAllboisson(req.params.boissonId);
+
+  if (!deletedboisson) {
+      return res.status(404).json({ status: 'Not Found', message: 'boisson was not deleted from all distpensors' });
+  
+    } else
+
+  return res.status(200).json({ status: 'success', data: deletedboisson });
+
+}
+
  //updates the description and the also the label and the price and availability of a drink
 const putHandler = async (req, res) => {
     const { distributeurId,boissonId } = req.params;
@@ -80,6 +98,7 @@ module.exports = {
     getAllAvailableHandler,
     getOneHandler,
     postHandler,
+    deleteAllHandler,
     deleteHandler, 
     putHandler
 }
