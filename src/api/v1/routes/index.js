@@ -7,6 +7,8 @@ const resourceManagement = require('./resourceManagement');
 const authentication = require('./auth');
 // reclamations routes
 const reclamation = require('./reclamation');
+// annonce routes
+const annonce = require('./annonce');
 
 route.use('/profileManagement', profileManagement);
 
@@ -15,5 +17,7 @@ route.use('/resourceManagement', resourceManagement);
 route.use('/auth', authentication)
 
 route.use('/reclamation', reclamation);
+
+route.use('/annonce', annonce);
 
 module.exports = route;

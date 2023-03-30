@@ -142,11 +142,30 @@ const validateAM = (AM) => {
      };
 }
 
+const validateAnnonceur = (Annonceur) => {
+    /**
+     * @description validate Annonceur and return it or null if it is not valid
+     * @param {object} Annonceur
+     * @returns {object|null}
+     *  */
+    const { nom, idClient } = Annonceur;
+    const valideNom = validateInput(nom);
+    const valideIdClient = validateId(idClient);
+    if (!valideNom || !valideIdClient) {
+        return null;
+    }
+    return {
+        nom: valideNom,
+        idClient: valideIdClient
+    };
+}
+
 module.exports = {
     validateAgent,
     validateCostumer,
     validateClient,
     validateSADM,
     validateADM,
-    validateAM
+    validateAM,
+    validateAnnonceur
 }
