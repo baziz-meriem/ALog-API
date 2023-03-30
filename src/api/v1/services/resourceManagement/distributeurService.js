@@ -47,7 +47,7 @@ const getDistributeurById = async (id) => {
     }
 }
 
-const createDistributeur = async (etat, type, codeDeverouillage, position,idClient, idRegion, idAM) => {
+const createDistributeur = async (etat, type, position,idClient, idRegion, idAM, codeDeverouillage) => {
    
     try {
         const distributeur = await prisma.Distributeur.create({
