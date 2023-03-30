@@ -1,5 +1,5 @@
-const { sendToken, comparePassword, getResetPasswordToken } = require('../../middlewares/utils');
-const { getDecideurByEmail, updateDecideurResetToken, getDecideurByResetToken, resetDecideurPassword } = require('../../services/auth/decideurService');
+const { sendToken, comparePassword, getResetPasswordCode } = require('../../middlewares/utils');
+const { getDecideurByEmail, resetDecideurPassword, updateDecideurResetCode } = require('../../services/auth/decideurService');
 const {  validateEmail, validatePassword } = require('../../validators/inputValidation');
 
 const login = async (req, res) => {
@@ -51,16 +51,14 @@ const forgotPassword = async (req, res) => {
         }  
     
       
-        // Get ResetPassword Token
-        const {resetToken , user:decideurUpdated } = getResetPasswordToken(ac);
-      //update the resetPassword token and expirePassword token 
-      decideurUpdated = await updateDecideurResetToken(req.body.email, acUpdated);
+        // Get ResetPassword code
+        const {resetCode , user:decideurUpdated } = getResetPasswordCode(decideur);
+      //update the resetPassword code and expirePassword code 
+      decideurUpdated = await updateDecideurResetCode(req.body.email, acUpdated);
     
-        const resetPasswordUrl = `${req.protocol}://${req.get(
-          "host"
-        )}/password/reset/${resetToken}`;
       
-        const message = `Your password reset token is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
+      
+        const message = `Your password reset code is :- \n\n ${resetCode} \n\nIf you have not requested this email then, please ignore it.`;
       
         try {
           await sendEmail({
@@ -74,10 +72,10 @@ const forgotPassword = async (req, res) => {
          });
     
         } catch (error) {
-            decideurUpdated.resetPasswordToken = undefined;
+            decideurUpdated.resetPasswordCode = undefined;
             decideurUpdated.resetPasswordExpire = undefined;
       
-            decideurUpdated = await updateDecideurResetToken(req.body.email, decideurUpdated);
+            decideurUpdated = await updateDecideurResetCode(req.body.email, decideurUpdated);
       
             return res.status(500).json({ status: 'Error', message: error });
     
@@ -86,23 +84,23 @@ const forgotPassword = async (req, res) => {
 }
 
 const resetPassword = async (req, res) => {
-    // creating token hash
-    const resetPasswordToken = crypto
-      .createHash("sha256")
-      .update(req.params.token)
-      .digest("hex");
+    // getting reset code
+    const resetPasswordCode = req.body.code;
   
-    const decideur = await getDecideurByResetToken({resetPasswordToken});
+      const decideur = await getDecideurByEmail(req.body.email);
   
-    if (!decideur) {
-        return res.status(400).json({ status: 'Bad request', message: "Reset Password Token is invalid or has been expired" });
+      if (!decideur) {
+          return res.status(400).json({ status: 'Bad request', message: "Email not valid" });
+      }
+      if (decideur.resetPasswordCode!==resetPasswordCode) {
+        return res.status(400).json({ status: 'Bad request', message: "Reset Password code is invalid or has been expired" });
     }
   
     if (req.body.password !== req.body.confirmPassword) {
         return res.status(400).json({ status: 'Bad Request', message: "Password does not password" });
     }
     decideur.password = req.body.password;
-    decideur.resetPasswordToken = undefined;
+    decideur.resetPasswordCode = undefined;
     decideur.resetPasswordExpire = undefined;
   
     const decideurUpdated = await resetDecideurPassword(decideur.id, decideur);

@@ -1,6 +1,5 @@
-const { sendToken, comparePassword, getResetPasswordToken, sendEmail } = require('../../middlewares/utils');
-const { getAcByEmail } = require('../../services/auth/acService');
-const { createCostumer, getCostumerByEmail, updateCostumerResetToken, getCostumerByResetToken, resetCustomerPassword } = require('../../services/auth/consommateurService');
+const { sendToken, comparePassword, sendEmail, getResetPasswordCode } = require('../../middlewares/utils');
+const { createCostumer, getCostumerByEmail, resetCustomerPassword, updateCostumerResetCode } = require('../../services/auth/consommateurService');
 const {   validateEmail, validatePassword } = require('../../validators/inputValidation');
 const { validateAgent, validateCostumer } = require('../../validators/profileValidation');
 const crypto = require("crypto");
@@ -72,15 +71,14 @@ const forgotPassword = async (req, res) => {
       }  
   
     
-      // Get ResetPassword Token
-      let {resetToken , user:costumerUpdated } = getResetPasswordToken(costumer);
-      // save the reset token of the customer
+      // Get ResetPassword code
+      let {resetCode , user:costumerUpdated } = getResetPasswordCode(costumer);
+      // save the reset code of the customer
 
-      costumerUpdated = await updateCostumerResetToken(req.body.email, costumerUpdated);
+      costumerUpdated = await updateCostumerResetCode(req.body.email, costumerUpdated);
 
-      const resetPasswordUrl = `http://localhost:8080/password/reset/${resetToken}`;
     
-      const message = `Your password reset token is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
+      const message = `Your password reset token is :- \n\n ${resetCode} \n\nIf you have not requested this email then, please ignore it.`;
     
       try {
         await sendEmail({
@@ -94,11 +92,11 @@ const forgotPassword = async (req, res) => {
        });
   
       } catch (error) {
-        //delete the reset pwd token
-          costumerUpdated.resetPasswordToken = undefined;
+        //delete the reset pwd code
+          costumerUpdated.resetPasswordCode = undefined;
          costumerUpdated.resetPasswordExpire = undefined;
     
-          costumerUpdated = await updateCostumerResetToken(req.body.email, costumerUpdated);
+          costumerUpdated = await updateCostumerResetCode(req.body.email, costumerUpdated);
     
           return res.status(500).json({ status: 'Error', message: error });
   
@@ -106,23 +104,23 @@ const forgotPassword = async (req, res) => {
 }
 
 const resetPassword = async (req, res) => {
-    // creating token hash
-    const resetPasswordToken = crypto
-      .createHash("sha256")
-      .update(req.params.token)
-      .digest("hex");
-  // get customer from the reset password token
-    const customer = await getCostumerByResetToken(resetPasswordToken);
+    // getting reset code
+    const resetPasswordCode = req.body.code;
+  // get customer from the reset password code
+    const customer = await getCostumerByEmail(req.body.email);
   
     if (!costumer) {
-        return res.status(400).json({ status: 'Bad request', message: "Reset Password Token is invalid or has been expired" });
+        return res.status(400).json({ status: 'Bad request', message: "Email not valid" });
     }
+    if (costumer.resetPasswordCode!==resetPasswordCode) {
+      return res.status(400).json({ status: 'Bad request', message: "Reset Password code is invalid or has been expired" });
+  }
   // if the password and confirm password do not match return an error
     if (req.body.password !== req.body.confirmPassword) {
         return res.status(400).json({ status: 'Bad Request', message: "Password does not match" });
     }
     costumer.password = req.body.password;
-    customer.resetPasswordToken = undefined;
+    customer.resetPasswordCode = undefined;
     customer.resetPasswordExpire = undefined;
   
     const customerUpdated = await resetCustomerPassword(customer.id, customer);

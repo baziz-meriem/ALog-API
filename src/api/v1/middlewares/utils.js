@@ -52,19 +52,15 @@ const sendToken = (user, statusCode, res) => {
     });
   };
 //create a token
- const getResetPasswordToken =  (user)=> {
-    // Generating Token
-    const resetToken = crypto.randomBytes(20).toString("hex");
-  
-    // Hashing and adding resetPasswordToken to userSchema
-    user.resetPasswordToken = crypto
-      .createHash("sha256")
-      .update(resetToken)
-      .digest("hex");
+ const getResetPasswordCode =  (user)=> {
+    const code = Math.floor(Math.random() * 900000) + 100000; // Generates a random number between 100000 and 999999
+
+    // adding resetPasswordCode to userSchema
+    user.resetPasswordCode = code;
   
     user.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
   
-    return {resetToken:resetToken , user:user};
+    return {resetCode:resetCode , user:user};
   };
 
   const comparePassword = async function (addedPassword , userPassword) {
@@ -79,4 +75,4 @@ const sendToken = (user, statusCode, res) => {
   };
   
   
-  module.exports = {sendToken , getJWTToken , getResetPasswordToken , sendEmail , comparePassword }
+  module.exports = {sendToken , getJWTToken , getResetPasswordCode , sendEmail , comparePassword }

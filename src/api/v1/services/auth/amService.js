@@ -80,33 +80,7 @@ const getAmByEmail = async (email) => {
     }
 }
 
-const getAmByResetToken = async (resetPasswordToken) => {
-    /**
-     * @description get the AM with resetPasswordToken from the database and return it as an object or null if there is an error
-     * @param {number} id
-     * @returns {Promise<null| import('@prisma/client').AM>} am
-    */
-    try {
-        const am = await prisma.AM.findFirst({
-            where: {
-                resetPasswordToken:resetPasswordToken,
-                resetPasswordExpire: { $gt: Date.now() },
-            },
-            select: {
-                id: true,
-                nom: true,
-                prenom: true,
-                email: true,
-                numTel: true,
-                idClient: true,
-                mot_de_passe: false
-            }
-        });
-        return am;
-    } catch (error) {
-        return null;
-    }
-}
+
 
 const createAm = async ({ nom, prenom, email, password, numTel, idClient }) => {
     /**
@@ -201,7 +175,7 @@ const updateAm = async (id, am) => {
     }
 }
 
-const updateAmResetToken = async (email, am) => {
+const updateAmResetCode = async (email, am) => {
     /**
      * @description update the AM with email in the database and return it as an object or null if there is an error
      * @param {string} email
@@ -215,7 +189,7 @@ const updateAmResetToken = async (email, am) => {
                 email: email
             },
             data: {
-                resetPasswordToken: am.resetPasswordToken,
+                resetPasswordCode: am.resetPasswordCode,
                 resetPasswordExpire: am.resetPasswordExpire,              
             },
             select: {
@@ -225,7 +199,7 @@ const updateAmResetToken = async (email, am) => {
                 email: true,
                 numTel: true,
                 idClient: true,
-                resetPasswordToken: true,
+                resetPasswordCode: true,
                 resetPasswordExpire: true,
                 mot_de_passe: false
             }
@@ -252,7 +226,7 @@ const resetAmPassword = async (id, am) => {
             },
             data: {
                 password: hashPassword,
-                resetPasswordToken: am.resetPasswordToken,
+                resetPasswordCode: am.resetPasswordCode,
                 resetPasswordExpire: am.resetPasswordExpire,              
             },
             select: {
@@ -262,7 +236,7 @@ const resetAmPassword = async (id, am) => {
                 email: true,
                 numTel: true,
                 idClient: true,
-                resetPasswordToken: false,
+                resetPasswordCode: false,
                 resetPasswordExpire: false,
                 mot_de_passe: false
             }
@@ -296,4 +270,4 @@ const deleteAm = async(id) => {
     }
 }
 
-module.exports = { getAllAms, getAmById,getAmByEmail,getAmByResetToken, createAm, updateAm,updateAmResetToken , resetAmPassword , deleteAm }
+module.exports = { getAllAms, getAmById,getAmByEmail, createAm, updateAm,updateAmResetCode , resetAmPassword , deleteAm }
