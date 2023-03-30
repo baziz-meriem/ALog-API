@@ -118,6 +118,7 @@ const updateDistributeur = async (id, distributeur) => {
                 idClient: true,
                 idRegion: true,
                 idAM: true,
+                codeDeverouillage : true
             }
         });
         return updatedDistributeur;

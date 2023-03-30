@@ -1,8 +1,7 @@
-const route = require('express').Router();
+const route = require("express").Router();
 
-const ADRoutes = require('./ADRoutes');
+const ADRoutes = require("./ADRoutes");
 
-
-route.use('/ADRoutes', ADRoutes);
+route.use("/ADRoutes", ADRoutes);
 
 module.exports = route;

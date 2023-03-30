@@ -132,6 +132,7 @@ model Produit {
 model Boisson {
   id                  Int                   @id @default(autoincrement())
   label               String
+  description         String
   Annonce             Annonce[]
   BoissonClient       BoissonClient[]
   BoissonDistributeur BoissonDistributeur[]
@@ -141,20 +142,22 @@ model Boisson {
 }
 
 model BoissonDistributeur {
-  idBoisson      Int
+  idBoisson      Int 
   idDistributeur Int
-  boisson        Boisson      @relation(fields: [idBoisson], references: [id])
-  distributeur   Distributeur @relation(fields: [idDistributeur], references: [id])
+  disponible     Boolean
+  boisson        Boisson      @relation(fields: [idBoisson], references: [id],  onDelete: Cascade) 
+  distributeur   Distributeur @relation(fields: [idDistributeur], references: [id],  onDelete: Cascade)
   prix           Float        @default(0)
-  @@id([idBoisson, idDistributeur])
+  @@id([idBoisson, idDistributeur]) 
 }
+
 
 model BoissonProduit {
   idBoisson Int
   idProduit Int
   quantite  Float   @default(0)
-  boisson   Boisson @relation(fields: [idBoisson], references: [id])
-  produit   Produit @relation(fields: [idProduit], references: [id])
+  boisson   Boisson @relation(fields: [idBoisson], references: [id], onDelete: Cascade)
+  produit   Produit @relation(fields: [idProduit], references: [id], onDelete: Cascade)
 
   @@id([idBoisson, idProduit])
 }
@@ -274,8 +277,8 @@ model Supplement {
 model BoissonSupplement {
   idBoisson    Int
   idSupplement Int
-  boisson      Boisson    @relation(fields: [idBoisson], references: [id])
-  supplement   Supplement @relation(fields: [idSupplement], references: [id])
+  boisson      Boisson    @relation(fields: [idBoisson], references: [id], onDelete: Cascade)
+  supplement   Supplement @relation(fields: [idSupplement], references: [id], onDelete: Cascade)
 
   @@id([idBoisson, idSupplement])
 }
@@ -307,8 +310,8 @@ model BoissonClient {
   idBoisson Int
   idClient  Int
   prix      Float
-  boisson   Boisson @relation(fields: [idBoisson], references: [id])
-  client    Client  @relation(fields: [idClient], references: [id])
+  boisson   Boisson @relation(fields: [idBoisson], references: [id] ,onDelete: Cascade)
+  client    Client  @relation(fields: [idClient], references: [id], onDelete: Cascade)
 
   @@id([idBoisson, idClient])
 }

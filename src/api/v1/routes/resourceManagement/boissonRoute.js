@@ -1,5 +1,5 @@
 const route = require('express').Router();
-const { getAllHandler, getOneHandler, postHandler, deleteHandler, putHandler } = require('../../controllers/resourceManagement/boissonController');
+const { getAllHandler,getAllAvailableHandler, getOneHandler, postHandler, deleteHandler, putHandler } = require('../../controllers/resourceManagement/boissonController');
 
 /**
  * @swagger
@@ -18,7 +18,8 @@ const { getAllHandler, getOneHandler, postHandler, deleteHandler, putHandler } =
  *       500:
  *         description: Internal Server Error
  */
-route.get('/', getAllHandler);
+route.get('/:id', getAllHandler);
+route.get('/available/:id', getAllAvailableHandler);
 /**
  * @swagger
  * /api/v1/resourceManagement/boisson/{id}:
@@ -44,7 +45,7 @@ route.get('/', getAllHandler);
  *       400:
  *         description: provided id is not valid
  */
-route.get('/:id', getOneHandler);
+route.get('/:distributeurId/:boissonId', getOneHandler);
 /**
  * @swagger
  * /api/v1/resourceManagement/boisson/:
@@ -68,7 +69,7 @@ route.get('/:id', getOneHandler);
  *        400:
  *          description: provided id is not valid
  */
-route.post('/', postHandler);
+route.post('/:distributeurId', postHandler);
 /**
  * @swagger
  * /api/v1/resourceManagement/boisson/{id}:
@@ -98,7 +99,7 @@ route.post('/', postHandler);
  *        400:
  *          description: provided id is not valid
  */
-route.put('/:id', putHandler);
+route.put('/:distributeurId/:boissonId', putHandler);
 /**
  * @swagger
  * /api/v1/resourceManagement/boisson/{id}:
@@ -122,6 +123,6 @@ route.put('/:id', putHandler);
  *       400:
  *         description: provided id is not valid
  */
-route.delete('/:id', deleteHandler);
+route.delete('/:distributeurId/:boissonId', deleteHandler);
 
 module.exports = route;

@@ -1,96 +1,182 @@
 const prisma = require('../../../../config/dbConfig')
 
-
-const getAllboissons = async () => {
+//get all drinks label desc price and availability of a specific dispenser
+const getAll = async (id) => {
     try {
-
-        const boissons = await prisma.Boisson.findMany({
-            select:{
-                id: true,
-                label:true
-            }
-        });
-  
-        return boissons;
-    } catch (error) {
-        console.log(error)
-        return null;
-    }
-}
-
-const getboissonById = async (id) => {
-    
-    try {
-        const boisson = await prisma.Boisson.findUnique({
+        const boissons = await prisma.BoissonDistributeur.findMany({
             where: {
-                id: parseInt(id)
+              idDistributeur:  parseInt(id),
             },
             select: {
-                id: true,
-                label:true
-            }
-        });
-        return boisson;
+              boisson: {
+                select: {
+                  id: true,
+                  label: true,
+                  description: true,
+                }
+              },
+              prix: true,
+            },
+          });
+          
+        return boissons; //array of boissons
     } catch (error) {
+        console.log(error)
+        throw new Error('Error getting drinks');
+        return null;
+    }
+}
+const getAllAvailable = async (id) => {
+    try {
+        const boissons = await prisma.BoissonDistributeur.findMany({
+            where: {
+              idDistributeur:  parseInt(id),
+              disponible: true,
+            },
+            select: {
+              boisson: {
+                select: {
+                  id: true,
+                  label: true,
+                  description: true,
+                }
+              },
+              prix: true,
+            },
+          });
+          
+        return boissons; //array of boissons
+    } catch (error) {
+        console.log(error)
+        throw new Error('Error getting drinks');
         return null;
     }
 }
 
-const createboisson = async (label) => {
-   
+const getboissonById = async ( distributeurId,boissonId) => {
+    try {
+      const boisson = await prisma.BoissonDistributeur.findUnique({
+        where: {
+          idBoisson_idDistributeur: {
+            idBoisson: parseInt(boissonId),
+            idDistributeur: parseInt(distributeurId),
+          },
+        },
+        select: {
+          boisson: {
+            select: {
+              id: true,
+              label: true,
+              description: true,
+            },
+          },
+          prix: true,
+        },
+      });
+      
+      return boisson;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  };
+  
+
+  const createboisson = async (distributeurId, prix, label, description) => {
     try {
         const boisson = await prisma.Boisson.create({
             data: {
-                label:label
+                label: label,
+                description: description
             },
             select: {
                 id: true,
-                label:true
+                label: true,
+                description: true
             }
         });
-        return boisson;
+
+        const newBoissonDistributeur = await prisma.BoissonDistributeur.create({
+            data: {
+                boisson: { connect: { id: parseInt(boisson.id) } },
+                distributeur: { connect: { id: parseInt(distributeurId) } },//establish connection with an existing record
+                prix:parseFloat(prix),
+                disponible:false,
+            },
+            select: {
+                idDistributeur: true,
+                idBoisson: true,
+                prix: true,
+                boisson: {
+                    select: {
+                        id: true,
+                        label: true,
+                        description: true,
+                    }
+                }
+            }
+        });
+
+        return newBoissonDistributeur;
     } catch (error) {
         console.log(error);
         return null;
+        
     }
 }
 
-const deleteboisson = async (id) => {
+
+const deleteboisson = async (distributeurId,boissonId) => {
     try {
-        const deletedboisson =await prisma.Boisson.delete({
-            where: {
-                id: parseInt(id)
+        const deletedboisson =await prisma.BoissonDistributeur.delete({
+          where: {
+            idBoisson_idDistributeur: {
+              idBoisson: parseInt(boissonId),
+              idDistributeur: parseInt(distributeurId),
             },
-            select: {
-                id: true,
-                label:true
-            }
+          },
+          select: {
+            idBoisson: true
+          }
         });
         return deletedboisson;
     } catch (error) {
-        return null;
+      return null
     }
 }
 
-const updateboisson = async (id, boisson) => {
+const updateboisson = async (distributeurId,boissonId,label,description,prix,disponible) => {
+ 
     try {
-        const updatedboisson = await prisma.Boisson.update({
+        const updatedBoisson = await prisma.Boisson.updateMany({
             where: {
-                id: parseInt(id)
+                id: parseInt(boissonId)
             },
             data: {
-                label: boisson.label
-            },
-            select: {
-                id: true,
-                label:true
+                label:label,
+                description: description
             }
         });
-        return updatedboisson;
+
+        const updatedBoissonDistributeur = await prisma.BoissonDistributeur.updateMany({
+          where: {
+              idBoisson: parseInt(boissonId),
+              idDistributeur: parseInt(distributeurId),
+          },
+          data: {
+            prix: prix,
+            disponible: disponible,
+          },
+        });
+
+        
+        if (updatedBoisson.count === 0 || updatedBoissonDistributeur.count === 0) return null
+        else return 1  ;
     } catch (error) {
         console.log(error)
-        return null;
+        throw new Error('Error updating boisson')
     }
 }
 
-module.exports = { getAllboissons, getboissonById, createboisson, deleteboisson, updateboisson }
+
+module.exports = { getAll,getAllAvailable, getboissonById, createboisson, deleteboisson, updateboisson }

@@ -1,4 +1,14 @@
 
 
+PUT http://localhost:8080/api/v1/resourceManagement/boisson/1/1
 
-GET http://localhost:8080/api/v1/resourceManagement/boisson
+Content-Type: application/json
+
+{
+  "label": "New label",
+  "description": "New description",
+  "prix": 2.99,
+  "disponible": true
+}
+
+
