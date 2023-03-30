@@ -22,7 +22,7 @@ const getAll = async (id) => {
         return boissons; //array of boissons
     } catch (error) {
         console.log(error)
-        throw new Error('Error getting drinks');
+        
         return null;
     }
 }

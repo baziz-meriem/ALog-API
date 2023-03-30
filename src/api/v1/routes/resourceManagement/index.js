@@ -48,6 +48,9 @@ route.use('/distributeur',distributeurRoute)
  *        label:
  *          type: string
  *          description: boisson's label
+ *        description:
+ *          type: string
+ *          description: boisson's description
  */
 route.use('/boisson',boissonRoute)
 module.exports = route;

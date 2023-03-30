@@ -3,126 +3,180 @@ const { getAllHandler,getAllAvailableHandler, getOneHandler, postHandler, delete
 
 /**
  * @swagger
- * /api/v1/resourceManagement/boisson:
+ * /api/v1/resourceManagement/boisson/:distributeurId
  *   get:
- *     tags:
- *       - boisson
- *     summary: get all boissons
- *     responses:
- *       200:
- *         description: success
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Boisson'
- *       500:
- *         description: Internal Server Error
- */
-route.get('/:id', getAllHandler);
-route.get('/available/:id', getAllAvailableHandler);
-/**
- * @swagger
- * /api/v1/resourceManagement/boisson/{id}:
- *   get:
- *     tags:
- *       - boisson
- *     summary: get single boisson by id
+ *     summary: Get all drinks associated with a dispensor
  *     parameters:
- *       - in: path
+ *       - in: query
  *         name: id
  *         schema:
  *           type: integer
  *         required: true
+ *         description: The ID of the dispensor to filter by
  *     responses:
- *       200:
- *         description: success
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Boisson'
- *       404:
- *         description: boisson not found
- *       400:
- *         description: provided id is not valid
+ *       '200':
+ *         description: A list of drinks associated with the dispensor
+ *       '400':
+ *         description: Bad request. The ID parameter is missing or invalid.
+ *       '500':
+ *         description: Internal server error.
  */
+route.get('/:id', getAllHandler);
+/**
+ * @swagger
+ * /api/v1/resourceManagement/boisson/available/:distributeurId
+ *   get:
+ *     summary: Get all the available drinks associated with a dispensor
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The ID of the dispensor to filter by
+ *     responses:
+ *       '200':
+ *         description: A list of available drinks associated with the dispensor
+ *       '400':
+ *         description: Bad request. The ID parameter is missing or invalid.
+ *       '500':
+ *         description: Internal server error.
+ */
+route.get('/available/:id', getAllAvailableHandler);
+/**
+ * @swagger
+ * /api/v1/resourceManagement/boisson/:distributeurId/:boissonId
+ *   get:
+ *     summary: Get a specific drink by ID and distributor
+ *     parameters:
+ *       - in: path
+ *         name: distributeurId
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The ID of the distributor to filter by
+ *       - in: path
+ *         name: boissonId
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The ID of the drink to retrieve
+ *     responses:
+ *       '200':
+ *         description: A specific drink associated with the distributor
+ *       '404':
+ *         description: Drink not found.
+ *       '500':
+ *         description: Internal server error.
+ */
+
 route.get('/:distributeurId/:boissonId', getOneHandler);
 /**
  * @swagger
- * /api/v1/resourceManagement/boisson/:
- *    post:
- *      tags:
- *       - boisson
- *      summary: add a new boisson
- *      requestBody:
- *          required: true
- *          content:
- *              application/json:
- *                  schema:
- *                      $ref: '#/components/schemas/Boisson'
- *      responses:
- *        201:
- *          description: OK
- *          content:
- *            application/json:
- *              schema:
- *                $ref: '#/components/schemas/Boisson'
- *        400:
- *          description: provided id is not valid
+ * /api/v1/resourceManagement/boisson/:distributeurId
+ *   post:
+ *     summary: Create a new drink
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               distributeurId:
+ *                 type: integer
+ *               prix:
+ *                 type: number
+ *               label:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *     responses:
+ *       '200':
+ *         description: The newly created drink
+ *       '400':
+ *         description: Invalid request body
+ *       '500':
+ *         description: Internal server error.
  */
 route.post('/:distributeurId', postHandler);
 /**
  * @swagger
- * /api/v1/resourceManagement/boisson/{id}:
- *    put:
- *      tags:
- *       - boisson
- *      summary: update boisson with id
- *      parameters:
- *        - in: path
- *          name: id
- *          schema:
- *              type: integer
- *              required: true
- *      requestBody:
- *          required: true
- *          content:
- *              application/json:
- *                  schema:
- *                      $ref: '#/components/schemas/Boisson'
- *      responses:
- *        200:
- *          description: sucess
- *          content:
- *            application/json:
- *              schema:
- *                $ref: '#/components/schemas/Boisson'
- *        400:
- *          description: provided id is not valid
+ * /api/v1/resourceManagement/boisson/:distributeurId
+ *   put:
+ *     summary: Update boisson information
+ *     parameters:
+ *       - in: path
+ *         name: distributeurId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the distributor.
+ *       - in: path
+ *         name: boissonId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the drink to update.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               label:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               prix:
+ *                 type: number
+ *               disponible:
+ *                 type: boolean
+ *     responses:
+ *       '200':
+ *         description: The drink has been updated.
+ *       '404':
+ *         description: Drink or dispensor not found.
+ *       '500':
+ *         description: Internal server error.
  */
+
 route.put('/:distributeurId/:boissonId', putHandler);
 /**
  * @swagger
- * /api/v1/resourceManagement/boisson/{id}:
+ * /api/v1/resourceManagement/boisson/:distributeurId/:boissonId
  *   delete:
- *     tags:
- *       - boisson
- *     summary: delete a boisson by id
+ *     summary: Delete a boisson from a distributor's inventory.
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: distributeurId
+ *         required: true
+ *         description: The ID of the distributor.
  *         schema:
  *           type: integer
+ *       - in: path
+ *         name: boissonId
  *         required: true
+ *         description: The ID of the boisson.
+ *         schema:
+ *           type: integer
  *     responses:
  *       200:
- *         description: success
+ *         description: The ID of the deleted boisson.
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Boisson'
- *       400:
- *         description: provided id is not valid
+ *               type: object
+ *               properties:
+ *                 idBoisson:
+ *                   type: integer
+ *       404:
+ *         description: The specified boisson or distributor was not found.
+ *       500:
+ *         description: An error occurred while deleting the boisson.
  */
+
 route.delete('/:distributeurId/:boissonId', deleteHandler);
 
 module.exports = route;

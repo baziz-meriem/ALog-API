@@ -42,8 +42,6 @@ const getOneHandler = async (req, res) => {
 const postHandler = async (req, res) => { 
     const {distributeurId} = req.params;
     const {prix ,label,description} = req;
-    console.log("---------------------------------------here is the body content --------------------------------");
-    console.log(req.body);
     const newboisson = await createboisson(distributeurId,prix,label,description);
 
     if (!newboisson) {
@@ -67,7 +65,6 @@ const putHandler = async (req, res) => {
     const { distributeurId,boissonId } = req.params;
    
     const { label,description,prix,disponible } = req.body;
-    console.log(req.body)
     
     const updatedboisson = await updateboisson(distributeurId,boissonId,label,description,prix,disponible);
     if (!updatedboisson) {
