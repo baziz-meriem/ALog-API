@@ -54,9 +54,9 @@ const forgotPassword = async (req, res) => {
     }  
 
   
-    // Get ResetPassword Token
+    // Get ResetPassword code
     const {resetCode , user:acUpdated } = getResetPasswordCode(ac);
-  //update the resetPassword token and expirePassword token 
+  //update the resetPassword code and expirePassword code 
     acUpdated = await updateAcResetCode(req.body.email, acUpdated);
 
 
@@ -86,7 +86,7 @@ const forgotPassword = async (req, res) => {
   };
 
 const resetPassword = async (req, res) => {
-    // creating token hash
+    // getting reset code
     const resetPasswordCode = req.body.code;
   
     const ac = await getAcByEmail(req.body.email);

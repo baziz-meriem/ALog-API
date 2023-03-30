@@ -71,7 +71,9 @@ const getDecideurByEmail = async (email) => {
                 email: true,
                 numTel: true,
                 idClient: true,
-                mot_de_passe: false
+                mot_de_passe: false,
+                resetPasswordCode: true,
+                resetPasswordExpire: true,
             }
         });
         return decideur;

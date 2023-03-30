@@ -68,7 +68,9 @@ const getSadmByEmail = async (email) => {
                 prenom: true,
                 email: true,
                 numTel: true,
-                mot_de_passe: false
+                mot_de_passe: false,
+                resetPasswordCode: true,
+                resetPasswordExpire: true,
             }
         });
         return sadm;

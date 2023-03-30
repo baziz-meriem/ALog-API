@@ -65,7 +65,7 @@ const forgotPassword = async (req, res) => {
     
       // call the service to get the customer
       let costumer = await getCostumerByEmail(req.body.email);
-      // return the ac
+      // return the customer
       if (!costumer) {
           return res.status(404).json({ status: 'Not Found', message: 'Costumerrr not found, Invalid Email' });
       }  
@@ -74,11 +74,10 @@ const forgotPassword = async (req, res) => {
       // Get ResetPassword code
       let {resetCode , user:costumerUpdated } = getResetPasswordCode(costumer);
       // save the reset code of the customer
-
       costumerUpdated = await updateCostumerResetCode(req.body.email, costumerUpdated);
 
     
-      const message = `Your password reset token is :- \n\n ${resetCode} \n\nIf you have not requested this email then, please ignore it.`;
+      const message = `Your password reset code is :- \n\n ${resetCode} \n\nIf you have not requested this email then, please ignore it.`;
     
       try {
         await sendEmail({
@@ -106,7 +105,7 @@ const forgotPassword = async (req, res) => {
 const resetPassword = async (req, res) => {
     // getting reset code
     const resetPasswordCode = req.body.code;
-  // get customer from the reset password code
+
     const customer = await getCostumerByEmail(req.body.email);
   
     if (!costumer) {

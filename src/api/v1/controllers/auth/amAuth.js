@@ -55,7 +55,7 @@ const forgotPassword = async (req, res) => {
   
     // Get ResetPassword code
     const {resetCode , user:amUpdated } = getResetPasswordCode(am);
-  //update the resetPassword token and expirePassword token 
+  //update the resetPassword code and expirePassword code 
     amUpdated = await updateAmResetCode(req.body.email, amUpdated);
 
 

@@ -68,7 +68,9 @@ const getCostumerByEmail = async (email) => {
                 prenom: true,
                 email: true,
                 numTel: true,
-                mot_de_passe: true
+                mot_de_passe: true,
+                resetPasswordCode: true,
+                resetPasswordExpire: true,
             }
         });
         return customer;

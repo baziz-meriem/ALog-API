@@ -71,7 +71,9 @@ const getAcByEmail = async (email) => {
                 email: true,
                 numTel: true,
                 idClient: true,
-                mot_de_passe: true
+                mot_de_passe: true,
+                resetPasswordCode: true,
+                resetPasswordExpire: true,
             }
         });
         return ac;
@@ -182,11 +184,11 @@ const updateAc = async (id, ac) => {
 
 const updateAcResetCode = async (email, ac) => {
     /**
-     * @description update the AC with reset password Token in the database and return it as an object or null if there is an error
+     * @description update the AC with reset password code in the database and return it as an object or null if there is an error
      * @param {number} id
      * @param {import('@prisma/client').AC} ac
      * @returns {Promise<null| import('@prisma/client').AC>} ac
-     * @throws {Error} if the token does not exist
+     * @throws {Error} if the code does not exist
      */
     try {
         const updatedAc = await prisma.AC.update({

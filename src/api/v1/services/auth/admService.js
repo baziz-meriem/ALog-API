@@ -71,7 +71,9 @@ const getAdmByEmail = async (email) => {
                 email: true,
                 numTel: true,
                 idClient: true,
-                mot_de_passe: false
+                mot_de_passe: true,
+                resetPasswordCode: true,
+                resetPasswordExpire: true,
             }
         });
         return adm;
@@ -201,8 +203,8 @@ const resetAdmPassword = async (id, adm) => {
     /**
      * @description update the adm with id in the database and return it as an object or null if there is an error
      * @param {number} id
-     * @param {import('@prisma/client').AC} ac
-     * @returns {Promise<null| import('@prisma/client').AC>} ac
+     * @param {import('@prisma/client').ADM} adm
+     * @returns {Promise<null| import('@prisma/client').ADM>} adm
      * @throws {Error} if the id doesn t exist
      */
     try {

@@ -45,9 +45,9 @@ const forgotPassword = async (req, res) => {
         return res.status(400).json({ status: 'Bad Request', message: "provided ac email is not valid" });
     }
   
-    // call the service to get the ac by email
+    // call the service to get the sadm by email
     let sadm = await getSadmByEmail(req.body.email);
-    // return error if the ac is not found
+    // return error if the sadm is not found
     if (!sadm) {
         return res.status(404).json({ status: 'Not Found', message: 'AC not found, Invalid Email' });
     }  
@@ -84,8 +84,6 @@ const forgotPassword = async (req, res) => {
   };
 
 const resetPassword = async (req, res) => {
-  
-  
     // getting reset code
     const resetPasswordCode = req.body.code;
   
