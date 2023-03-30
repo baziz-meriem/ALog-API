@@ -1,13 +1,18 @@
-const { getDistributeurById, getAllDistributeurs, createDistributeur, deleteDistributeur , updateDistributeur} = require('../../services/resourceManagement/distributeurService');
+const {
+  getDistributeurById,
+  getAllDistributeurs,
+  createDistributeur,
+  deleteDistributeur,
+  updateDistributeur,
+} = require("../../services/resourceManagement/distributeurService");
 
 const { validateId } = require('../../validators/inputValidation');
 const { validateSADM, validateDistributeur } = require('../../validators/profileValidation');
 
 const getAllHandler = async (req, res) => {
-   
-    const distributeurs = await getAllDistributeurs();
-    return res.status(200).json({ status: 'success', data: distributeurs });
-}
+  const distributeurs = await getAllDistributeurs();
+  return res.status(200).json({ status: "success", data: distributeurs });
+};
 const getOneHandler = async (req, res) => {
     const { id } = req.params;
 
@@ -80,9 +85,9 @@ const putHandler = async (req, res) => {
 
 
 module.exports = {
-    getAllHandler,
-    getOneHandler,
-    postHandler,
-    deleteHandler, 
-    putHandler
-}
+  getAllHandler,
+  getOneHandler,
+  postHandler,
+  deleteHandler,
+  putHandler,
+};
