@@ -181,7 +181,7 @@ const deleteCostumer =async (id) => {
 }
 
 
-const updateCostumerResetToken = async (email, costumer) => {
+const updateCostumerResetCode = async (email, costumer) => {
     /**
      * @description update the customer with email in the database and return it as an object or null if there is an error
      * @param {string} email
@@ -196,7 +196,7 @@ const updateCostumerResetToken = async (email, costumer) => {
                 email: email
             },
             data: {
-                resetPasswordToken: costumer.resetPasswordToken,
+                resetPasswordCode: costumer.resetPasswordCode,
                 resetPasswordExpire: costumer.resetPasswordExpire,              
             },
             select: {
@@ -205,7 +205,7 @@ const updateCostumerResetToken = async (email, costumer) => {
                 prenom: true,
                 email: true,
                 numTel: true,
-                resetPasswordToken: true,
+                resetPasswordCode: true,
                 resetPasswordExpire: true,
                 mot_de_passe: false
             }
@@ -216,32 +216,7 @@ const updateCostumerResetToken = async (email, costumer) => {
     }
 }
 
-const getCostumerByResetToken = async (resetPasswordToken) => {
-    /**
-     * @description get the customer with resetPasswordToken from the database and return it as an object or null if there is an error
-     * @param {string} resetPasswordToken
-     * @returns {Promise<null| import('@prisma/client').Consommateur>} customer
-    */
-    try {
-        const customer = await prisma.Consommateur.findFirst({
-            where: {
-                resetPasswordToken:resetPasswordToken,
-                resetPasswordExpire: { $gt: Date.now() },
-            },
-            select: {
-                id: true,
-                nom: true,
-                prenom: true,
-                email: true,
-                numTel: true,
-                mot_de_passe: false
-            }
-        });
-        return customer;
-    } catch (error) {
-        return null;
-    }
-}
+
 
 const resetCustomerPassword = async (id, customer) => {
     /**
@@ -259,7 +234,7 @@ const resetCustomerPassword = async (id, customer) => {
             },
             data: {
                 password:hashPassword,
-                resetPasswordToken: customer.resetPasswordToken,
+                resetPasswordCode: customer.resetPasswordCode,
                 resetPasswordExpire: customer.resetPasswordExpire,              
             },
             select: {
@@ -268,7 +243,7 @@ const resetCustomerPassword = async (id, customer) => {
                 prenom: true,
                 email: true,
                 numTel: true,
-                resetPasswordToken: false,
+                resetPasswordCode: false,
                 resetPasswordExpire: false,
                 mot_de_passe: false
             }
@@ -279,4 +254,4 @@ const resetCustomerPassword = async (id, customer) => {
     }
 }
 
-module.exports = { getAllCostumers, getCostumerById, getCostumerByEmail , createCostumer, updateCostumer, updateCostumerResetToken, deleteCostumer , getCostumerByResetToken , resetCustomerPassword }
+module.exports = { getAllCostumers, getCostumerById, getCostumerByEmail , createCostumer, updateCostumer, updateCostumerResetCode, deleteCostumer  , resetCustomerPassword }

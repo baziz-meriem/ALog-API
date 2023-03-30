@@ -213,7 +213,7 @@ const resetDecideurPassword = async (id, decideur) => {
             },
             data: {
                 password: hashPassword,
-                resetPasswordToken: decideur.resetPasswordToken,
+                resetPasswordCode: decideur.resetPasswordCode,
                 resetPasswordExpire: decideur.resetPasswordExpire,              
             },
             select: {
@@ -223,7 +223,7 @@ const resetDecideurPassword = async (id, decideur) => {
                 email: true,
                 numTel: true,
                 idClient: true,
-                resetPasswordToken: false,
+                resetPasswordCode: false,
                 resetPasswordExpire: false,
                 mot_de_passe: false
             }
@@ -233,34 +233,8 @@ const resetDecideurPassword = async (id, decideur) => {
         return null;
     }
 }
-const getDecideurByResetToken = async (resetPasswordToken) => {
-    /**
-     * @description get the decideur with resetPasswordToken from the database and return it as an object or null if there is an error
-     * @param {string} resetPasswordToken
-     * @returns {Promise<null| import('@prisma/client').Decideur>} decideur
-    */
-    try {
-        const decideur = await prisma.Decideur.findFirst({
-            where: {
-                resetPasswordToken:resetPasswordToken,
-                resetPasswordExpire: { $gt: Date.now() },
-            },
-            select: {
-                id: true,
-                nom: true,
-                prenom: true,
-                email: true,
-                numTel: true,
-                idClient: true,
-                mot_de_passe: false
-            }
-        });
-        return decideur;
-    } catch (error) {
-        return null;
-    }
-}
-const updateDecideurResetToken = async (email, decideur) => {
+
+const updateDecideurResetCode = async (email, decideur) => {
     /**
      * @description update the decideur with ID in the database and return it as an object or null if there is an error
      * @param {string} email
@@ -274,7 +248,7 @@ const updateDecideurResetToken = async (email, decideur) => {
                 email: email
             },
             data: {
-                resetPasswordToken: decideur.resetPasswordToken,
+                resetPasswordCode: decideur.resetPasswordCode,
                 resetPasswordExpire: decideur.resetPasswordExpire,              
             },
             select: {
@@ -284,7 +258,7 @@ const updateDecideurResetToken = async (email, decideur) => {
                 email: true,
                 numTel: true,
                 idClient: true,
-                resetPasswordToken: true,
+                resetPasswordCode: true,
                 resetPasswordExpire: true,
                 mot_de_passe: false
             }
@@ -295,4 +269,4 @@ const updateDecideurResetToken = async (email, decideur) => {
     }
 }
 
-module.exports = { getAllDecideurs, getDecideurById,getDecideurByEmail ,getDecideurByResetToken,resetDecideurPassword,  createDecideur, updateDecideur, updateDecideurResetToken , deleteDecideur }
+module.exports = { getAllDecideurs, getDecideurById,getDecideurByEmail ,resetDecideurPassword,  createDecideur, updateDecideur, updateDecideurResetCode , deleteDecideur }

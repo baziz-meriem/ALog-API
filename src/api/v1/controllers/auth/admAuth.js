@@ -1,7 +1,6 @@
 const prisma = require('../../../../config/dbConfig');
-const { sendToken, getResetPasswordToken, comparePassword, sendEmail } = require('../../middlewares/utils');
-const { resetAdmPassword, getAdmByResetToken, updateAdmResetToken, getAdmByEmail, createAdm } = require('../../services/auth/admService');
-const { getAllADMs } = require('../../services/profileManagement/admService');
+const { sendToken, comparePassword, sendEmail, getResetPasswordCode } = require('../../middlewares/utils');
+const { resetAdmPassword, getAdmByEmail, updateAdmResetCode } = require('../../services/auth/admService');
 const {  validateEmail, validatePassword } = require('../../validators/inputValidation');
 
 const login = async (req, res) => {
@@ -55,15 +54,13 @@ const forgotPassword = async (req, res) => {
 
   
     // Get ResetPassword Token
-    const {resetToken , user:admUpdated } = getResetPasswordToken(adm);
+    const {resetCode , user:admUpdated } = getResetPasswordCode(adm);
   //update the resetPassword token and expirePassword token 
-  admUpdated = await updateAdmResetToken(req.body.email, admUpdated);
+  admUpdated = await updateAdmResetCode(req.body.email, admUpdated);
 
-    const resetPasswordUrl = `${req.protocol}://${req.get(
-      "host"
-    )}/password/reset/${resetToken}`;
+
   
-    const message = `Your password reset token is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
+    const message = `Your password reset code is :- \n\n ${resetCode} \n\nIf you have not requested this email then, please ignore it.`;
   
     try {
       await sendEmail({
@@ -77,10 +74,10 @@ const forgotPassword = async (req, res) => {
      });
 
     } catch (error) {
-        admUpdated.resetPasswordToken = undefined;
+        admUpdated.resetPasswordCode = undefined;
         admUpdated.resetPasswordExpire = undefined;
   
-        admUpdated = await updateAdmResetToken(req.body.email, admUpdated);
+        admUpdated = await updateAdmResetCode(req.body.email, admUpdated);
   
         return res.status(500).json({ status: 'Error', message: error });
 
@@ -88,23 +85,26 @@ const forgotPassword = async (req, res) => {
   };
 
 const resetPassword = async (req, res) => {
-    // creating token hash
-    const resetPasswordToken = crypto
-      .createHash("sha256")
-      .update(req.params.token)
-      .digest("hex");
+    // getting code
+    const resetPasswordCode = req.body.code;
   
-    const adm = await getAdmByResetToken({resetPasswordToken});
+
+    const adm = await getAdmByEmail(req.body.email);
   
     if (!adm) {
-        return res.status(400).json({ status: 'Bad request', message: "Reset Password Token is invalid or has been expired" });
+      return res.status(400).json({ status: 'Bad request', message: "Email not valid" });
     }
-  
+
+    if (adm.resetPasswordCode!==resetPasswordCode) {
+      return res.status(400).json({ status: 'Bad request', message: "Reset Password code is invalid or has been expired" });
+  }
+
+
     if (req.body.password !== req.body.confirmPassword) {
         return res.status(400).json({ status: 'Bad Request', message: "Password does not password" });
     }
     adm.password = req.body.password;
-    adm.resetPasswordToken = undefined;
+    adm.resetPasswordCode = undefined;
     adm.resetPasswordExpire = undefined;
   
     const admUpdated = await resetAdmPassword(adm.id, adm);
