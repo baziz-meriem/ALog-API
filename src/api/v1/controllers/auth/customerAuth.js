@@ -1,8 +1,8 @@
 const { sendToken, comparePassword, sendEmail, getResetPasswordCode } = require('../../middlewares/utils');
-const { createCostumer, getCostumerByEmail, resetCustomerPassword, updateCostumerResetCode } = require('../../services/auth/consommateurService');
+const { getCostumerByEmail, resetCustomerPassword, updateCostumerResetCode } = require('../../services/auth/consommateurService');
+
 const {   validateEmail, validatePassword } = require('../../validators/inputValidation');
-const { validateAgent, validateCostumer } = require('../../validators/profileValidation');
-const crypto = require("crypto");
+const {  validateCostumer } = require('../../validators/profileValidation');
 
 const login = async (req, res) => {
     // retrieve the costumer from the request

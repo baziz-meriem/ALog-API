@@ -1,6 +1,5 @@
-const prisma = require('../../../../config/dbConfig');
 const { sendToken, comparePassword, sendEmail, getResetPasswordCode } = require('../../middlewares/utils');
-const { getAcByEmail, resetAcPassword , getAllAcs, createAc, updateAcResetCode } = require('../../services/auth/acService');
+const { getAcByEmail, resetAcPassword , updateAcResetCode } = require('../../services/auth/acService');
 const {  validateEmail, validatePassword } = require('../../validators/inputValidation');
 const bcrypt = require('bcrypt');
 
@@ -11,7 +10,6 @@ const login = async (req, res) => {
         return res.status(400).json({ status: 'Bad Request', message: 'Please Enter Email & Password' });
     }
     const hashPassword = await bcrypt.hash(password, 10);
-    console.log(hashPassword)
     // call the validateEmail and validatePassword functions
     const valideAc = validateEmail(email) && validatePassword(password) ;
     // if there is an error, return a 400 status code

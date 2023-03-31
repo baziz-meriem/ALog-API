@@ -1,4 +1,3 @@
-const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const nodeMailer = require("nodemailer");
 const bcrypt = require('bcrypt');
@@ -22,7 +21,6 @@ const sendEmail = async (options) => {
   };
 
   await transporter.sendMail(mailOptions);
-  console.log("milo")
 
 };
 

@@ -1,6 +1,6 @@
-const prisma = require('../../../../config/dbConfig');
 const { sendToken, comparePassword, sendEmail, getResetPasswordCode } = require('../../middlewares/utils');
 const {  resetSadmPassword, getSadmByEmail, updateSadmResetCode } = require('../../services/auth/sadmService');
+
 const {  validateEmail, validatePassword } = require('../../validators/inputValidation');
 
 const login = async (req, res) => {

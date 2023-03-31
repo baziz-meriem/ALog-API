@@ -34,10 +34,8 @@ const clientRoute = require('./ClientRoutes');
  *          description: SADM's phone number
  *        password:
  *          type: string
- *          description: AC's password
- *        idClient:
- *          type: integer
- *          description: AC's client id
+ *          description: SADM's password
+ *        
  */
  route.use('/sadm', sadmRoute);
  /**
@@ -65,8 +63,12 @@ const clientRoute = require('./ClientRoutes');
   *        password:
   *          type: string
   *          description: ADM's password
+  *        idClient:
+  *           type: integer
+  *           description: ADM's client id
   */
  route.use('/adm', admRoute);
+ 
  /**
   * @swagger
   * components:

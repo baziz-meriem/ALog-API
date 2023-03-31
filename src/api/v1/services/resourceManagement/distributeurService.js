@@ -47,7 +47,7 @@ const getDistributeurById = async (id) => {
     }
 }
 
-const createDistributeur = async (etat, type, position,idClient, idRegion, idAM) => {
+const createDistributeur = async (etat, type, position,idClient, idRegion, idAM, codeDeverouillage) => {
    
     try {
         const distributeur = await prisma.Distributeur.create({
@@ -55,9 +55,10 @@ const createDistributeur = async (etat, type, position,idClient, idRegion, idAM)
                 etat: etat,
                 type: type,
                 position: position,
-                idRegion: idRegion,
-                idAM: idAM,
-                idClient: idClient
+                idRegion: Number(idRegion),
+                idAM: Number(idAM),
+                idClient: Number(idClient),
+                codeDeverouillage: codeDeverouillage
             },
             select: {
                 id: true,
@@ -66,6 +67,7 @@ const createDistributeur = async (etat, type, position,idClient, idRegion, idAM)
                 position: true,
                 idClient: true,
                 idRegion: true,
+                codeDeverouillage: true,
                 idAM: true,
             }
         });
@@ -107,7 +109,8 @@ const updateDistributeur = async (id, distributeur) => {
                 position: distributeur.position,
                 idRegion: distributeur.idRegion,
                 idAM: distributeur.idAM,
-                idClient: distributeur.idClient
+                idClient: distributeur.idClient,
+                codeDeverouillage:distributeur.codeDeverouillage
             },
             select: {
                 id: true,
@@ -117,6 +120,7 @@ const updateDistributeur = async (id, distributeur) => {
                 idClient: true,
                 idRegion: true,
                 idAM: true,
+                codeDeverouillage : true
             }
         });
         return updatedDistributeur;
