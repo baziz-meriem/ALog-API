@@ -1,7 +1,11 @@
 const route = require('express').Router();
 
 const distributeurRoute = require('./distributeurRoute');
+<<<<<<< HEAD
 const productRoute = require('./productRoute');
+=======
+const supplementRoute = require('./supplementRoute');
+>>>>>>> 678ca29168ba304adf33d718e83242441e095c70
 
 
 /**
@@ -35,20 +39,37 @@ const productRoute = require('./productRoute');
  */
 route.use('/distributeur',distributeurRoute)
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 678ca29168ba304adf33d718e83242441e095c70
 /**
  * @swagger
  * components:
  *  schemas:
+<<<<<<< HEAD
  *    produit:
+=======
+ *    supplement:
+>>>>>>> 678ca29168ba304adf33d718e83242441e095c70
  *      type: object
  *      properties:
  *        id:
  *          type: integer
+<<<<<<< HEAD
  *          description: product's id
  *        label:
  *          type: string
  *          description: product's label 
  */
 route.use('/product',productRoute)
+=======
+ *          description: supplement's id
+ *        label:
+ *          type: string
+ *          description: supplement's label
+ */
+route.use('/supplement',supplementRoute)
+
+>>>>>>> 678ca29168ba304adf33d718e83242441e095c70
 module.exports = route;

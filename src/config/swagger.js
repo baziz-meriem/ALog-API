@@ -9,7 +9,7 @@ const option={
         },
         servers:[
             {
-                url:"http://localhost:8080"
+                url:"https://sitandlipapi.onrender.com"
             }
         ]
     },

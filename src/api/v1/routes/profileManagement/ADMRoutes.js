@@ -4,18 +4,18 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
 
 /**
  * @swagger
- * /api/v1/profileManagement/ADM:
+ * /api/v1/profileManagement/adm:
  *    get:
  *      tags:
- *       - ADM
- *      summary: get all ADMs'
+ *       - adm
+ *      summary: get all adms'
  *      responses:
  *        200:
  *          description: sucess
  *          content:
  *            application/json:
  *              schema:
- *                $ref: '#/components/schemas/ADM'
+ *                $ref: '#/components/schemas/adm'
  *        500:
  *          description: Internal Server Error
  * 
@@ -23,11 +23,11 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
  route.get('/', getAllHandler);
  /**
   * @swagger
-  * /api/v1/profileManagement/ADM/{id}:
+  * /api/v1/profileManagement/adm/{id}:
   *    get:
   *      tags:
-  *       - ADM
-  *      summary: get single ADM by id'
+  *       - adm
+  *      summary: get single adm by id'
   *      parameters:
   *       - in: path
   *         name: id
@@ -40,44 +40,44 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
   *          content:
   *            application/json:
   *              schema:
-  *                $ref: '#/components/schemas/ADM'
+  *                $ref: '#/components/schemas/adm'
   *        404:
-  *          description: ADM not found
+  *          description: adm not found
   *        400:
   *          description: provided id is not valid
   */
  route.get('/:id', getOneHandler);
  /**
   * @swagger
-  * /api/v1/profileManagement/ADM/:
+  * /api/v1/profileManagement/adm/:
   *    post:
   *      tags:
-  *       - ADM
-  *      summary: add new ADM'
+  *       - adm
+  *      summary: add new adm'
   *      requestBody:
   *          required: true
   *          content:
   *              application/json:
   *                  schema:
-  *                      $ref: '#/components/schemas/ADM'
+  *                      $ref: '#/components/schemas/adm'
   *      responses:
   *        201:
   *          description: OK
   *          content:
   *            application/json:
   *              schema:
-  *                $ref: '#/components/schemas/ADM'
+  *                $ref: '#/components/schemas/adm'
   *        400:
   *          description: provided id is not valid
   */
  route.post('/', postHandler);
  /**
   * @swagger
-  * /api/v1/profileManagement/sSADM/{id}:
+  * /api/v1/profileManagement/adm/{id}:
   *    put:
   *      tags:
-  *       - SSADM
-  *      summary: update SSADM with id'
+  *       - adm
+  *      summary: update adm with id'
   *      parameters:
   *        - in: path
   *          name: id
@@ -89,25 +89,25 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
   *          content:
   *              application/json:
   *                  schema:
-  *                      $ref: '#/components/schemas/ADM'
+  *                      $ref: '#/components/schemas/adm'
   *      responses:
   *        200:
   *          description: sucess
   *          content:
   *            application/json:
   *              schema:
-  *                $ref: '#/components/schemas/ADM'
+  *                $ref: '#/components/schemas/adm'
   *        400:
   *          description: provided id is not valid
   */
  route.put('/:id', putHandler);
  /**
   * @swagger
-  * /api/v1/profileManagement/ADM/{id}:
+  * /api/v1/profileManagement/adm/{id}:
   *    delete:
   *      tags:
-  *       - ADM
-  *      summary: delete ADM with id'
+  *       - adm
+  *      summary: delete adm with id'
   *      parameters:
   *        - in: path
   *          name: id
@@ -120,7 +120,7 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
   *          content:
   *            application/json:
   *              schema:
-  *                $ref: '#/components/schemas/ADM'
+  *                $ref: '#/components/schemas/adm'
   *        400:
   *          description: provided id is not valid
   */
