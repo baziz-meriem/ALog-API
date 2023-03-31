@@ -52,7 +52,7 @@ const sendToken = (user, statusCode, res) => {
     });
   };
 //create a code
-const getResetPasswordCode =  (user)=> {
+const getResetPasswordCode =   (user)=> {
   const code = Math.floor(Math.random() * 900000) + 100000; // Generates a random number between 100000 and 999999
 
   // adding resetPasswordCode to userSchema
