@@ -2870,6 +2870,8 @@
 ::ffff:127.0.0.1 - - [19/Mar/2023:07:48:04 +0000] "GET /api/v1 HTTP/1.1" 200 44 "-" "-"
 ::1 - - [19/Mar/2023:07:57:52 +0000] "POST /api/v1/resourceManagement/distributeur HTTP/1.1" 201 32 "-" "PostmanRuntime/7.31.3"
 ::1 - - [19/Mar/2023:07:59:00 +0000] "POST /api/v1/resourceManagement/distributeur HTTP/1.1" 201 159 "-" "PostmanRuntime/7.31.3"
+<<<<<<< HEAD
+=======
 ::ffff:127.0.0.1 - - [19/Mar/2023:08:10:41 +0000] "POST /api/v1/profileManagement/client HTTP/1.1" 200 106 "-" "-"
 ::ffff:127.0.0.1 - - [19/Mar/2023:08:10:42 +0000] "POST /api/v1/profileManagement/ac HTTP/1.1" 201 121 "-" "-"
 ::ffff:127.0.0.1 - - [19/Mar/2023:08:10:42 +0000] "POST /api/v1/profileManagement/ac HTTP/1.1" 400 90 "-" "-"
@@ -3638,3 +3640,4 @@
 ::ffff:127.0.0.1 - - [30/Mar/2023:23:08:56 +0000] "DELETE /api/v1/resourceManagement/region/8 HTTP/1.1" 200 52 "-" "-"
 ::ffff:127.0.0.1 - - [30/Mar/2023:23:08:56 +0000] "DELETE /api/v1/resourceManagement/region/0 HTTP/1.1" 400 61 "-" "-"
 ::ffff:127.0.0.1 - - [30/Mar/2023:23:08:56 +0000] "GET /api/v1 HTTP/1.1" 200 44 "-" "-"
+>>>>>>> 5f0246f7a90b1231a4a24b50af9e65f272056cf8
