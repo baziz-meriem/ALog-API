@@ -1,6 +1,4 @@
 const prisma = require('../../../../config/dbConfig')
-const bcrypt = require('bcrypt');
-
 
 const getAllDistributeurs = async () => {
     try {
