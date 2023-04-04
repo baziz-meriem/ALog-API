@@ -1,4 +1,3 @@
-const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const nodeMailer = require("nodemailer");
 const bcrypt = require('bcrypt');
@@ -22,6 +21,7 @@ const sendEmail = async (options) => {
   };
 
   await transporter.sendMail(mailOptions);
+
 };
 
 const getJWTToken =(user)=>{
@@ -49,25 +49,28 @@ const sendToken = (user, statusCode, res) => {
       token,
     });
   };
-//create a token
- const getResetPasswordToken =  (user)=> {
-    // Generating Token
-    const resetToken = crypto.randomBytes(20).toString("hex");
-  
-    // Hashing and adding resetPasswordToken to userSchema
-    user.resetPasswordToken = crypto
-      .createHash("sha256")
-      .update(resetToken)
-      .digest("hex");
-  
-    user.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
-  
-    return {resetToken:resetToken , user:user};
-  };
+//create a code
+const getResetPasswordCode =   (user)=> {
+  const code = Math.floor(Math.random() * 900000) + 100000; // Generates a random number between 100000 and 999999
+
+  // adding resetPasswordCode to userSchema
+  user.resetPasswordCode = code.toString();
+
+  user.resetPasswordExpire = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+  return {resetCode:code , user:user};
+};
 
   const comparePassword = async function (addedPassword , userPassword) {
-    return await bcrypt.compare(addedPassword, userPassword);
+    try {
+      return await bcrypt.compare(addedPassword, userPassword);
+
+    } catch (error) {
+      console.error(error);
+      throw new Error('Error comparing passwords');
+    }
+
   };
   
   
-  module.exports = {sendToken , getJWTToken , getResetPasswordToken , sendEmail , comparePassword }
+  module.exports = {sendToken , getJWTToken , getResetPasswordCode , sendEmail , comparePassword }

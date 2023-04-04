@@ -22,6 +22,8 @@ app.use(cors({
 
 app.use('/api/v1/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
+
+
 // Routes
 app.get('/api/v1', (req, res) => {
     res.status(200).json({

@@ -1,3 +1,5 @@
+const { getAgent } = require('../../controllers/auth/common');
+
 const route= require('express').Router();
 
 route.use('/ac', require('./acAuth'));
@@ -11,5 +13,7 @@ route.use('/consommateur', require('./customerAuth'));
 route.use('/decideur', require('./decideurAuth'));
 
 route.use('/sadm', require('./sadmAuth'));
+
+route.get('/agent', getAgent);
 
 module.exports = route;
