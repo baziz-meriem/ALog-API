@@ -1,5 +1,4 @@
-const prisma = require("../../../../config/dbConfig");
-const bcrypt = require("bcrypt");
+const prisma = require('../../../../config/dbConfig')
 
 const getAllDistributeurs = async () => {
   try {
@@ -46,7 +45,7 @@ const getDistributeurById = async (id) => {
   }
 };
 
-const createDistributeur = async (etat, type, position,idClient, idRegion, idAM, codeDeverouillage) => {
+const createDistributeur = async ({etat, type, position,idClient, idRegion, idAM, codeDeverouillage}) => {
    
     try {
         const distributeur = await prisma.Distributeur.create({

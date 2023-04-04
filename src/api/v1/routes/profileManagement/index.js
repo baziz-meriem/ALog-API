@@ -65,9 +65,10 @@ const clientRoute = require('./ClientRoutes');
   *          description: ADM's password
   *        idClient:
   *           type: integer
-  *            description: ADM's client id
+  *           description: ADM's client id
   */
  route.use('/adm', admRoute);
+ 
  /**
   * @swagger
   * components:
