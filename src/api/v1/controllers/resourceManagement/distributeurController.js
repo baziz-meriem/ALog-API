@@ -68,6 +68,8 @@ const postHandler = async (req, res) => {
         return res.status(400).json({ status: 'Bad Request', message: "provided Distributeur is not valid" });
     }
 
+
+
     const newDistributeur = await createDistributeur(valideDistributeur);
     if (!newDistributeur) {
         return res.status(400).json({ status: 'Bad Request', message: "Distributeur has not been created" });

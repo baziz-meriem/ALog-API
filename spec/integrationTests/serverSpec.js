@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 const superTest = require('supertest');
 const app= require('../../src/index.js');
 
@@ -9,3 +11,4 @@ describe('GET /api/v1', () => {
         expect(response.status).toBe(200);
     });
 });
+>>>>>>> 5f0246f7a90b1231a4a24b50af9e65f272056cf8

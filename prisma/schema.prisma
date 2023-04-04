@@ -69,6 +69,8 @@ model Decideur {
   numTel       String
   idClient     Int
   client       Client @relation(fields: [idClient], references: [id])
+  resetPasswordCode String @default("") 
+  resetPasswordExpire DateTime @default(now())
 }
 
 model AC {
@@ -80,6 +82,8 @@ model AC {
   numTel       String
   idClient     Int
   client       Client @relation(fields: [idClient], references: [id])
+  resetPasswordCode String @default("")
+  resetPasswordExpire DateTime @default(now())
 }
 
 model AM {
@@ -93,6 +97,8 @@ model AM {
   client       Client         @relation(fields: [idClient], references: [id])
   Distributeur Distributeur[]
   Tache        Tache[]
+  resetPasswordCode String @default("") 
+  resetPasswordExpire DateTime @default(now())
 }
 
 model ADM {
@@ -104,6 +110,8 @@ model ADM {
   numTel       String
   idClient     Int
   client       Client @relation(fields: [idClient], references: [id])
+  resetPasswordCode String @default("")
+  resetPasswordExpire DateTime @default(now())
 }
 
 model SADM {
@@ -113,6 +121,8 @@ model SADM {
   email        String @unique
   mot_de_passe String
   numTel       String
+  resetPasswordCode String @default("") 
+  resetPasswordExpire DateTime @default(now())
 }
 
 model Consommateur {
@@ -161,7 +171,6 @@ model BoissonProduit {
   quantite  Float   @default(0)
   boisson   Boisson @relation(fields: [idBoisson], references: [id], onDelete: Cascade)
   produit   Produit @relation(fields: [idProduit], references: [id], onDelete: Cascade)
-
   @@id([idBoisson, idProduit])
 }
 
@@ -171,7 +180,6 @@ model ProduitDistributeur {
   quantite       Float        @default(0)
   distributeur   Distributeur @relation(fields: [idDistributeur], references: [id])
   produit        Produit      @relation(fields: [idProduit], references: [id])
-
   @@id([idProduit, idDistributeur])
 }
 
@@ -244,7 +252,6 @@ model AnnonceCategorie {
   idCategorie Int
   annonce     Annonce   @relation(fields: [idAnnonce], references: [id])
   categorie   Categorie @relation(fields: [idCategorie], references: [id])
-
   @@id([idAnnonce, idCategorie])
 }
 
@@ -282,7 +289,6 @@ model BoissonSupplement {
   idSupplement Int
   boisson      Boisson    @relation(fields: [idBoisson], references: [id], onDelete: Cascade)
   supplement   Supplement @relation(fields: [idSupplement], references: [id], onDelete: Cascade)
-
   @@id([idBoisson, idSupplement])
 }
 
@@ -291,7 +297,6 @@ model DistributeurSupplement {
   idSupplement Int
   client       Client     @relation(fields: [idClient], references: [id])
   supplement   Supplement @relation(fields: [idSupplement], references: [id])
-
   @@id([idClient, idSupplement])
 }
 
@@ -315,6 +320,5 @@ model BoissonClient {
   prix      Float
   boisson   Boisson @relation(fields: [idBoisson], references: [id] ,onDelete: Cascade)
   client    Client  @relation(fields: [idClient], references: [id], onDelete: Cascade)
-
   @@id([idBoisson, idClient])
 }
