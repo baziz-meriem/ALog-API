@@ -3,6 +3,8 @@ const route = require('express').Router();
 const distributeurRoute = require('./distributeurRoute');
 const regionRoute = require('./regionRoute');
 const supplementRoute = require('./supplementRoute');
+const boissonRoute = require('./boissonRoute');
+
 
 /**
  * @swagger
