@@ -132,6 +132,8 @@ model Consommateur {
   email        String     @unique
   mot_de_passe String
   numTel       String
+  resetPasswordCode String @default("")
+  resetPasswordExpire DateTime @default(now())
   Commande     Commande[]
 }
 

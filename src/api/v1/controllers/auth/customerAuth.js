@@ -1,5 +1,5 @@
 const { sendToken, comparePassword, sendEmail, getResetPasswordCode } = require('../../middlewares/utils');
-const { getCostumerByEmail, resetCustomerPassword, updateCostumerResetCode } = require('../../services/auth/consommateurService');
+const { getCostumerByEmail, resetCustomerPassword, updateCostumerResetCode, createCustomer } = require('../../services/auth/consommateurService');
 
 const {   validateEmail, validatePassword } = require('../../validators/inputValidation');
 const {  validateCostumer } = require('../../validators/profileValidation');
@@ -30,7 +30,7 @@ const login = async (req, res) => {
         return res.status(401).json({ status: 'Not Found', message: 'Customer not found, Invalid Password' });
     }
     //return customer with a token
-    sendToken(customer, 200, res);
+    sendToken(customer,"Consommateur", 200, res);
 
    // return res.status(200).json({ status: 'success', data: ac });
 }
@@ -43,13 +43,13 @@ const register = async (req, res) => {
           return res.status(400).json({ status: 'Bad Request', message: "provided costumer is not valid" });
       }
       // call the service to create the costumer
-      const newCostumer = await createCostumer(valideCostumer);
+      const newCostumer = await createCustomer(valideCostumer);
       // if there is an error, return a 400 status code
       if (!newCostumer) {
           return res.status(400).json({ status: 'Bad Request', message: "provided costumer is not valid" });
       }
       // return the new costumer with a token
-      sendToken(newCostumer, 201, res);
+      sendToken(newCostumer,"Consommateur", 201, res);
 
    //   return res.status(201).json({ status: 'success', data: newCostumer });
 }
@@ -57,7 +57,7 @@ const register = async (req, res) => {
 const forgotPassword = async (req, res) => {
     const {email} = req.body;
       // call the validateEmail function
-      const valideCustomer = validateEmail(email)  ;
+      const valideCustomer = validateEmail(req.body.email)  ;
       // if there is an error, return a 400 status code
       if (!valideCustomer) {
           return res.status(400).json({ status: 'Bad Request', message: "provided customer email is not valid" });
@@ -92,7 +92,7 @@ const forgotPassword = async (req, res) => {
   
       } catch (error) {
         //delete the reset pwd code
-          costumerUpdated.resetPasswordCode = undefined;
+          costumerUpdated.resetPasswordCode = "";
          costumerUpdated.resetPasswordExpire = undefined;
     
           costumerUpdated = await updateCostumerResetCode(req.body.email, costumerUpdated);
@@ -104,7 +104,7 @@ const forgotPassword = async (req, res) => {
 
 const resetPassword = async (req, res) => {
     // getting reset code
-    const resetPasswordCode = req.body.code;
+    const resetPasswordCode = req.body.resetPasswordCode;
 
     const customer = await getCostumerByEmail(req.body.email);
   
@@ -119,12 +119,12 @@ const resetPassword = async (req, res) => {
         return res.status(400).json({ status: 'Bad Request', message: "Password does not match" });
     }
     costumer.password = req.body.password;
-    customer.resetPasswordCode = undefined;
+    customer.resetPasswordCode = "";
     customer.resetPasswordExpire = undefined;
   
     const customerUpdated = await resetCustomerPassword(customer.id, customer);
     
-    sendToken(customerUpdated, 200, res);
+    sendToken(customerUpdated,"Consommateur", 200, res);
 }
 
 const logout = async (req, res, next) => {

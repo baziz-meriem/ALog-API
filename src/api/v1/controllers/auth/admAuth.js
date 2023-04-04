@@ -29,7 +29,7 @@ const login = async (req, res) => {
         return res.status(401).json({ status: 'Not Found', message: 'ADM not found, Invalid Password' });
     }
     //send auth token
-    sendToken(adm, 200, res);
+    sendToken(adm,"ADM", 200, res);
 
    // return res.status(200).json({ status: 'success', data: ac });
 }
@@ -109,7 +109,7 @@ const resetPassword = async (req, res) => {
   
     const admUpdated = await resetAdmPassword(adm.id, adm);
   
-    sendToken(admUpdated, 200, res);
+    sendToken(admUpdated,"ADM", 200, res);
   }
 
 // Logout Ac
