@@ -16,10 +16,10 @@ const tacheRoute= require('./tacheRoute')
  *          description: Tache's description
  *        etat:           
  *          type: string
- *          description: Tache's etat
+ *          description: Tache's etat, pas commencer, en cours, termine
  *        type:             
  *          type: string
- *          description: Tache's type anomalie, panne
+ *          description: Tache's type anomalie, panne, tentative de vol
  *        Soustype:        
  *          type: string
  *          description: Tache's Soustype dans le cas d'anomalie,un sous type est ingredient
@@ -40,7 +40,7 @@ const tacheRoute= require('./tacheRoute')
  *          description: Distributeur's id concerné par la tache
  *        idAM:            
  *          type: integer
- *          description: AM's  id concerné par la tache
+ *          description: AM's id concerné par la tache
  */
 
 route.use('/tache', tacheRoute);

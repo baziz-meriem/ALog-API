@@ -7,7 +7,13 @@ const { getAllDistHandler, getAllAmHandler, getOneHandler, createHandler, update
  *    get:
  *      tags:
  *       - tache
- *      summary: get all taches d'un distributeur'
+ *      summary: get tache by id
+ *      parameters:
+ *       - in: path
+ *         name: id distributeur
+ *         schema:
+ *          type: integer
+ *          required: true
  *      responses:
  *        200:
  *          description: OK
@@ -15,11 +21,10 @@ const { getAllDistHandler, getAllAmHandler, getOneHandler, createHandler, update
  *            application/json:
  *              schema:
  *                $ref: '#/components/schemas/Tache'
-  *        400:
- *          description: provided distributeur id is not valid
+ *        400:
+ *          description: provided id is not valid
  *        500:
  *          description: Internal Server Error
- * 
  */
 route.get('/distributeur/:id', getAllDistHandler);
 
@@ -29,7 +34,13 @@ route.get('/distributeur/:id', getAllDistHandler);
  *    get:
  *      tags:
  *       - tache
- *      summary: get all taches d'un Am'
+ *      summary: get tache by id
+ *      parameters:
+ *       - in: path
+ *         name: id AM
+ *         schema:
+ *          type: integer
+ *          required: true
  *      responses:
  *        200:
  *          description: OK
@@ -38,10 +49,9 @@ route.get('/distributeur/:id', getAllDistHandler);
  *              schema:
  *                $ref: '#/components/schemas/Tache'
  *        400:
- *          description: provided am id is not valid
+ *          description: provided id is not valid
  *        500:
  *          description: Internal Server Error
- * 
  */
 route.get('/am/:id', getAllAmHandler);
 
@@ -51,10 +61,10 @@ route.get('/am/:id', getAllAmHandler);
  *    get:
  *      tags:
  *       - tache
- *      summary: get tache by id'
+ *      summary: get tache by id
  *      parameters:
  *       - in: path
- *         name: id
+ *         name: id tache
  *         schema:
  *          type: integer
  *          required: true
@@ -198,7 +208,7 @@ route.put('/:id', updateHandler);
  *      summary: delete an tache by id
  *      parameters:
  *        - in: path
- *          name: id
+ *          name: id tache
  *          schema:
  *              type: integer
  *              required: true

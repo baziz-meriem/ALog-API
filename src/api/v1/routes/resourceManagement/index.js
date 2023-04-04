@@ -42,7 +42,6 @@ route.use('/distributeur',distributeurRoute)
  * components:
  *  schemas:
  *    region:
- *    supplement:
  *      type: object
  *      properties:
  *        id:

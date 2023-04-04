@@ -106,6 +106,22 @@ const createTache = async ({ idDistributeur, idAM, type, Soustype, description, 
      * @throws {Error} if the id already exists
     */
     try { 
+        const DistExists = await prisma.Distributeur.findUnique({
+            where: {
+                id: idDistributeur
+            }
+        });
+        if (!DistExists) {
+            throw new Error('ce Distributeur n"exists pas ');
+        }
+        const AMExists = await prisma.AM.findUnique({
+            where: {
+                id: idAM
+            }
+        });
+        if (!AMExists) {
+            throw new Error('ce AM n"exists pas ');
+        }
         const Tache = await prisma.Tache.create({
             data: {
                 idDistributeur  : idDistributeur, 
@@ -149,6 +165,23 @@ const updateTache = async (id, Tache) => {
      * @throws {Error} if the Tache does not exist
      */
     try {
+        const DistExists = await prisma.Distributeur.findUnique({
+            where: {
+                id: idDistributeur
+            }
+        });
+        if (!DistExists) {
+            throw new Error('ce Distributeur n"exists pas ');
+        }
+        const AMExists = await prisma.AM.findUnique({
+            where: {
+                id: idAM
+            }
+        });
+        if (!AMExists) {
+            throw new Error('ce AM n"exists pas ');
+        }
+    
         const updatedTache = await prisma.Tache.update({
             where: {
                 id: parseInt(id)
