@@ -72,7 +72,7 @@ route.post('/forgotPassword', forgotPassword);
  *        400:
  *          description: 
  */
-route.post('/resetPassword', resetPassword);
+route.put('/resetPassword', resetPassword);
 
 /**
  * @swagger
