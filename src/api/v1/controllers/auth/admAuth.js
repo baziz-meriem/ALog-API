@@ -39,7 +39,7 @@ const login = async (req, res) => {
 // Forgot Password
 const forgotPassword = async (req, res) => {
     // call the validateEmail function
-    const valideAdm = validateEmail(email)  ;
+    const valideAdm = validateEmail(req.body.email)  ;
     // if there is an error, return a 400 status code
     if (!valideAdm) {
         return res.status(400).json({ status: 'Bad Request', message: "provided ac email is not valid" });
@@ -54,7 +54,7 @@ const forgotPassword = async (req, res) => {
 
   
     // Get ResetPassword code
-    const {resetCode , user:admUpdated } = getResetPasswordCode(adm);
+    let {resetCode , user:admUpdated } = getResetPasswordCode(adm);
   //update the resetPassword code and expirePassword code 
   admUpdated = await updateAdmResetCode(req.body.email, admUpdated);
 
@@ -74,7 +74,7 @@ const forgotPassword = async (req, res) => {
      });
 
     } catch (error) {
-        admUpdated.resetPasswordCode = undefined;
+        admUpdated.resetPasswordCode = "";
         admUpdated.resetPasswordExpire = undefined;
   
         admUpdated = await updateAdmResetCode(req.body.email, admUpdated);
@@ -86,7 +86,7 @@ const forgotPassword = async (req, res) => {
 
 const resetPassword = async (req, res) => {
     // getting code
-    const resetPasswordCode = req.body.code;
+    const resetPasswordCode = req.body.resetPasswordCode;
   
 
     const adm = await getAdmByEmail(req.body.email);
@@ -104,7 +104,7 @@ const resetPassword = async (req, res) => {
         return res.status(400).json({ status: 'Bad Request', message: "Password does not password" });
     }
     adm.password = req.body.password;
-    adm.resetPasswordCode = undefined;
+    adm.resetPasswordCode = "";
     adm.resetPasswordExpire = undefined;
   
     const admUpdated = await resetAdmPassword(adm.id, adm);

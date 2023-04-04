@@ -32,11 +32,11 @@ const getAdmById = async (id) => {
 const getAdmByEmail = async (email) => {
     /**
      * @description get the adm with email from the database and return it as an object or null if there is an error
-     * @param {number} id
+     * @param {string} email
      * @returns {Promise<null| import('@prisma/client').ADM>} adm
     */
     try {
-        const adm = await prisma.AdM.findUnique({
+        const adm = await prisma.ADM.findUnique({
             where: {
                 email: email
             },
@@ -68,13 +68,13 @@ const resetAdmPassword = async (id, adm) => {
      * @throws {Error} if the id doesn t exist
      */
     try {
-        const hashPassword = await bcrypt.hash(password, 10);
+        const hashPassword = await bcrypt.hash(adm.password, 10);
         const updatedAdm = await prisma.ADM.update({
             where: {
                 id: id
             },
             data: {
-                password: hashPassword,
+                mot_de_passe: hashPassword,
                 resetPasswordCode: adm.resetPasswordCode,
                 resetPasswordExpire: adm.resetPasswordExpire,              
             },

@@ -69,6 +69,8 @@ model Decideur {
   numTel       String
   idClient     Int
   client       Client @relation(fields: [idClient], references: [id])
+  resetPasswordCode String @default("") 
+  resetPasswordExpire DateTime @default(now())
 }
 
 model AC {
@@ -80,6 +82,8 @@ model AC {
   numTel       String
   idClient     Int
   client       Client @relation(fields: [idClient], references: [id])
+  resetPasswordCode String @default("")
+  resetPasswordExpire DateTime @default(now())
 }
 
 model AM {
@@ -93,6 +97,8 @@ model AM {
   client       Client         @relation(fields: [idClient], references: [id])
   Distributeur Distributeur[]
   Tache        Tache[]
+  resetPasswordCode String @default("") 
+  resetPasswordExpire DateTime @default(now())
 }
 
 model ADM {
@@ -104,6 +110,8 @@ model ADM {
   numTel       String
   idClient     Int
   client       Client @relation(fields: [idClient], references: [id])
+  resetPasswordCode String @default("")
+  resetPasswordExpire DateTime @default(now())
 }
 
 model SADM {
@@ -113,6 +121,8 @@ model SADM {
   email        String @unique
   mot_de_passe String
   numTel       String
+  resetPasswordCode String @default("") 
+  resetPasswordExpire DateTime @default(now())
 }
 
 model Consommateur {

@@ -31,7 +31,7 @@ const getAcById = async (id) => {
 const getAcByEmail = async (email) => {
     /**
      * @description get the AC with email from the database and return it as an object or null if there is an error
-     * @param {number} id
+     * @param {string} email
      * @returns {Promise<null| import('@prisma/client').AC>} ac
     */
     try {
@@ -102,13 +102,13 @@ const resetAcPassword = async (id, ac) => {
      * @throws {Error} if the id does not exist
      */
     try {
-        const hashPassword = await bcrypt.hash(password, 10);
+        const hashPassword = await bcrypt.hash(ac.password, 10);
         const updatedAc = await prisma.AC.update({
             where: {
                 id: id
             },
             data: {
-                password: hashPassword,
+                mot_de_passe: hashPassword,
                 resetPasswordCode: ac.resetPasswordCode,
                 resetPasswordExpire: ac.resetPasswordExpire,              
             },

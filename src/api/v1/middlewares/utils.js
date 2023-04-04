@@ -54,11 +54,11 @@ const getResetPasswordCode =   (user)=> {
   const code = Math.floor(Math.random() * 900000) + 100000; // Generates a random number between 100000 and 999999
 
   // adding resetPasswordCode to userSchema
-  user.resetPasswordCode = code;
+  user.resetPasswordCode = code.toString();
 
-  user.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
+  user.resetPasswordExpire = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
-  return {resetCode:resetCode , user:user};
+  return {resetCode:code , user:user};
 };
 
   const comparePassword = async function (addedPassword , userPassword) {

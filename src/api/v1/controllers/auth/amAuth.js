@@ -39,7 +39,7 @@ const login = async (req, res) => {
 // Forgot Password
 const forgotPassword = async (req, res) => {
     // call the validateEmail function
-    const valideAm = validateEmail(email)  ;
+    const valideAm = validateEmail(req.body.email)  ;
     // if there is an error, return a 400 status code
     if (!valideAm) {
         return res.status(400).json({ status: 'Bad Request', message: "provided ac email is not valid" });
@@ -54,7 +54,7 @@ const forgotPassword = async (req, res) => {
 
   
     // Get ResetPassword code
-    const {resetCode , user:amUpdated } = getResetPasswordCode(am);
+    let {resetCode , user:amUpdated } = getResetPasswordCode(am);
   //update the resetPassword code and expirePassword code 
     amUpdated = await updateAmResetCode(req.body.email, amUpdated);
 
@@ -64,7 +64,7 @@ const forgotPassword = async (req, res) => {
     try {
       await sendEmail({
         email: amUpdated.email,
-        subject: `Ecommerce Password Recovery`,
+        subject: `Password Recovery`,
         message,
       });
       return res.status(200).json({   
@@ -73,7 +73,7 @@ const forgotPassword = async (req, res) => {
      });
 
     } catch (error) {
-        amUpdated.resetPasswordCode = undefined;
+        amUpdated.resetPasswordCode = "";
         amUpdatedc.resetPasswordExpire = undefined;
   
         amUpdated = await updateAmResetCode(req.body.email, amUpdated);
@@ -85,7 +85,7 @@ const forgotPassword = async (req, res) => {
 
 const resetPassword = async (req, res) => {
     // getting reset code
-    const resetPasswordCode = req.body.code;
+    const resetPasswordCode = req.body.resetPasswordCode;
   
     const am = await getAmByEmail(req.body.email);
   
@@ -101,7 +101,7 @@ const resetPassword = async (req, res) => {
         return res.status(400).json({ status: 'Bad Request', message: "Password does not password" });
     }
     am.password = req.body.password;
-    am.resetPasswordCode = undefined;
+    am.resetPasswordCode = "";
     am.resetPasswordExpire = undefined;
   
     const amUpdated = await resetAmPassword(am.id, am);
