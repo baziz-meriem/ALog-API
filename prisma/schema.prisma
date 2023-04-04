@@ -1,0 +1,324 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Client {
+  id                     Int                      @id @default(autoincrement())
+  nom                    String
+  email                  String                   @unique
+  numTel                 String
+  AC                     AC[]
+  ADM                    ADM[]
+  AM                     AM[]
+  Annonceur              Annonceur[]
+  BoissonClient          BoissonClient[]
+  Decideur               Decideur[]
+  Distributeur           Distributeur[]
+  DistributeurSupplement DistributeurSupplement[]
+}
+
+model Region {
+  id           Int            @id @default(autoincrement())
+  nom          String
+  Annonce      Annonce[]
+  Distributeur Distributeur[]
+}
+
+model Distributeur {
+  id                  Int                   @id @default(autoincrement())
+  etat                String
+  type                String
+  position            String
+  codeDeverouillage   String
+  idClient            Int
+  idRegion            Int
+  idAM                Int
+  Anomalie            Anomalie[]
+  BoissonDistributeur BoissonDistributeur[]
+  Commande            Commande[]
+  AM                  AM                    @relation(fields: [idAM], references: [id])
+  client              Client                @relation(fields: [idClient], references: [id])
+  region              Region                @relation(fields: [idRegion], references: [id])
+  ProduitDistributeur ProduitDistributeur[]
+  Tache               Tache[]
+  TentativeVol        TentativeVol[]
+}
+
+model TentativeVol {
+  id             Int          @id @default(autoincrement())
+  date           DateTime     @default(now())
+  type           String
+  idDistributeur Int
+  distributeur   Distributeur @relation(fields: [idDistributeur], references: [id])
+}
+
+model Decideur {
+  id           Int    @id @default(autoincrement())
+  nom          String
+  prenom       String
+  email        String @unique
+  mot_de_passe String
+  numTel       String
+  idClient     Int
+  client       Client @relation(fields: [idClient], references: [id])
+  resetPasswordCode String @default("") 
+  resetPasswordExpire DateTime @default(now())
+}
+
+model AC {
+  id           Int    @id @default(autoincrement())
+  nom          String
+  prenom       String
+  email        String @unique
+  mot_de_passe String
+  numTel       String
+  idClient     Int
+  client       Client @relation(fields: [idClient], references: [id])
+  resetPasswordCode String @default("")
+  resetPasswordExpire DateTime @default(now())
+}
+
+model AM {
+  id           Int            @id @default(autoincrement())
+  nom          String
+  prenom       String
+  email        String         @unique
+  mot_de_passe String
+  numTel       String
+  idClient     Int
+  client       Client         @relation(fields: [idClient], references: [id])
+  Distributeur Distributeur[]
+  Tache        Tache[]
+  resetPasswordCode String @default("") 
+  resetPasswordExpire DateTime @default(now())
+}
+
+model ADM {
+  id           Int    @id @default(autoincrement())
+  nom          String
+  prenom       String
+  email        String @unique
+  mot_de_passe String
+  numTel       String
+  idClient     Int
+  client       Client @relation(fields: [idClient], references: [id])
+  resetPasswordCode String @default("")
+  resetPasswordExpire DateTime @default(now())
+}
+
+model SADM {
+  id           Int    @id @default(autoincrement())
+  nom          String
+  prenom       String
+  email        String @unique
+  mot_de_passe String
+  numTel       String
+  resetPasswordCode String @default("") 
+  resetPasswordExpire DateTime @default(now())
+}
+
+model Consommateur {
+  id           Int        @id @default(autoincrement())
+  nom          String
+  prenom       String
+  email        String     @unique
+  mot_de_passe String
+  numTel       String
+  Commande     Commande[]
+}
+
+model Produit {
+  id                  Int                   @id @default(autoincrement())
+  label               String
+  BoissonProduit      BoissonProduit[]
+  ProduitDistributeur ProduitDistributeur[]
+}
+
+model Boisson {
+  id                  Int                   @id @default(autoincrement())
+  label               String
+  description         String
+  Annonce             Annonce[]
+  BoissonClient       BoissonClient[]
+  BoissonDistributeur BoissonDistributeur[]
+  BoissonProduit      BoissonProduit[]
+  BoissonSupplement   BoissonSupplement[]
+  Commande            Commande[]
+}
+
+model BoissonDistributeur {
+  idBoisson      Int 
+  idDistributeur Int
+  disponible     Boolean
+  boisson        Boisson      @relation(fields: [idBoisson], references: [id],  onDelete: Cascade) 
+  distributeur   Distributeur @relation(fields: [idDistributeur], references: [id],  onDelete: Cascade)
+  prix           Float        @default(0)
+  @@id([idBoisson, idDistributeur]) 
+}
+
+
+model BoissonProduit {
+  idBoisson Int
+  idProduit Int
+  quantite  Float   @default(0)
+  boisson   Boisson @relation(fields: [idBoisson], references: [id], onDelete: Cascade)
+  produit   Produit @relation(fields: [idProduit], references: [id], onDelete: Cascade)
+  @@id([idBoisson, idProduit])
+}
+
+model ProduitDistributeur {
+  idProduit      Int
+  idDistributeur Int
+  quantite       Float        @default(0)
+  distributeur   Distributeur @relation(fields: [idDistributeur], references: [id])
+  produit        Produit      @relation(fields: [idProduit], references: [id])
+  @@id([idProduit, idDistributeur])
+}
+
+model Commande {
+  id             Int          @id @default(autoincrement())
+  date           DateTime     @default(now())
+  etat           String
+  idConsommateur Int
+  idDistributeur Int
+  idBoisson      Int
+  boisson        Boisson      @relation(fields: [idBoisson], references: [id])
+  consommateur   Consommateur @relation(fields: [idConsommateur], references: [id])
+  distributeur   Distributeur @relation(fields: [idDistributeur], references: [id])
+  Payment        Payment[]
+}
+
+model Payment {
+  id          Int           @id @default(autoincrement())
+  montant     Float
+  date        DateTime      @default(now())
+  etat        String
+  typeCarte   String
+  monnaie     String
+  idCommande  Int
+  commande    Commande      @relation(fields: [idCommande], references: [id])
+  Reclamation Reclamation[]
+}
+
+model Reclamation {
+  id          Int       @id @default(autoincrement())
+  description String
+  date        DateTime  @default(now())
+  idPayment   Int
+  payment     Payment   @relation(fields: [idPayment], references: [id])
+  Reponse     Reponse[]
+}
+
+model Reponse {
+  id            Int         @id @default(autoincrement())
+  description   String
+  date          DateTime    @default(now())
+  idReclamation Int
+  reclamation   Reclamation @relation(fields: [idReclamation], references: [id])
+}
+
+model Annonceur {
+  id       Int       @id @default(autoincrement())
+  nom      String
+  idClient Int
+  Annonce  Annonce[]
+  client   Client    @relation(fields: [idClient], references: [id])
+}
+
+model Annonce {
+  id               Int                @id @default(autoincrement())
+  video            String
+  periodeAffichage String
+  prixAnnonce      Float
+  idRegion         Int
+  idBoisson        Int
+  idAnnonceur      Int
+  annonceur        Annonceur          @relation(fields: [idAnnonceur], references: [id])
+  boisson          Boisson            @relation(fields: [idBoisson], references: [id])
+  region           Region             @relation(fields: [idRegion], references: [id])
+  AnnonceCategorie AnnonceCategorie[]
+}
+
+model AnnonceCategorie {
+  idAnnonce   Int
+  idCategorie Int
+  annonce     Annonce   @relation(fields: [idAnnonce], references: [id])
+  categorie   Categorie @relation(fields: [idCategorie], references: [id])
+  @@id([idAnnonce, idCategorie])
+}
+
+model Categorie {
+  id               Int                @id @default(autoincrement())
+  label            String
+  AnnonceCategorie AnnonceCategorie[]
+}
+
+model TypeAnomalie {
+  id          Int        @id @default(autoincrement())
+  type        String
+  description String
+  Anomalie    Anomalie[]
+}
+
+model Anomalie {
+  id             Int          @id @default(autoincrement())
+  date           DateTime     @default(now())
+  idTypeAnomalie Int
+  idDistributeur Int
+  distributeur   Distributeur @relation(fields: [idDistributeur], references: [id])
+  typeAnomalie   TypeAnomalie @relation(fields: [idTypeAnomalie], references: [id])
+}
+
+model Supplement {
+  id                     Int                      @id @default(autoincrement())
+  label                  String
+  BoissonSupplement      BoissonSupplement[]
+  DistributeurSupplement DistributeurSupplement[]
+}
+
+model BoissonSupplement {
+  idBoisson    Int
+  idSupplement Int
+  boisson      Boisson    @relation(fields: [idBoisson], references: [id], onDelete: Cascade)
+  supplement   Supplement @relation(fields: [idSupplement], references: [id], onDelete: Cascade)
+  @@id([idBoisson, idSupplement])
+}
+
+model DistributeurSupplement {
+  idClient     Int
+  idSupplement Int
+  client       Client     @relation(fields: [idClient], references: [id])
+  supplement   Supplement @relation(fields: [idSupplement], references: [id])
+  @@id([idClient, idSupplement])
+}
+
+model Tache {
+  id             Int          @id @default(autoincrement())
+  description    String
+  etat           Float
+  type           String
+  chargement     Float
+  dateDebut      DateTime     @default(now())
+  dateTraitement DateTime     @default(now())
+  idDistributeur Int
+  distributeur   Distributeur @relation(fields: [idDistributeur], references: [id])
+  idAM           Int
+  am             AM           @relation(fields: [idAM], references: [id])
+}
+
+model BoissonClient {
+  idBoisson Int
+  idClient  Int
+  prix      Float
+  boisson   Boisson @relation(fields: [idBoisson], references: [id] ,onDelete: Cascade)
+  client    Client  @relation(fields: [idClient], references: [id], onDelete: Cascade)
+  @@id([idBoisson, idClient])
+}
