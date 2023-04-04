@@ -2,7 +2,7 @@ const route = require('express').Router();
 const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } = require('../../controllers/resourceManagement/regionController');
 /**
  * @swagger
- * /api/v1/resourceManagement/region:
+ * /api/v1/resourceManagement/region/:
  *    get:
  *      tags:
  *       - Region
@@ -13,7 +13,7 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
  *          content:
  *            application/json:
  *              schema:
- *                $ref: '#/components/schemas/Region'
+ *                $ref: '#/components/schemas/region'
  *        500:
  *          description: Internal Server Error
  * 

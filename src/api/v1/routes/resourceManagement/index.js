@@ -5,7 +5,6 @@ const regionRoute = require('./regionRoute');
 const supplementRoute = require('./supplementRoute');
 const boissonRoute = require('./boissonRoute');
 
-
 /**
  * @swagger
  * components:
