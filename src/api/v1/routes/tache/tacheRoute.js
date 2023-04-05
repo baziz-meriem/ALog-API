@@ -103,7 +103,7 @@ route.get('/:id', getOneHandler);
  *                          description: AM's  id concerné par la tache
  *                        type:             
  *                          type: string
- *                          description: Tache's type anamalie, panne            
+ *                          description: Tache's type anomalie, panne            
  *                        Soustype:        
  *                          type: string
  *                          description: Tache's Soustype dans le cas d'anomalie,un sous type est ingredient
@@ -114,7 +114,7 @@ route.get('/:id', getOneHandler);
  *                          type: string
  *                          description: Tache's etat                          
  *                        dateAffectation:       
- *                          type: Timestamp 
+ *                          type: Timestamp
  *                          description: date d'Affectation de cette tache à un AM
  *                        dateDebutTraitement:    
  *                          type: Timestamp 

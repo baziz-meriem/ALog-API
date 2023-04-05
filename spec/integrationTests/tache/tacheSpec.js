@@ -87,7 +87,6 @@ describe('tache test', () => {
         });
 
         afterAll( async () => {
-            await request.delete(`/api/v1/tache/tache/${tacheId}`).send();
             await request.delete(`/api/v1/resourceManagement/distributeur/${tacheTest.idDistributeur}`).send();
             await request.delete(`/api/v1/resourceManagement/region/${DistTest.idRegion}`).send();
             await request.delete(`/api/v1/profileManagement/am/${DistTest.idAM}`).send();
@@ -127,7 +126,7 @@ describe('tache test', () => {
             expect(response.status).toBe(200);
         });
         it('should return 400',   async () => {
-            const response =  await request.get(`${route}/-1`);
+            const response =  await request.get(`${route}/0`);
             expect(response.status).toBe(400);
         });
     });
