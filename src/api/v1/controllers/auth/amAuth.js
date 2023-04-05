@@ -29,7 +29,7 @@ const login = async (req, res) => {
         return res.status(401).json({ status: 'Not Found', message: 'AM not found, Invalid Password' });
     }
     //send auth token
-    sendToken(am, 200, res);
+    sendToken(am,"AM", 200, res);
 
    // return res.status(200).json({ status: 'success', data: ac });
 }
@@ -106,7 +106,7 @@ const resetPassword = async (req, res) => {
   
     const amUpdated = await resetAmPassword(am.id, am);
   
-    sendToken(amUpdated, 200, res);
+    sendToken(amUpdated,"AM", 200, res);
   }
 
 // Logout Ac

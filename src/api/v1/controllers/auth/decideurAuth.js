@@ -27,7 +27,7 @@ const login = async (req, res) => {
     if (!isPasswordMatched) {
         return res.status(401).json({ status: 'Not Found', message: 'Decideur not found, Invalid Password' });
     }
-    sendToken(decideur, 200, res);
+    sendToken(decideur,"Decideur", 200, res);
 
    // return res.status(200).json({ status: 'success', data: ac });
 }
@@ -104,7 +104,7 @@ const resetPassword = async (req, res) => {
   
     const decideurUpdated = await resetDecideurPassword(decideur.id, decideur);
   
-    sendToken(decideurUpdated, 200, res);
+    sendToken(decideurUpdated,"Decideur", 200, res);
 }
 
 // Logout Ac

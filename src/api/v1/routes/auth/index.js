@@ -1,4 +1,4 @@
-const { getAgent } = require('../../controllers/auth/common');
+const {  getRole } = require('../../controllers/auth/common');
 
 const route= require('express').Router();
 
@@ -14,6 +14,6 @@ route.use('/decideur', require('./decideurAuth'));
 
 route.use('/sadm', require('./sadmAuth'));
 
-route.get('/agent', getAgent);
+route.get('/role', getRole);
 
 module.exports = route;
