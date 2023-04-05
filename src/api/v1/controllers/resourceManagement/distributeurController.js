@@ -31,12 +31,15 @@ const getOneHandler = async (req, res) => {
 }
 
 const postHandler = async (req, res) => {
+    console.log(req.body)
     const {etat, type, position,codeDeverouillage,idClient, idRegion, idAM} = req.body;
     const valideDistributeur = validateDistributeur({etat, type, position, codeDeverouillage,idClient, idRegion, idAM});
 
     if (!valideDistributeur) {
         return res.status(400).json({ status: 'Bad Request', message: "provided Distributeur is not valid" });
     }
+
+
 
     const newDistributeur = await createDistributeur(valideDistributeur);
     if(!newDistributeur){
