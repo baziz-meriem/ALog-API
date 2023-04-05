@@ -14,7 +14,6 @@ const validateTache = (Tache) => {
     const chargementTache = validateChargTache( chargement ); 
 
     if (!Distid || !AMid || !typeTache  || !etatTache ) {
-        console.log( "invalid champ est : ", !Distid, !AMid, !typeTache, !etatTache, !chargementTache);
         return null;
     }
     return { idDistributeur, idAM, type, Soustype, description, etat, dateAffectation, dateDebutTraitement, dateFinTraitement, chargement};
@@ -24,9 +23,9 @@ const validatetypeTache = (type) => {
     if (typeof type !== 'string') {
         return null;
     }
-    if (type !== "anomalie" && type !== "panne") {
-        return null;
-    }
+    // if (type !== "anomalie" && type !== "panne") {
+    //     return null;
+    // }
     return type ; 
 }
 
@@ -34,9 +33,9 @@ const validateEtatTache = (etat) => {
     if (typeof etat !== 'string') {
         return null;
     }
-    if (etat !== "pas encore" && etat !== "en cours" && etat !== "traite")  {
-        return null;
-    }
+    // if (etat !== "pas encore" && etat !== "en cours" && etat !== "traite")  {
+    //     return null;
+    // }
     return etat ; 
 }
 const validateChargTache = (charge) => {

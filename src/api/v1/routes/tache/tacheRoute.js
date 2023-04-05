@@ -86,52 +86,45 @@ route.get('/:id', getOneHandler);
  *    post:
  *      tags:
  *       - tache
- *      summary: Create new tache
- *      requestBody:
- *          required: true
- *          content:
- *              application/json:
- *                  schema:
- *                      type: object
- *                      properties:
- *                        description:     
- *                          type: string
- *                          description: Tache's description
- *                        etat:            
- *                          type: string
- *                          description: Tache's etat              
- *                        type:             
- *                          type: string
- *                          description: Tache's type anamalie, panne            
- *                        Soustype:        
- *                          type: string
- *                          description: Tache's Soustype dans le cas d'anomalie,un sous type est ingredient
- *                        chargement:      
- *                          type: float
- *                          description: Tache's chargement              
- *                        dateAffectation:       
- *                          type: DateTime
- *                          description: date d'Affectation de cette tache à un AM
- *                        dateDebutTraitement:    
- *                          type: DateTime
- *                          description: date Debut de Traitement de cette tache
- *                        dateFinTraitement:      
- *                          type: DateTime
- *                          description: date Fin de Traitement de cette tache 
- *                        idDistributeur:  
- *                          type: integer
- *                          description: Distributeur's id concerné par la tache
- *                        idAM:           
- *                          type: integer
- *                          description: AM's  id concerné par la tache
- *                
+ *      summary: Create new tache          
  *      responses:
  *        201:
  *          description: OK
  *          content:
  *            application/json:
  *              schema:
- *                $ref: '#/components/schemas/Tache'
+ *                      type: object
+ *                      properties:
+ *                        idDistributeur:  
+ *                          type: integer
+ *                          description: Distributeur's id concerné par la tache
+ *                        idAM:           
+ *                          type: integer
+ *                          description: AM's  id concerné par la tache
+ *                        type:             
+ *                          type: string
+ *                          description: Tache's type anamalie, panne            
+ *                        Soustype:        
+ *                          type: string
+ *                          description: Tache's Soustype dans le cas d'anomalie,un sous type est ingredient
+ *                        description:     
+ *                          type: string
+ *                          description: Tache's description
+ *                        etat:            
+ *                          type: string
+ *                          description: Tache's etat                          
+ *                        dateAffectation:       
+ *                          type: Timestamp 
+ *                          description: date d'Affectation de cette tache à un AM
+ *                        dateDebutTraitement:    
+ *                          type: Timestamp 
+ *                          description: date Debut de Traitement de cette tache
+ *                        dateFinTraitement:      
+ *                          type: Timestamp 
+ *                          description: date Fin de Traitement de cette tache 
+ *                        chargement:      
+ *                          type: Float
+ *                          description: Tache's chargement  
  *        400:
  *          description: provided idClient is not valid
  */
@@ -157,36 +150,36 @@ route.post('/', createHandler);
  *                  schema:
  *                      type: object
  *                      properties:
- *                        description:     
- *                          type: string
- *                          description: Tache's description
- *                        etat:            
- *                          type: string
- *                          description: Tache's etat              
- *                        type:             
- *                          type: string
- *                          description: Tache's type anamalie, panne            
- *                        Soustype:        
- *                          type: string
- *                          description: Tache's Soustype dans le cas d'anomalie,un sous type est ingredient
- *                        chargement:      
- *                          type: float
- *                          description: Tache's chargement              
- *                        dateAffectation:       
- *                          type: DateTime
- *                          description: date d'Affectation de cette tache à un AM
- *                        dateDebutTraitement:    
- *                          type: DateTime
- *                          description: date Debut de Traitement de cette tache
- *                        dateFinTraitement:      
- *                          type: DateTime
- *                          description: date Fin de Traitement de cette tache 
  *                        idDistributeur:  
  *                          type: integer
  *                          description: Distributeur's id concerné par la tache
  *                        idAM:           
  *                          type: integer
  *                          description: AM's  id concerné par la tache
+ *                        type:             
+ *                          type: string
+ *                          description: Tache's type anamalie, panne            
+ *                        Soustype:        
+ *                          type: string
+ *                          description: Tache's Soustype dans le cas d'anomalie,un sous type est ingredient
+ *                        description:     
+ *                          type: string
+ *                          description: Tache's description
+ *                        etat:            
+ *                          type: string
+ *                          description: Tache's etat                          
+ *                        dateAffectation:       
+ *                          type: Timestamp 
+ *                          description: date d'Affectation de cette tache à un AM
+ *                        dateDebutTraitement:    
+ *                          type: Timestamp 
+ *                          description: date Debut de Traitement de cette tache
+ *                        dateFinTraitement:      
+ *                          type: Timestamp 
+ *                          description: date Fin de Traitement de cette tache 
+ *                        chargement:      
+ *                          type: Float
+ *                          description: Tache's chargement  
  *      responses:
  *        200:
  *          description: success
@@ -218,7 +211,7 @@ route.put('/:id', updateHandler);
  *          content:
  *            application/json:
  *              schema:
- *                $ref: '#/components/schemas/ANNOUNCEUR'
+ *                $ref: '#/components/schemas/Tache'
  *        400:
  *          description: provided id is not valid
  */

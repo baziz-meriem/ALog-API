@@ -88,9 +88,6 @@ const getTacheById = async (id) => {
                 idAM: true
             }
         });
-        if (Tache.length == 0) {
-            throw new Error('ce id n existe pas ');
-        }
         return Tache;
     } catch (error) {
         console.log(error);
@@ -167,7 +164,7 @@ const updateTache = async (id, Tache) => {
     try {
         const DistExists = await prisma.Distributeur.findUnique({
             where: {
-                id: idDistributeur
+                id: Tache.idDistributeur
             }
         });
         if (!DistExists) {
@@ -175,7 +172,7 @@ const updateTache = async (id, Tache) => {
         }
         const AMExists = await prisma.AM.findUnique({
             where: {
-                id: idAM
+                id: Tache.idAM
             }
         });
         if (!AMExists) {
@@ -212,9 +209,6 @@ const updateTache = async (id, Tache) => {
                 idAM: true
             }
         });
-        if (updatedTache.length == 0) {
-            throw new Error('ce id n existe pas ');
-        }
         return updatedTache;
     } catch (error) {
         console.log(error);
@@ -247,9 +241,6 @@ const deleteTache = async(id) => {
                 idAM: true
             }
         });
-        if (deletedTache.length == 0) {
-            throw new Error('ce id n existe pas ');
-        }
         return deletedTache;
     } catch (error) {
         console.log(error);

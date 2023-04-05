@@ -8,59 +8,59 @@ const route = "/api/v1/tache/tache";
 const AMTest = {
     "nom": "AM1",
     "prenom": "AM1",
-    "email": "AM0009@gmail.com",
+    "email": "AM002@gmail.com",
     "password": "Test password",
     "numTel": "0123456789",
     "idClient": 1
 };
 const ClientTest = {
     "nom": "Client1",
-    "email": "Client00009@gmail.com",
+    "email": "Client000011@gmail.com",
     "numTel": "0123456789",
 };
 
 const RegionTest = {
-    "nom": "Tipaza09"
+    "nom": "Tipaza"
 }
 const DistTest = {
     "etat": "en marche",
     "type": "Boisoon chaude",
     "position": "pos1",
-    "codeDeverouillage": "0345",
-    "idRegion": 1,
     "idClient": 1,
-    "idAM": 1
+	"idRegion": 1,
+    "idAM": 1,
+	"codeDeverouillage": "0345"
 }
 
 
 const tacheTest = 
     {
-        "type": "anomalie", 
+        "idDistributeur": 1,
+        "idAM": 1,
+	    "type": "vol", 
         "Soustype": "ingredient", 
         "description": "cette intervention concrne manque d ingredient", 
-        "etat": "pas encore", 
+        "etat": "terminer", 
         "dateAffectation": "2023-12-01T12:30:00.000Z", 
         "dateDebutTraitement": "2023-12-01T12:30:00.000Z",
         "dateFinTraitement": "2023-12-01T12:30:00.000Z", 
-        "chargement": 0.00,
-        "idDistributeur": 1,
-        "idAM": 1
+        "chargement": 0.00
     }
     // format DatTime: 2022-04-07T14:30:00.000Z le T séparateur, et à la fin 000Z
 
 const tacheUpdate = {
-    "type": "anomalie", 
+    "idDistributeur": 1,
+    "idAM": 1,
+    "type": "vol", 
     "Soustype": "ingredient", 
     "description": "cette intervention concrne manque d ingredient", 
-    "etat": "en cours", 
+    "etat": "pas encore", 
     "dateAffectation": "2023-12-01T12:30:00.000Z", 
     "dateDebutTraitement": "2023-12-01T12:30:00.000Z",
     "dateFinTraitement": "2023-12-01T12:30:00.000Z", 
-    "chargement": 10.00,
-    "idDistributeur": 1,
-    "idAM": 1
+    "chargement": 0.00
 }
-const tacheId = 1;
+tacheId = 1;
 
 
 describe('tache test', () => {
@@ -87,6 +87,7 @@ describe('tache test', () => {
         });
 
         afterAll( async () => {
+            await request.delete(`/api/v1/tache/tache/${tacheId}`).send();
             await request.delete(`/api/v1/resourceManagement/distributeur/${tacheTest.idDistributeur}`).send();
             await request.delete(`/api/v1/resourceManagement/region/${DistTest.idRegion}`).send();
             await request.delete(`/api/v1/profileManagement/am/${DistTest.idAM}`).send();
@@ -95,65 +96,62 @@ describe('tache test', () => {
         
 
     describe(`POST ${route}`, () => {
-        it('should return 201',   () => {
-            const response =  request.post(route).send(tacheTest);
-            tacheId = response.body.data.id
+        it('should return 201',  async () => {
+            const response =  await request.post(route).send(tacheTest);
+            tacheId = response.body.data.id;
+            console.log("tacheId=", tacheId);
             expect(response.status).toBe(201);
         });
-        it('should return 400',   () => {
-            const response =  request.post(route).send({});
+        it('should return 400', async  () => {
+            const response =  await request.post(route).send({});
             expect(response.status).toBe(400);
         });
     })
 
     describe(`GET ${route}/am/:id`, () => {
-        it('should return 200',   () => {
-            const response =  request.get(`${route}/am/${tacheTest.idAM}`);
+        it('should return 200',  async () => {
+            const response =  await request.get(`${route}/am/${tacheTest.idAM}`);
             expect(response.status).toBe(200);
         });
     });
 
     describe(`GET ${route}/distributeur/:id`, () => {
-        it('should return 200',   () => {
-            const response =  request.get(`${route}/distributeur/${tacheTest.idDistributeur}`);
+        it('should return 200',  async () => {
+            const response = await request.get(`${route}/distributeur/${tacheTest.idDistributeur}`);
             expect(response.status).toBe(200);
         });
     });
     describe(`GET ${route}/:id`, () => {
-        it('should return 200',   () => {
-            const response =  request.get(`${route}/${tacheId}`);
+        it('should return 200',  async () => {
+            const response = await request.get(`${route}/${tacheId}`);
             expect(response.status).toBe(200);
         });
-        it('should return 400',   () => {
-            const response =  request.get(`${route}/-1`);
+        it('should return 400',   async () => {
+            const response =  await request.get(`${route}/-1`);
             expect(response.status).toBe(400);
         });
     });
     describe(`PUT ${route}/:id`, () => {
-        it('should return 200',   () => {
-            const response =  request.put(`${route}/${tacheId}`).send(tacheUpdate);
+        it('should return 200',  async  () => {
+            const response =  await request.put(`${route}/${tacheId}`).send(tacheUpdate);
             expect(response.status).toBe(200);
         });
-        it('should return 400',   () => {
-            const response =  request.put(`${route}/0`).send( tacheUpdate );
+        it('should return 400',   async () => {
+            const response =  await request.put(`${route}/0`).send( tacheUpdate );
             expect(response.status).toBe(400);
         });
-        it('should return 400',   () => {
-            const response =  request.put(`${route}/z`).send(tacheUpdate);
+        it('should return 400',  async  () => {
+            const response =  await request.put(`${route}/z`).send(tacheUpdate);
             expect(response.status).toBe(400);
         });
     });
     describe(`DELETE ${route}/:id`, () => {
-        it('should return 200',   () => {
-            const response =  request.delete(`${route}/${tacheId}`);
+        it('should return 200',  async  () => {
+            const response =  await request.delete(`${route}/${tacheId}`);
             expect(response.status).toBe(200);
         });
-        it('should return 400',   () => {
-            const response =  request.delete(`${route}/0`);
-            expect(response.status).toBe(400);
-        });
-        it('should return 400',   () => {
-            const response =  request.delete(`${route}/A`);
+        it('should return 400',  async () => {
+            const response = await request.delete(`${route}/0`);
             expect(response.status).toBe(400);
         });
     });

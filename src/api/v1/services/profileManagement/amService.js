@@ -105,6 +105,7 @@ const createAM = async ({ nom, prenom, email, password, numTel, idClient }) => {
         });
         return AM;
     } catch (error) {
+        console.log(error)
         return null;
     }
 }

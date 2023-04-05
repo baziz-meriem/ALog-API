@@ -3,9 +3,13 @@
 
   - You are about to drop the column `dateDebut` on the `Tache` table. All the data in the column will be lost.
   - You are about to drop the column `dateTraitement` on the `Tache` table. All the data in the column will be lost.
+  - Added the required column `idClient` to the `SADM` table without a default value. This is not possible if the table is not empty.
   - Added the required column `Soustype` to the `Tache` table without a default value. This is not possible if the table is not empty.
 
 */
+-- AlterTable
+ALTER TABLE "SADM" ADD COLUMN     "idClient" INTEGER NOT NULL;
+
 -- AlterTable
 ALTER TABLE "Tache" DROP COLUMN "dateDebut",
 DROP COLUMN "dateTraitement",

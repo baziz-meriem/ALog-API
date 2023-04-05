@@ -45,7 +45,6 @@ const getOneHandler = async (req, res) => {
 
 const createHandler = async (req, res) => {
     const { idDistributeur, idAM, type, Soustype, description, etat, dateAffectation, dateDebutTraitement, dateFinTraitement, chargement } = req.body;
-    console.log("entre",  { idDistributeur, idAM, type, Soustype, description, etat, dateAffectation, dateDebutTraitement, dateFinTraitement, chargement });
     const valideTache = validateTache( { idDistributeur, idAM, type, Soustype, description, etat, dateAffectation, dateDebutTraitement, dateFinTraitement, chargement } );
     if (!valideTache) {
         return res.status(400).json({ status: 'Bad Request', message: "provided Tache is not valid" });
@@ -72,7 +71,7 @@ const updateHandler = async (req, res) => {
     if (!valideTache) {
         return res.status(400).json({ status: 'Bad Request', message: "provided Tache is not valid" });
     }
-
+    
     const updatedTache = await updateTache(valideId, valideTache);
     if (!updatedTache) {
         return res.status(400).json({ status: 'Bad Request', message: "Error while updating Tache, provided Tache is not valid" });
