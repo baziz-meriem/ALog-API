@@ -70,7 +70,7 @@ route.get('/:id', getOneHandler);
  *       400:
  *         description: provided id is not valid
  */
-//route.get('/:id/pannes', getPannesHandler)
+route.get('/:id/pannes', getPannesHandler)
 /**
  * @swagger
  * /api/v1/resourceManagement/distributeur/:
