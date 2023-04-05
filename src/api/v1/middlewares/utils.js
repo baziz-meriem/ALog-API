@@ -32,7 +32,7 @@ const getJWTToken =(user)=>{
 }
 
 // Create Token and saving in cookie
-const sendToken = (user, statusCode, res) => {
+const sendToken = (user,role, statusCode, res) => {
     const token = getJWTToken(user);
   
     // options for cookie
@@ -47,6 +47,7 @@ const sendToken = (user, statusCode, res) => {
       success: true,
       user,
       token,
+      role
     });
   };
 //create a code

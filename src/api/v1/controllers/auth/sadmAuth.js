@@ -29,7 +29,7 @@ const login = async (req, res) => {
         return res.status(401).json({ status: 'Not Found', message: 'SADM not found, Invalid Password' });
     }
     //send auth token
-    sendToken(sadm, 200, res);
+    sendToken(sadm,"SADM", 200, res);
 
    // return res.status(200).json({ status: 'success', data: ac });
 }
@@ -104,7 +104,7 @@ const resetPassword = async (req, res) => {
   
     const sadmUpdated = await resetSadmPassword(sadm.id, sadm);
   
-    sendToken(sadmUpdated, 200, res);
+    sendToken(sadmUpdated,"SADM", 200, res);
   }
 
 // Logout Ac
