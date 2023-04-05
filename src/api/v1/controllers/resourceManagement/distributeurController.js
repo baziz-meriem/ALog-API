@@ -66,7 +66,7 @@ const {
   
   const putHandler = async (req, res) => {
       const { id } = req.params;
-      const validId= validateId(id);
+      const valideId= validateId(id);
   
       if (!valideId) {
           return res.status(400).json({ status: 'Bad Request', message: "provided id is not valid" });
@@ -78,7 +78,7 @@ const {
           return res.status(400).json({ status: 'Bad Request', message: "provided distributeur is not valid" });
       }
   
-      const updatedDistributeur = await updateDistributeur(validId, valideDistributeur);
+      const updatedDistributeur = await updateDistributeur(valideId, valideDistributeur);
       if (!updatedDistributeur) {
           return res.status(400).json({ status: 'Bad Request', message: "Error while updating the distributeur, provided distributeur is not valid" });
       }
