@@ -2,7 +2,7 @@ const route = require('express').Router();
 const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } = require('../../controllers/resourceManagement/regionController');
 /**
  * @swagger
- * /api/v1/resourceManagement/region:
+ * /api/v1/resourceManagement/region/:
  *    get:
  *      tags:
  *       - Region

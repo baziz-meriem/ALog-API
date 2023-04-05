@@ -4,18 +4,18 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
 
 /**
  * @swagger
- * /api/v1/profileManagement/am:
+ * /api/v1/profileManagement/am/:
  *    get:
  *      tags:
  *       - am
- *      summary: get all ams'
+ *      summary: get all ams
  *      responses:
  *        200:
  *          description: sucess
  *          content:
  *            application/json:
  *              schema:
- *                $ref: '#/components/schemas/am'
+ *                $ref: '#/components/schemas/AM'
  *        500:
  *          description: Internal Server Error
  * 
@@ -27,7 +27,7 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
   *    get:
   *      tags:
   *       - am
-  *      summary: get single am by id'
+  *      summary: get single am by id
   *      parameters:
   *       - in: path
   *         name: id
@@ -40,7 +40,7 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
   *          content:
   *            application/json:
   *              schema:
-  *                $ref: '#/components/schemas/am'
+  *                $ref: '#/components/schemas/AM'
   *        404:
   *          description: am not found
   *        400:
@@ -53,13 +53,13 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
   *    post:
   *      tags:
   *       - am
-  *      summary: add new am'
+  *      summary: add new am
   *      requestBody:
   *          required: true
   *          content:
   *              application/json:
   *                  schema:
-  *                      $ref: '#/components/schemas/am'
+  *                      $ref: '#/components/schemas/AM'
   *      responses:
   *        201:
   *          description: OK
@@ -77,7 +77,7 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
   *    put:
   *      tags:
   *       - am
-  *      summary: update am with id'
+  *      summary: update am with id
   *      parameters:
   *        - in: path
   *          name: id
@@ -89,14 +89,14 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
   *          content:
   *              application/json:
   *                  schema:
-  *                      $ref: '#/components/schemas/am'
+  *                      $ref: '#/components/schemas/AM'
   *      responses:
   *        200:
   *          description: sucess
   *          content:
   *            application/json:
   *              schema:
-  *                $ref: '#/components/schemas/am'
+  *                $ref: '#/components/schemas/AM'
   *        400:
   *          description: provided id is not valid
   */
@@ -107,7 +107,7 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
   *    delete:
   *      tags:
   *       - am
-  *      summary: delete am with id'
+  *      summary: delete am with id
   *      parameters:
   *        - in: path
   *          name: id
@@ -120,7 +120,7 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
   *          content:
   *            application/json:
   *              schema:
-  *                $ref: '#/components/schemas/am'
+  *                $ref: '#/components/schemas/AM'
   *        400:
   *          description: provided id is not valid
   */
