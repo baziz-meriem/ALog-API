@@ -3,7 +3,7 @@ const {
     getAllDistributeurTaches, 
     getTacheById, createTache, 
     updateTache, 
-    deleteTache } = require('../../services/Tache/tacheService');
+    deleteTache } = require('../../services/tache/tacheService');
 
 const { validateId } = require('../../validators/inputValidation');
 const { validateTache }  = require('../../validators/tacheValidation');
