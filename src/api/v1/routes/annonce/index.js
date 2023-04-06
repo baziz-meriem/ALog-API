@@ -7,7 +7,7 @@ const annonceRoute= require('./annonceRoute')
  * @swagger
  * components:
  *  schemas:
- *    ANNOUNCEUR:
+ *    ANNONCEUR:
  *      type: object
  *      properties:
  *        id:
@@ -25,7 +25,7 @@ const annonceRoute= require('./annonceRoute')
  * @swagger
  * components:
  *  schemas:
- *    ANNOUNCEUR_POST:
+ *    ANNONCEUR_POST:
  *      type: object
  *      properties:
  *        nom:
@@ -37,6 +37,35 @@ const annonceRoute= require('./annonceRoute')
  *        
  */
 route.use('/annonceur', annonceurRoute);
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    Annonce:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: integer
+ *          description: Annonce's id
+ *        video:
+ *          type: string
+ *          description: Annonce's video
+ *        periodeAffichage:
+ *          type: string
+ *          description: periode d'affichage de l'annonce
+ *        prixAnnonce:
+ *          type: float
+ *          description: the price of the advertisment
+ *        idRegion:
+ *          type: integer
+ *          description: id de la region     
+ *        idBoisson:
+ *          type: integer
+ *          description: id de la boisson
+ *        idAnnonceur:
+ *          type: integer
+ *          description: id de l'annonceur
+ */
 route.use('/annonce', annonceRoute);
 
 
