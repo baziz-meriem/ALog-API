@@ -1,7 +1,7 @@
-const { sendToken, comparePassword, sendEmail, getResetPasswordCode } = require('../../middlewares/utils');
-const {  resetSadmPassword, getSadmByEmail, updateSadmResetCode } = require('../../services/auth/sadmService');
-
+const { sendToken, comparePassword, sendEmail, getResetPasswordCode, getResetPasswordToken } = require('../../middlewares/utils');
+const {  resetSadmPassword, getSadmByEmail, updateSadmResetCode, getSadmByResetToken } = require('../../services/auth/sadmService');
 const {  validateEmail, validatePassword } = require('../../validators/inputValidation');
+const crypto = require("crypto");
 
 const login = async (req, res) => {
     // retrieve the sadm from the request
@@ -54,12 +54,15 @@ const forgotPassword = async (req, res) => {
 
   
     // Get ResetPassword code
-    let {resetCode , user:sadmUpdated } = getResetPasswordCode(sadm);
+    let {resetCode , user:sadmUpdated } = getResetPasswordToken(sadm);
   //update the resetPassword code and expirePassword code 
   sadmUpdated = await updateSadmResetCode(req.body.email, sadmUpdated);
 
-  
-    const message = `Your password reset code is :- \n\n ${resetCode} \n\nIf you have not requested this email then, please ignore it.`;
+  const resetPasswordUrl = `${req.protocol}://${req.get(
+    "host"
+  )}/api/v1/auth/ac/resetPassword/${resetCode}`;
+
+  const message = `Your password reset code is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
   
     try {
       await sendEmail({
@@ -84,14 +87,19 @@ const forgotPassword = async (req, res) => {
   };
 
 const resetPassword = async (req, res) => {
-    // getting reset code
-    const resetPasswordCode = req.body.resetPasswordCode;
-  
-      const sadm = await getSadmByEmail(req.body.email);
-  
-      if (!sadm) {
-          return res.status(400).json({ status: 'Bad request', message: "Email not valid" });
-      }
+     // getting reset code
+     const resetPasswordCode = crypto
+     .createHash("sha256")
+     .update(req.params.token)
+     .digest("hex");
+   
+     const sadm = await getSadmByResetToken(resetPasswordCode);
+ 
+   
+     if (!sadm) {
+         return res.status(400).json({ status: 'Bad request', message: "Reset token invalid or has been expired" });
+     }
+
       if (sadm.resetPasswordCode!==resetPasswordCode) {
         return res.status(400).json({ status: 'Bad request', message: "Reset Password code is invalid or has been expired" });
     }

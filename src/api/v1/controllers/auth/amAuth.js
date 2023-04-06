@@ -83,9 +83,9 @@ const forgotPassword = async (req, res) => {
     }
   };
 
-const resetPassword = async (req, res) => {
+const verifyCode = async (req, res) => {
     // getting reset code
-    const resetPasswordCode = req.body.resetPasswordCode;
+    const {resetPasswordCode} = req.query;
   
     const am = await getAmByEmail(req.body.email);
   
@@ -96,20 +96,25 @@ const resetPassword = async (req, res) => {
     if (am.resetPasswordCode!==resetPasswordCode) {
       return res.status(400).json({ status: 'Bad request', message: "Reset Password code is invalid or has been expired" });
   }
-  
-    if (req.body.password !== req.body.confirmPassword) {
-        return res.status(400).json({ status: 'Bad Request', message: "Password does not password" });
-    }
-    am.password = req.body.password;
-    am.resetPasswordCode = "";
-    am.resetPasswordExpire = undefined;
-  
-    const amUpdated = await resetAmPassword(am.id, am);
-  
-    sendToken(amUpdated,"AM", 200, res);
+  return res.status(200).json({ success: true});
   }
 
-// Logout Ac
+  const resetPassword = async(req,res)=>{
+    if (req.body.password !== req.body.confirmPassword) {
+      return res.status(400).json({ status: 'Bad Request', message: "Password does not password" });
+  }
+  am.password = req.body.password;
+  am.resetPasswordCode = "";
+  am.resetPasswordExpire = undefined;
+  
+  const amUpdated = await resetAmPassword(am.id, am);
+    if(amUpdated)
+  {return res.status(200).json({ success: true});}
+  }
+
+
+
+// Logout Am
 const logout = async (req, res, next) => {
     res.cookie("token", null, {
       expires: new Date(Date.now()),
@@ -126,6 +131,7 @@ module.exports = {
     login,
     forgotPassword,
     resetPassword,
-    logout
+    logout,
+    verifyCode
 
 }

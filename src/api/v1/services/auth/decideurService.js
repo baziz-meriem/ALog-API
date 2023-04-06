@@ -57,6 +57,35 @@ const getDecideurByEmail = async (email) => {
         return null;
     }
 }
+const getDecideurByResetToken = async (token) => {
+    /**
+     * @description get the decideur with token from the database and return it as an object or null if there is an error
+     * @param {string} token
+     * @returns {Promise<null| import('@prisma/client').Decideur>} decideur
+    */
+    try {
+        const decideur = await prisma.Decideur.findFirst({
+            where: {
+                resetPasswordCode: token,
+                resetPasswordExpire: { gt: new Date() },
+            },
+            select: {
+                id: true,
+                nom: true,
+                prenom: true,
+                email: true,
+                numTel: true,
+                idClient: true,
+                mot_de_passe: true,
+                resetPasswordCode: true,
+                resetPasswordExpire: true,
+            }
+        });
+        return decideur;
+    } catch (error) {
+        return null;
+    }
+}
 
 const resetDecideurPassword = async (id, decideur) => {
     /**
@@ -130,4 +159,4 @@ const updateDecideurResetCode = async (email, decideur) => {
     }
 }
 
-module.exports = {  getDecideurById,getDecideurByEmail ,resetDecideurPassword,  updateDecideurResetCode  }
+module.exports = {  getDecideurById,getDecideurByEmail ,resetDecideurPassword,  updateDecideurResetCode ,getDecideurByResetToken  }

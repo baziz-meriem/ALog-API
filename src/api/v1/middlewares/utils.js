@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const nodeMailer = require("nodemailer");
 const bcrypt = require('bcrypt');
+const crypto = require("crypto");
 
 const sendEmail = async (options) => {
   const transporter = nodeMailer.createTransport({
@@ -61,6 +62,21 @@ const getResetPasswordCode =   (user)=> {
 
   return {resetCode:code , user:user};
 };
+//reset password token
+const getResetPasswordToken =  (user)=> {
+  // Generating Token
+  const resetToken = crypto.randomBytes(20).toString("hex");
+
+  // Hashing and adding resetPasswordToken to userSchema
+  user.resetPasswordCode = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  user.resetPasswordExpire = new Date(Date.now() + 24 * 60 * 60 * 1000);
+  return {resetCode:resetToken , user:user};
+
+};
 
   const comparePassword = async function (addedPassword , userPassword) {
     try {
@@ -74,4 +90,4 @@ const getResetPasswordCode =   (user)=> {
   };
   
   
-  module.exports = {sendToken , getJWTToken , getResetPasswordCode , sendEmail , comparePassword }
+  module.exports = {sendToken , getJWTToken , getResetPasswordCode , sendEmail , comparePassword,getResetPasswordToken }
