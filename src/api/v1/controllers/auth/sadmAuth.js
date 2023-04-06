@@ -60,7 +60,7 @@ const forgotPassword = async (req, res) => {
 
   const resetPasswordUrl = `${req.protocol}://${req.get(
     "host"
-  )}/api/v1/auth/ac/resetPassword/${resetCode}`;
+  )}/api/v1/auth/sadm/resetPassword/${resetCode}`;
 
   const message = `Your password reset code is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
   

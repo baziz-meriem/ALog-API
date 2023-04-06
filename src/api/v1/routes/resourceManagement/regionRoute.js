@@ -2,18 +2,18 @@ const route = require('express').Router();
 const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } = require('../../controllers/resourceManagement/regionController');
 /**
  * @swagger
- * /api/v1/resourceManagement/region:
+ * /api/v1/resourceManagement/region/:
  *    get:
  *      tags:
  *       - Region
- *      summary: get all Regions'
+ *      summary: get all Regions
  *      responses:
  *        200:
  *          description: sucess
  *          content:
  *            application/json:
  *              schema:
- *                $ref: '#/components/schemas/Region'
+ *                $ref: '#/components/schemas/region'
  *        500:
  *          description: Internal Server Error
  * 
@@ -25,7 +25,7 @@ route.get('/', getAllHandler);
  *    get:
  *      tags:
  *       - Region
- *      summary: get single Region by id'
+ *      summary: get single Region by id
  *      parameters:
  *       - in: path
  *         name: id
@@ -38,7 +38,7 @@ route.get('/', getAllHandler);
  *          content:
  *            application/json:
  *              schema:
- *                $ref: '#/components/schemas/Region'
+ *                $ref: '#/components/schemas/region'
  *        404:
  *          description: Region not found
  *        400:
@@ -51,20 +51,20 @@ route.get('/:id', getOneHandler);
  *    post:
  *      tags:
  *       - Region
- *      summary: add new Region'
+ *      summary: add new Region
  *      requestBody:
  *          required: true
  *          content:
  *              application/json:
  *                  schema:
- *                      $ref: '#/components/schemas/Region'
+ *                      $ref: '#/components/schemas/region'
  *      responses:
  *        201:
  *          description: OK
  *          content:
  *            application/json:
  *              schema:
- *                $ref: '#/components/schemas/Region'
+ *                $ref: '#/components/schemas/region'
  *        400:
  *          description: provided id is not valid
  */
@@ -75,7 +75,7 @@ route.post('/', postHandler);
  *    put:
  *      tags:
  *       - Region
- *      summary: update Region with id'
+ *      summary: update Region with id
  *      parameters:
  *        - in: path
  *          name: id
@@ -87,14 +87,14 @@ route.post('/', postHandler);
  *          content:
  *              application/json:
  *                  schema:
- *                      $ref: '#/components/schemas/Region'
+ *                      $ref: '#/components/schemas/region'
  *      responses:
  *        200:
  *          description: sucess
  *          content:
  *            application/json:
  *              schema:
- *                $ref: '#/components/schemas/Region'
+ *                $ref: '#/components/schemas/region'
  *        400:
  *          description: provided id is not valid
  */
@@ -105,7 +105,7 @@ route.put('/:id', putHandler);
  *    delete:
  *      tags:
  *       - Region
- *      summary: delete Region with id'
+ *      summary: delete Region with id
  *      parameters:
  *        - in: path
  *          name: id
@@ -118,7 +118,7 @@ route.put('/:id', putHandler);
  *          content:
  *            application/json:
  *              schema:
- *                $ref: '#/components/schemas/Region'
+ *                $ref: '#/components/schemas/region'
  *        400:
  *          description: provided id is not valid
  */

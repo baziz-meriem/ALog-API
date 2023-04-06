@@ -4,6 +4,7 @@ const distributeurRoute = require('./distributeurRoute');
 const regionRoute = require('./regionRoute');
 const supplementRoute = require('./supplementRoute');
 const boissonRoute = require('./boissonRoute');
+const panneRoute= require('./panneRoute')
 
 /**
  * @swagger
@@ -41,7 +42,6 @@ route.use('/distributeur',distributeurRoute)
  * components:
  *  schemas:
  *    region:
- *    supplement:
  *      type: object
  *      properties:
  *        id:
@@ -52,22 +52,6 @@ route.use('/distributeur',distributeurRoute)
  *          description: region's name
  */
 route.use('/region', regionRoute)
-
-/**
- * @swagger
- * components:
- *  schemas:
- *    supplement:
- *      type: object
- *      properties:
- *        id:
- *          type: integer
- *          description: supplement's id
- *        label:
- *          type: string
- *          description: supplement's label
- */
-route.use('/supplement',supplementRoute)
 
 /**
  * @swagger
@@ -103,4 +87,56 @@ route.use('/supplement',supplementRoute)
  *          description: boisson's description
  */
 route.use('/boisson',boissonRoute)
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    PANNE:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: integer
+ *          description: panne's id
+ *        date:
+ *          type: string
+ *          description: panne's creation date
+ *        idDistributeur:
+ *          type: integer
+ *          description: Distributeurs's id that the panne is related to
+ *        idTypeAnomalie:
+ *          type: integer
+ *          description: the id of this panne Type
+ */
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    PANNE_POST:
+ *      type: object
+ *      properties:
+ *        idDistributeur:
+ *          type: integer
+ *          description: Distributeurs's id that the panne is related to
+ *        idTypeAnomalie:
+ *          type: integer
+ *          description: the id of this panne Type
+ */
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    PANNE_PUT:
+ *      type: object
+ *      properties:
+ *        date:
+ *          type: string
+ *          description: panne's creation date
+ *        idDistributeur:
+ *          type: integer
+ *          description: Distributeurs's id that the panne is related to
+ *        idTypeAnomalie:
+ *          type: integer
+ *          description: the id of this panne Type
+ */
+route.use('/panne',panneRoute)
 module.exports = route;

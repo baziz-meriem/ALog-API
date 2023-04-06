@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 [0mGET / [32m200[0m 6.861 ms - 44[0m
 [0mGET /favicon.ico [33m404[0m 1.002 ms - 36[0m
 [0mGET /api/v1/docs [36m301[0m 2.942 ms - 189[0m
@@ -5260,3 +5261,5 @@
 ::1 - - [06/Apr/2023:21:51:30 +0000] "POST /api/v1/profileManagement/sadm HTTP/1.1" 400 62 "-" "PostmanRuntime/7.29.2"
 ::1 - - [06/Apr/2023:21:53:03 +0000] "POST /api/v1/profileManagement/sadm HTTP/1.1" 400 62 "-" "PostmanRuntime/7.29.2"
 ::1 - - [06/Apr/2023:21:53:30 +0000] "POST /api/v1/profileManagement/sadm HTTP/1.1" 400 62 "-" "PostmanRuntime/7.29.2"
+=======
+>>>>>>> 52234675f79842864ea938abc07094e9d3f25133
