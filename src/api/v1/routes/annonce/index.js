@@ -1,5 +1,7 @@
 const route= require('express').Router();
 const annonceurRoute= require('./annonceurRoute')
+const annonceRoute= require('./annonceRoute')
+
 
 /**
  * @swagger
@@ -35,5 +37,7 @@ const annonceurRoute= require('./annonceurRoute')
  *        
  */
 route.use('/annonceur', annonceurRoute);
+route.use('/annonce', annonceRoute);
+
 
 module.exports = route;
