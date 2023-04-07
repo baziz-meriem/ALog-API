@@ -12,6 +12,7 @@ model Client {
   nom                    String
   email                  String                   @unique
   numTel                 String
+  createdAt              DateTime                 @default(now())
   AC                     AC[]
   ADM                    ADM[]
   AM                     AM[]

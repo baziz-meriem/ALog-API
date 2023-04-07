@@ -11,6 +11,7 @@ const reclamation = require('./reclamation');
 const annonce = require('./annonce');
 // tache routes
 const tache = require('./tache');
+const stats = require('./stats')
 
 route.use('/profileManagement', profileManagement);
 
@@ -23,5 +24,8 @@ route.use('/reclamation', reclamation);
 route.use('/annonce', annonce);
 
 route.use('/tache', tache);
+
+route.use('/stats', stats);
+
 
 module.exports = route;
