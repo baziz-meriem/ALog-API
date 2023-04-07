@@ -110,8 +110,8 @@ const createHandler = async (req, res) => { //create a new annonce
         });
     }
     // call the service to create the annonceur
-    const annonceur = await createAnnonce(valideAnnonce);
-    if(!annonceur){
+    const annonce = await createAnnonce(valideAnnonce);
+    if(!annonce){
         return res.status(400).json({
             status: 'Bad Request',
             message: 'Error while creating annonce'
@@ -120,7 +120,7 @@ const createHandler = async (req, res) => { //create a new annonce
     return res.status(201).json({
         status: 'success',
         message: 'Annonce created successfully',
-        data: annonceur
+        data: annonce
     });
 }
 
