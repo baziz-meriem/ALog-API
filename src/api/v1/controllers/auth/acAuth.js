@@ -57,7 +57,7 @@ const forgotPassword = async (req, res) => {
     acUpdated = await updateAcResetCode(req.body.email, acUpdated);
     const resetPasswordUrl = `${req.protocol}://${req.get(
       "host"
-    )}/api/v1/auth/ac/resetPassword/${resetCode}`;
+    )}/resetPassword/${resetCode}`;
   
     const message = `Your password reset code is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
   
