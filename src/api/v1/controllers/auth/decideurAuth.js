@@ -58,7 +58,7 @@ const forgotPassword = async (req, res) => {
       decideurUpdated = await updateDecideurResetCode(req.body.email, decideurUpdated);
       const resetPasswordUrl = `${req.protocol}://${req.get(
         "host"
-      )}/api/v1/auth/decideur/resetPassword/${resetCode}`;
+      )}/resetPassword/${resetCode}`;
     
       const message = `Your password reset code is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
           
