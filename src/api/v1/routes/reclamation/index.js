@@ -1,5 +1,6 @@
 const route = require('express').Router();
 const replyRoute = require('./reponseRoute');
+const reclamationRoute = require('./reclamationRoute');
 
 
 /**
@@ -39,5 +40,43 @@ const replyRoute = require('./reponseRoute');
  *        
  */
 route.use('/reponse', replyRoute);
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    RECLAMATION:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: integer
+ *          description: Reclamation's id
+ *        description:
+ *          type: string
+ *          description: Reply's description
+ *        idPayement:
+ *          type: integer
+ *          description: id of the payement transaction
+ *        date:
+ *          type: string
+ *          description: Reclamation's date
+ *        
+ */
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    RECLAMATION_POST:
+ *      type: object
+ *      properties:
+ *        description:
+ *          type: string
+ *          description: Reclamation's description
+ *        idPayment:
+ *          type: integer
+ *          description: payment's id (which appears in the payment invoice)
+ *        
+ */
+route.use('/reclamation', reclamationRoute);
 
 module.exports = route;
