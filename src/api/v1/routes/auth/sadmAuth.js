@@ -72,7 +72,7 @@ route.post('/forgotPassword', forgotPassword);
  *        400:
  *          description: token corresponding to email invalid
  */
-route.post('/resetPassword', resetPassword);
+route.put('/resetPassword', resetPassword);
 
 /**
  * @swagger

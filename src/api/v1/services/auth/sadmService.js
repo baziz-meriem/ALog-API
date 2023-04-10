@@ -44,7 +44,7 @@ const getSadmByEmail = async (email) => {
                 prenom: true,
                 email: true,
                 numTel: true,
-                mot_de_passe: false,
+                mot_de_passe: true,
                 resetPasswordCode: true,
                 resetPasswordExpire: true,
             }
@@ -66,13 +66,13 @@ const resetSadmPassword = async (id, sadm) => {
      * @throws {Error} if the id does not exist
      */
     try {
-        const hashPassword = await bcrypt.hash(password, 10);
+        const hashPassword = await bcrypt.hash(sadm.password, 10);
         const updatedSadm = await prisma.SADM.update({
             where: {
                 id: id
             },
             data: {
-                password: hashPassword,
+                mot_de_passe: hashPassword,
                 resetPasswordCode: sadm.resetPasswordCode,
                 resetPasswordExpire: sadm.resetPasswordExpire,              
             },

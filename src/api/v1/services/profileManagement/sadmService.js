@@ -173,6 +173,6 @@ const deleteSADM = async(id) => {
     } catch (error) {
         return null;
     }
-}
+} 
 
 module.exports = { getAllSADMs, getSADMById, createSADM, updateSADM, deleteSADM }

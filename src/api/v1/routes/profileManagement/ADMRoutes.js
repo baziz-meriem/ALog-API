@@ -4,18 +4,18 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
 
 /**
  * @swagger
- * /api/v1/profileManagement/adm:
+ * /api/v1/profileManagement/adm/:
  *    get:
  *      tags:
  *       - adm
- *      summary: get all adms'
+ *      summary: get all adms
  *      responses:
  *        200:
  *          description: sucess
  *          content:
  *            application/json:
  *              schema:
- *                $ref: '#/components/schemas/adm'
+ *                $ref: '#/components/schemas/ADM'
  *        500:
  *          description: Internal Server Error
  * 
@@ -27,7 +27,7 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
   *    get:
   *      tags:
   *       - adm
-  *      summary: get single adm by id'
+  *      summary: get single adm by id
   *      parameters:
   *       - in: path
   *         name: id
@@ -40,7 +40,7 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
   *          content:
   *            application/json:
   *              schema:
-  *                $ref: '#/components/schemas/adm'
+  *                $ref: '#/components/schemas/ADM'
   *        404:
   *          description: adm not found
   *        400:
@@ -53,20 +53,20 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
   *    post:
   *      tags:
   *       - adm
-  *      summary: add new adm'
+  *      summary: add new adm
   *      requestBody:
   *          required: true
   *          content:
   *              application/json:
   *                  schema:
-  *                      $ref: '#/components/schemas/adm'
+  *                      $ref: '#/components/schemas/ADM'
   *      responses:
   *        201:
   *          description: OK
   *          content:
   *            application/json:
   *              schema:
-  *                $ref: '#/components/schemas/adm'
+  *                $ref: '#/components/schemas/ADM'
   *        400:
   *          description: provided id is not valid
   */
@@ -77,7 +77,7 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
   *    put:
   *      tags:
   *       - adm
-  *      summary: update adm with id'
+  *      summary: update adm with id
   *      parameters:
   *        - in: path
   *          name: id
@@ -89,14 +89,14 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
   *          content:
   *              application/json:
   *                  schema:
-  *                      $ref: '#/components/schemas/adm'
+  *                      $ref: '#/components/schemas/ADM'
   *      responses:
   *        200:
   *          description: sucess
   *          content:
   *            application/json:
   *              schema:
-  *                $ref: '#/components/schemas/adm'
+  *                $ref: '#/components/schemas/ADM'
   *        400:
   *          description: provided id is not valid
   */
@@ -107,7 +107,7 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
   *    delete:
   *      tags:
   *       - adm
-  *      summary: delete adm with id'
+  *      summary: delete adm with id
   *      parameters:
   *        - in: path
   *          name: id
@@ -120,7 +120,7 @@ const { getAllHandler, getOneHandler, postHandler, putHandler, deleteHandler } =
   *          content:
   *            application/json:
   *              schema:
-  *                $ref: '#/components/schemas/adm'
+  *                $ref: '#/components/schemas/ADM'
   *        400:
   *          description: provided id is not valid
   */

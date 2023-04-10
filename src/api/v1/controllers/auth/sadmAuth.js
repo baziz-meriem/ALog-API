@@ -29,7 +29,7 @@ const login = async (req, res) => {
         return res.status(401).json({ status: 'Not Found', message: 'SADM not found, Invalid Password' });
     }
     //send auth token
-    sendToken(sadm, 200, res);
+    sendToken(sadm,"SADM", 200, res);
 
    // return res.status(200).json({ status: 'success', data: ac });
 }
@@ -39,7 +39,7 @@ const login = async (req, res) => {
 // Forgot Password
 const forgotPassword = async (req, res) => {
     // call the validateEmail function
-    const valideSadm = validateEmail(email)  ;
+    const valideSadm = validateEmail(req.body.email)  ;
     // if there is an error, return a 400 status code
     if (!valideSadm) {
         return res.status(400).json({ status: 'Bad Request', message: "provided ac email is not valid" });
@@ -54,7 +54,7 @@ const forgotPassword = async (req, res) => {
 
   
     // Get ResetPassword code
-    const {resetCode , user:sadmUpdated } = getResetPasswordCode(sadm);
+    let {resetCode , user:sadmUpdated } = getResetPasswordCode(sadm);
   //update the resetPassword code and expirePassword code 
   sadmUpdated = await updateSadmResetCode(req.body.email, sadmUpdated);
 
@@ -73,7 +73,7 @@ const forgotPassword = async (req, res) => {
      });
 
     } catch (error) {
-        sadmUpdated.resetPasswordCode = undefined;
+        sadmUpdated.resetPasswordCode = "";
         sadmUpdated.resetPasswordExpire = undefined;
   
         sadmUpdated = await updateSadmResetCode(req.body.email, admUpdated);
@@ -85,7 +85,7 @@ const forgotPassword = async (req, res) => {
 
 const resetPassword = async (req, res) => {
     // getting reset code
-    const resetPasswordCode = req.body.code;
+    const resetPasswordCode = req.body.resetPasswordCode;
   
       const sadm = await getSadmByEmail(req.body.email);
   
@@ -99,12 +99,12 @@ const resetPassword = async (req, res) => {
         return res.status(400).json({ status: 'Bad Request', message: "Password does not password" });
     }
     sadm.password = req.body.password;
-    sadm.resetPasswordCode = undefined;
+    sadm.resetPasswordCode = "";
     sadm.resetPasswordExpire = undefined;
   
     const sadmUpdated = await resetSadmPassword(sadm.id, sadm);
   
-    sendToken(sadmUpdated, 200, res);
+    sendToken(sadmUpdated,"SADM", 200, res);
   }
 
 // Logout Ac

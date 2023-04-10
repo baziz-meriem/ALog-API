@@ -32,7 +32,7 @@ const getAmById = async (id) => {
 const getAmByEmail = async (email) => {
     /**
      * @description get the AM with email from the database and return it as an object or null if there is an error
-     * @param {number} id
+     * @param {string} email
      * @returns {Promise<null| import('@prisma/client').AM>} am
     */
     try {
@@ -47,7 +47,7 @@ const getAmByEmail = async (email) => {
                 email: true,
                 numTel: true,
                 idClient: true,
-                mot_de_passe: false,
+                mot_de_passe: true,
                 resetPasswordCode: true,
                 resetPasswordExpire: true,
             }
@@ -102,13 +102,13 @@ const resetAmPassword = async (id, am) => {
      * @throws {Error} if the id does not exist
      */
     try {
-        const hashPassword = await bcrypt.hash(password, 10);
+        const hashPassword = await bcrypt.hash(am.password, 10);
         const updatedAm = await prisma.AM.update({
             where: {
                 id: id
             },
             data: {
-                password: hashPassword,
+                mot_de_passe: hashPassword,
                 resetPasswordCode: am.resetPasswordCode,
                 resetPasswordExpire: am.resetPasswordExpire,              
             },

@@ -119,6 +119,7 @@ const createDecideur = async ({ nom, prenom, email, password, numTel, idClient }
           }
         return decideur;
     } catch (error) {
+        console.log(error)
         return null;
     }
 }

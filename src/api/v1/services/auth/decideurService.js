@@ -47,7 +47,7 @@ const getDecideurByEmail = async (email) => {
                 email: true,
                 numTel: true,
                 idClient: true,
-                mot_de_passe: false,
+                mot_de_passe: true,
                 resetPasswordCode: true,
                 resetPasswordExpire: true,
             }
@@ -67,13 +67,13 @@ const resetDecideurPassword = async (id, decideur) => {
      * @throws {Error} if the id does not exist
      */
     try {
-        const hashPassword = await bcrypt.hash(password, 10);
+        const hashPassword = await bcrypt.hash(decideur.password, 10);
         const updatedDecideur = await prisma.Decideur.update({
             where: {
                 id: id
             },
             data: {
-                password: hashPassword,
+                mot_de_passe: hashPassword,
                 resetPasswordCode: decideur.resetPasswordCode,
                 resetPasswordExpire: decideur.resetPasswordExpire,              
             },
