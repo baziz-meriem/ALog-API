@@ -155,7 +155,6 @@ const deleteboisson = async (distributeurId,boissonId) => {
 }
 
 const deleteAllboisson = async (id) => {
-
     try {
         const deletedboisson =await prisma.Boisson.delete({
             where: {
@@ -189,8 +188,10 @@ const updateboisson = async (distributeurId,boissonId,label,description,prix,dis
 
         const updatedBoissonDistributeur = await prisma.BoissonDistributeur.update({
           where: {
+            idBoisson_idDistributeur: {
               idBoisson: parseInt(boissonId),
               idDistributeur: parseInt(distributeurId),
+            },
           },
           data: {
             prix: prix,
