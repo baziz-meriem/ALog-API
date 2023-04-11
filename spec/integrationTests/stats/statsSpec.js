@@ -8,7 +8,7 @@ const request = superTest(app);
 describe('Stats routes tests', () => {
 
 describe('GET /api/v1/stats/distributeurs', () => {
-    fit('should return 200', async () => {
+    it('should return 200', async () => {
         const response = await request.get('/api/v1/stats/distributeurs');
         expect(response.status).toBe(200);
     });
