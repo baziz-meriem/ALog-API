@@ -103,8 +103,6 @@ route.get('/:distributeurId/:boissonId', getOneHandler);
  *           schema:
  *             type: object
  *             properties:
- *               distributeurId:
- *                 type: integer
  *               prix:
  *                 type: number
  *               label:
@@ -130,7 +128,7 @@ route.post('/:distributeurId', postHandler);
  *   put:
  *     tags:
  *       - boisson
- *     summary: Update a boisson's information.
+ *     summary: Update a boisson's information(return 0 if id not found, 1 sinon).
  *     parameters:
  *       - in: path
  *         name: distributeurId

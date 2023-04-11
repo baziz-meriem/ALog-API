@@ -1,5 +1,5 @@
 const route = require('express').Router();
-const { login, resetPassword, forgotPassword, logout } = require('../../controllers/auth/amAuth');
+const { login, resetPassword, forgotPassword, logout, verifyCode } = require('../../controllers/auth/amAuth');
 
 /**
  * @swagger
@@ -51,8 +51,32 @@ route.post('/login', login);
 route.post('/forgotPassword', forgotPassword);
 /**
  * @swagger
+ * /api/v1/auth/am/verifyResetCode:
+ *    get:
+ *      tags:
+ *       - AM
+ *      summary: AM verify code'
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/AM'
+ *      responses:
+ *        201:
+ *          description: OK
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/AM'
+ *        400:
+ *          description: 
+ */
+route.get('/verifyResetCode', verifyCode);
+/**
+ * @swagger
  * /api/v1/auth/am/resetPassword:
- *    post:
+ *    put:
  *      tags:
  *       - AM
  *      summary: AM reset password'

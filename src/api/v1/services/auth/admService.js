@@ -96,6 +96,35 @@ const resetAdmPassword = async (id, adm) => {
     }
 }
 
+const getAdmByResetToken = async (token) => {
+    /**
+     * @description get the ADM with token from the database and return it as an object or null if there is an error
+     * @param {string} token
+     * @returns {Promise<null| import('@prisma/client').ADM>} adm
+    */
+    try {
+        const adm = await prisma.ADM.findFirst({
+            where: {
+                resetPasswordCode: token,
+                resetPasswordExpire: { gt: new Date() },
+            },
+            select: {
+                id: true,
+                nom: true,
+                prenom: true,
+                email: true,
+                numTel: true,
+                idClient: true,
+                mot_de_passe: true,
+                resetPasswordCode: true,
+                resetPasswordExpire: true,
+            }
+        });
+        return adm;
+    } catch (error) {
+        return null;
+    }
+}
 const updateAdmResetCode = async (email, adm) => {
     /**
      * @description update the adm with email in the database and return it as an object or null if there is an error
@@ -131,4 +160,4 @@ const updateAdmResetCode = async (email, adm) => {
     }
 }
 
-module.exports = {  getAdmById,getAdmByEmail ,resetAdmPassword,  updateAdmResetCode  }
+module.exports = {  getAdmById,getAdmByEmail ,resetAdmPassword,  updateAdmResetCode ,getAdmByResetToken  }
