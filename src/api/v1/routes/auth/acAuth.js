@@ -49,10 +49,11 @@ route.post('/login', login);
  *          description: 
  */
 route.post('/forgotPassword', forgotPassword);
+
 /**
  * @swagger
  * /api/v1/auth/ac/resetPassword:
- *    post:
+ *    put:
  *      tags:
  *       - AC
  *      summary: AC reset password'
@@ -72,7 +73,7 @@ route.post('/forgotPassword', forgotPassword);
  *        400:
  *          description: 
  */
-route.put('/resetPassword', resetPassword);
+route.put('/resetPassword/:token', resetPassword);
 
 /**
  * @swagger

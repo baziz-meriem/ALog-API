@@ -12,6 +12,8 @@ const annonce = require('./annonce');
 // tache routes
 const tache = require('./tache');
 const stats = require('./stats')
+// client routes
+const specific_get = require('./specific_get');
 
 route.use('/profileManagement', profileManagement);
 
@@ -27,5 +29,6 @@ route.use('/tache', tache);
 
 route.use('/stats', stats);
 
+route.use('', specific_get);
 
 module.exports = route;
