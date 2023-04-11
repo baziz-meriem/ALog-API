@@ -22,7 +22,6 @@ const getAll = async (id) => {
         return boissons; //array of boissons
     } catch (error) {
         console.log(error)
-        
         return null;
     }
 }
@@ -44,7 +43,6 @@ const getAllAvailable = async (id) => {
               prix: true,
             },
           });
-          
         return boissons; //array of boissons
     } catch (error) {
         console.log(error)
@@ -137,8 +135,17 @@ const deleteboisson = async (distributeurId,boissonId) => {
               idDistributeur: parseInt(distributeurId),
             },
           },
-          select: {
-            idBoisson: true
+            select: {
+              idDistributeur: true,
+              idBoisson: true,
+              prix: true,
+              boisson: {
+                  select: {
+                      id: true,
+                      label: true,
+                      description: true,
+                  }
+              }
           }
         });
         return deletedboisson;
@@ -148,7 +155,6 @@ const deleteboisson = async (distributeurId,boissonId) => {
 }
 
 const deleteAllboisson = async (id) => {
- 
     try {
         const deletedboisson =await prisma.Boisson.delete({
             where: {
@@ -168,9 +174,9 @@ const deleteAllboisson = async (id) => {
 
 
 const updateboisson = async (distributeurId,boissonId,label,description,prix,disponible) => {
- 
+
     try {
-        const updatedBoisson = await prisma.Boisson.updateMany({
+        const updatedBoisson = await prisma.Boisson.update({
             where: {
                 id: parseInt(boissonId)
             },
@@ -180,18 +186,30 @@ const updateboisson = async (distributeurId,boissonId,label,description,prix,dis
             }
         });
 
-        const updatedBoissonDistributeur = await prisma.BoissonDistributeur.updateMany({
+        const updatedBoissonDistributeur = await prisma.BoissonDistributeur.update({
           where: {
+            idBoisson_idDistributeur: {
               idBoisson: parseInt(boissonId),
               idDistributeur: parseInt(distributeurId),
+            },
           },
           data: {
             prix: prix,
             disponible: disponible,
           },
+          select: {
+            idDistributeur: true,
+            idBoisson: true,
+            prix: true,
+            boisson: {
+                select: {
+                    id: true,
+                    label: true,
+                    description: true,
+                    }
+                  }
+                }
         });
-
-        
         if (updatedBoisson.count === 0 || updatedBoissonDistributeur.count === 0) return null
         else return 1  ;
     } catch (error) {
