@@ -4,11 +4,7 @@ const distributeurRoute = require('./distributeurRoute');
 const regionRoute = require('./regionRoute');
 const supplementRoute = require('./supplementRoute');
 const boissonRoute = require('./boissonRoute');
-<<<<<<< HEAD
-
-=======
 const panneRoute= require('./panneRoute')
->>>>>>> f0e78edc8af8a65a1685c06481f651e823f8fc68
 
 /**
  * @swagger
