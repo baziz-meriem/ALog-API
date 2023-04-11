@@ -29,7 +29,6 @@ const getClientsByMonth = async (req, res) => {
     });
 
     return JSON.parse(jsonString); //to convert json string to an object
-   // return res.json({ clientsByMonth: clientsByMonthString });
 
   } catch (error) {
     console.error(error);
