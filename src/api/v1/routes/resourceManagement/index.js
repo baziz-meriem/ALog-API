@@ -73,7 +73,7 @@ route.use('/supplement',supplementRoute)
  * @swagger
  * components:
  *  schemas:
- *    Boisson:
+ *    boisson:
  *      type: object
  *      properties:
  *        id:
@@ -85,6 +85,9 @@ route.use('/supplement',supplementRoute)
  *        description:
  *          type: string
  *          description: boisson's description
+ *        prix:
+ *          type: float
+ *          description: boisson's price in this distributor
  */
 route.use('/boisson',boissonRoute)
 /**
