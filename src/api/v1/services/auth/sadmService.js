@@ -55,7 +55,35 @@ const getSadmByEmail = async (email) => {
     }
 }
 
-
+const getSadmByResetToken = async (token) => {
+    /**
+     * @description get the sadm with token from the database and return it as an object or null if there is an error
+     * @param {string} token
+     * @returns {Promise<null| import('@prisma/client').SADM>} sadm
+    */
+    try {
+        const sadm = await prisma.SADM.findFirst({
+            where: {
+                resetPasswordCode: token,
+                resetPasswordExpire: { gt: new Date() },
+            },
+            select: {
+                id: true,
+                nom: true,
+                prenom: true,
+                email: true,
+                numTel: true,
+                idClient: true,
+                mot_de_passe: true,
+                resetPasswordCode: true,
+                resetPasswordExpire: true,
+            }
+        });
+        return sadm;
+    } catch (error) {
+        return null;
+    }
+}
 
 const resetSadmPassword = async (id, sadm) => {
     /**
@@ -127,4 +155,4 @@ const updateSadmResetCode = async (email, sadm) => {
     }
 }
 
-module.exports = {  getSadmById,getSadmByEmail ,resetSadmPassword,  updateSadmResetCode  }
+module.exports = {  getSadmById,getSadmByEmail ,resetSadmPassword,  updateSadmResetCode  ,getSadmByResetToken }

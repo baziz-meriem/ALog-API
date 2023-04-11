@@ -52,7 +52,7 @@ route.post('/forgotPassword', forgotPassword);
 /**
  * @swagger
  * /api/v1/auth/sadm/resetPassword:
- *    post:
+ *    put:
  *      tags:
  *       - SADM
  *      summary: SADM reset password'
@@ -72,7 +72,7 @@ route.post('/forgotPassword', forgotPassword);
  *        400:
  *          description: token corresponding to email invalid
  */
-route.put('/resetPassword', resetPassword);
+route.put('/resetPassword/:token', resetPassword);
 
 /**
  * @swagger
