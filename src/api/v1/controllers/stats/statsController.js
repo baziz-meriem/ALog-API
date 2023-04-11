@@ -26,10 +26,12 @@ const getDistributeursByClientHandler = async (req, res) => {
 const getClientsByMonthHandler = async (req, res) => {
     // call the service to get all annonceurs
     const clients = await getClientsByMonth(req,res);
+    
     if(!clients){
         return res.status(500).json({
             status: 'Internal Server Error',
             message: 'An error occured while trying to get number of clients created in each month'
+       
         });
     }
     return res.status(200).json({
