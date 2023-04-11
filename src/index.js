@@ -7,10 +7,16 @@ const fs = require('fs');
 const path= require('path');
 const swaggerUI = require('swagger-ui-express');
 const swaggerDocs = require('./config/swagger');
+
+
 require('dotenv').config();
 
 
 const app = express();
+
+
+// Configure PayPal REST API SDK
+
 
 // Middlewares
 app.use(morgan('combined',{stream:fs.createWriteStream(path.join(__dirname, 'logger/access.log'), { flags: 'a' })}));
