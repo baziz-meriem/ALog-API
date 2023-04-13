@@ -6,6 +6,9 @@ const getPanneById = async (id) => {
         const panne = await prisma.anomalie.findUnique({
             where: {
                 id
+            },
+            include:{
+                typeAnomalie:true,
             }
         });
         // return the panne
@@ -17,7 +20,11 @@ const getPanneById = async (id) => {
 }
 const getAllPannes = async () => {
     try {
-        const pannes= await prisma.anomalie.findMany();
+        const pannes= await prisma.anomalie.findMany({
+            include:{
+                typeAnomalie:true,
+            }
+        });
         return pannes;
     } catch (error) {
         return null;
@@ -30,6 +37,9 @@ const getPanneByDistributeur = async (idDistributeur) => {
         const pannes = await prisma.anomalie.findMany({
             where: {
                 idDistributeur
+            },
+            include:{
+                typeAnomalie:true,
             }
         });
         // return the panne
@@ -47,6 +57,9 @@ const createPanne = async (idDistributeur, idTypeAnomalie) => {
             data: {
                 idDistributeur,
                 idTypeAnomalie
+            },
+            include:{
+                typeAnomalie:true
             }
         });
         // return the panne
@@ -68,6 +81,9 @@ const updatePanne= async ({id, idDistributeur, idTypeAnomalie,date}) => {
                 idDistributeur,
                 idTypeAnomalie,
                 date
+            },
+            include:{
+                typeAnomalie:true
             }
         });
         // return the panne
@@ -84,6 +100,9 @@ const deletePanne = async (id) => {
         const panne = await prisma.anomalie.delete({
             where: {
                 id
+            },
+            include:{
+                typeAnomalie:true
             }
         });
         // return the panne
