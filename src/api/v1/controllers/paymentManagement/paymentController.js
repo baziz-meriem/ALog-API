@@ -15,7 +15,7 @@ const paymentHandler = async (req, res) => {
         if(!payment){
             return res.status(400).json({
                 status: 'Bad Request',
-                message: 'create payment Error'
+                message: 'payement failed'
             });
         }
         return res.status(200).json({
