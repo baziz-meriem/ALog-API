@@ -1,27 +1,27 @@
 const prisma = require('../../../../config/dbConfig');
 const stripe = require('stripe')('sk_test_51MwCe0AIIjdIkPoTmiwKrNNEG2sREDbvj6InAS9Ti86ddeP2szPz7I40PfLfuQr5MfRwGnLDLTVXWtuZ17tfBrTT00cwTqng3X');
 
-const createPayment = async (req, res) => {
+const createPayment = async (data) => {
   try {
     const paymentMethod = await stripe.paymentMethods.create({
       type: 'card',
       card: {
-        number: req.body.cardNumber,
-        exp_month: req.body.expMonth,
-        exp_year: req.body.expYear,
-        cvc: req.body.cvc,
+        number: data.cardNumber,
+        exp_month: data.expMonth,
+        exp_year: data.expYear,
+        cvc: data.cvc,
       },
       billing_details: {
-        email: req.body.email,
+        email: data.email,
       },
     });
 
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: req.body.amount,
-      currency: req.body.currency,
+      amount: data.amount,
+      currency: data.currency,
       payment_method: paymentMethod.id,
-      description: req.body.description,
-      receipt_email: req.body.email,
+      description: data.description,
+      receipt_email: data.email,
       confirm: false, // set confirm to false to require manual confirmation
     });
 

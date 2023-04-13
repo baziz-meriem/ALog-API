@@ -8,7 +8,6 @@ const path= require('path');
 const swaggerUI = require('swagger-ui-express');
 const swaggerDocs = require('./config/swagger');
 
-
 require('dotenv').config();
 
 
@@ -65,4 +64,4 @@ app.listen(port, () => {
 }
 );
 
-module.exports = app;
+module.exports = {app};
