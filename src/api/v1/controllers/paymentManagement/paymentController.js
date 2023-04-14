@@ -73,7 +73,7 @@ const webhookHandler = async (req, res) => {
   try {
     //console.log('------------------req.rawBody-----------------:', req.rawBody);
 
-    const event = stripe.webhooks.constructEvent(req.rawBody, sig, endpointSecret);
+    const event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
     paymentWebhook(event);
     res.sendStatus(200);
   } catch (err) {

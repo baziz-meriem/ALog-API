@@ -7,8 +7,8 @@ route.post('/pay', paymentHandler);
 route.put('/cancel', cancelPayementHandler);
 
 route.put('/confirm', confirmPayementHandler);
-
-route.post('/webhooks', express.raw({type: 'application/json'}), webhookHandler); //stripe requires raw body
+route.use(express.raw({type:"*/*"}))
+route.post('/webhooks', webhookHandler); //stripe requires raw body
 
 
 //-------------basic CRUD--------//

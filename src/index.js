@@ -19,7 +19,15 @@ const app = express();
 
 // Middlewares
 app.use(morgan('combined',{stream:fs.createWriteStream(path.join(__dirname, 'logger/access.log'), { flags: 'a' })}));
-app.use(bodyParser.json());
+
+// Middleware function to check if the route contains 'webhooks' it neeeds raw data
+const webhookMiddleware = (req, res, next) => {
+  if (req.originalUrl.includes('webhooks')) {
+    console.log('includes webhooks')
+    return express.raw({ type: '*/*' })(req, res, next);
+  }
+  return bodyParser.json()(req, res, next);
+};
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors({
     origin: '*'
@@ -36,7 +44,7 @@ app.get('/api/v1', (req, res) => {
         message: 'Hello World'
     });
 });
-app.use('/api/v1', require('./api/v1/routes'));
+app.use('/api/v1',webhookMiddleware, require('./api/v1/routes'));
 
 app.use((req, res, next) => {
   next(createError.NotFound());
