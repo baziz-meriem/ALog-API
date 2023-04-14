@@ -21,7 +21,7 @@ const createPayment = async (data) => {
       currency: data.currency,
       payment_method: paymentMethod.id,
       description: data.description,
-      receipt_email: data.email,
+      receipt_email: data.email, //the email where the receipt will be sent
       confirm: false, // set confirm to false to require manual confirmation
     });
 
@@ -61,7 +61,7 @@ const cancelPayment = async (paymentIntentId) => {
     }
   } catch (error) {
     console.error(error);
-    return null;
+    return null; //"whsec_769b58bcad36d9892c57272e2ff0f954fcce096f7b77c889ac0dabc38cde4a9d"
   }
 };
 // Function to manually confirm a payment
@@ -75,6 +75,34 @@ const confirmPayment = async (paymentIntentId) => {
   } catch (error) {
     console.error(error);
     return null;
+  }
+};
+
+const paymentWebhook = async (event) => {
+  switch (event.type) {
+    case 'payment_intent.succeeded':
+      // Handle successful payment intent
+      console.log('Payment intent succeeded:', event.data.object.id);
+      break;
+    case 'payment_intent.created':
+      // Handle created payment intent
+      console.log('Payment intent created:', event.data.object.id);
+      break;
+    case 'payment_intent.canceled':
+      // Handle canceled payment intent
+      console.log('Payment intent canceled:', event.data.object.id);
+      break;
+    case 'payment_intent.payment_failed':
+      // Handle failed payment intent
+      console.log('Payment intent failed:', event.data.object.id);
+      break;
+    case 'charge.refunded':
+      // Handle refunded charge
+      console.log('Charge refunded:', event.data.object.id);
+      break;
+    default:
+      // Unexpected event type
+      console.log('Unexpected event type:', event.type);
   }
 };
 
@@ -156,6 +184,7 @@ module.exports = {
   createPayment,
   cancelPayment,
   confirmPayment,
+  paymentWebhook,
   getAllPayments,
   getOnePayment,
   createDBPayment,

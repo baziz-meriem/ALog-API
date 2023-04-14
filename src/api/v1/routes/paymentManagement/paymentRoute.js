@@ -1,5 +1,6 @@
+const express = require('express');
 const route= require('express').Router();
-const { paymentHandler ,cancelPayementHandler,confirmPayementHandler,updateHandler ,deleteHandler,createHandler,getAllHandler,getOneHandler} = require('../../controllers/paymentManagement/paymentController');
+const { paymentHandler ,cancelPayementHandler,confirmPayementHandler,webhookHandler,updateHandler ,deleteHandler,createHandler,getAllHandler,getOneHandler} = require('../../controllers/paymentManagement/paymentController');
 
 route.post('/pay', paymentHandler);
 
@@ -7,9 +8,12 @@ route.put('/cancel', cancelPayementHandler);
 
 route.put('/confirm', confirmPayementHandler);
 
+route.post('/webhooks', express.raw({type: 'application/json'}), webhookHandler); //stripe requires raw body
+
+
 //-------------basic CRUD--------//
 
-route.get('/', getAllHandler);
+route.get('/', getAllHandler); 
 
 route.get('/:id', getOneHandler);
 
