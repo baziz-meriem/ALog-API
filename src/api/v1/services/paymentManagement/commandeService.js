@@ -61,7 +61,7 @@ const deleteCommande = async (id) => {
             }
         });
         return commande;
-    } catch (error) {
+    } catch (error) { 
         return null;
     }
 }
