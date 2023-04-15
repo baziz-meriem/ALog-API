@@ -1,6 +1,31 @@
 const prisma = require('../../../../config/dbConfig')
 const bcrypt = require('bcrypt');
 
+const getSadmById = async (id) => {
+    /**
+     * @description get the sadm with ID from the database and return it as an object or null if there is an error
+     * @param {number} id
+     * @returns {Promise<null| import('@prisma/client').SADM>} sadm
+    */
+    try {
+        const sadm = await prisma.SADM.findUnique({
+            where: {
+                id: id
+            },
+            select: {
+                id: true,
+                nom: true,
+                prenom: true,
+                email: true,
+                numTel: true,
+                mot_de_passe: false
+            }
+        });
+        return sadm;
+    } catch (error) {
+        return null;
+    }
+}
 
 const getSadmByEmail = async (email) => {
     /**
@@ -19,7 +44,39 @@ const getSadmByEmail = async (email) => {
                 prenom: true,
                 email: true,
                 numTel: true,
-                mot_de_passe: false
+                mot_de_passe: true,
+                resetPasswordCode: true,
+                resetPasswordExpire: true,
+            }
+        });
+        return sadm;
+    } catch (error) {
+        return null;
+    }
+}
+
+const getSadmByResetToken = async (token) => {
+    /**
+     * @description get the sadm with token from the database and return it as an object or null if there is an error
+     * @param {string} token
+     * @returns {Promise<null| import('@prisma/client').SADM>} sadm
+    */
+    try {
+        const sadm = await prisma.SADM.findFirst({
+            where: {
+                resetPasswordCode: token,
+                resetPasswordExpire: { gt: new Date() },
+            },
+            select: {
+                id: true,
+                nom: true,
+                prenom: true,
+                email: true,
+                numTel: true,
+                idClient: true,
+                mot_de_passe: true,
+                resetPasswordCode: true,
+                resetPasswordExpire: true,
             }
         });
         return sadm;
@@ -37,16 +94,15 @@ const resetSadmPassword = async (id, sadm) => {
      * @throws {Error} if the id does not exist
      */
     try {
-        const hashPassword = await bcrypt.hash(password, 10);
+        const hashPassword = await bcrypt.hash(sadm.password, 10);
         const updatedSadm = await prisma.SADM.update({
             where: {
                 id: id
             },
             data: {
-                password: hashPassword,
-
-                resetPasswordToken: sadm.resetPasswordToken,
-                resetPasswordExpire: sadm.resetPasswordExpire,
+                mot_de_passe: hashPassword,
+                resetPasswordCode: sadm.resetPasswordCode,
+                resetPasswordExpire: sadm.resetPasswordExpire,              
             },
             select: {
                 id: true,
@@ -65,33 +121,7 @@ const resetSadmPassword = async (id, sadm) => {
     }
 }
 
-const getSadmByResetToken = async (resetPasswordToken) => {
-    /**
-     * @description get the sadm with resetPasswordToken from the database and return it as an object or null if there is an error
-     * @param {string} resetPasswordToken
-     * @returns {Promise<null| import('@prisma/client').SADM>} sadm
-    */
-    try {
-        const sadm = await prisma.SADM.findFirst({
-            where: {
-                resetPasswordToken: resetPasswordToken,
-                resetPasswordExpire: { $gt: Date.now() },
-            },
-            select: {
-                id: true,
-                nom: true,
-                prenom: true,
-                email: true,
-                numTel: true,
-                mot_de_passe: false
-            }
-        });
-        return sadm;
-    } catch (error) {
-        return null;
-    }
-}
-const updateSadmResetToken = async (email, sadm) => {
+const updateSadmResetCode = async (email, sadm) => {
     /**
      * @description update the sadm with email in the database and return it as an object or null if there is an error
      * @param {string} email
@@ -105,8 +135,8 @@ const updateSadmResetToken = async (email, sadm) => {
                 email: email
             },
             data: {
-                resetPasswordToken: sadm.resetPasswordToken,
-                resetPasswordExpire: sadm.resetPasswordExpire,
+                resetPasswordCode: sadm.resetPasswordCode,
+                resetPasswordExpire: sadm.resetPasswordExpire,              
             },
             select: {
                 id: true,
@@ -125,5 +155,4 @@ const updateSadmResetToken = async (email, sadm) => {
     }
 }
 
-
-module.exports = { getSadmByEmail, getSadmByResetToken, resetSadmPassword, updateSadmResetToken }
+module.exports = {  getSadmById,getSadmByEmail ,resetSadmPassword,  updateSadmResetCode  ,getSadmByResetToken }

@@ -27,7 +27,6 @@ const validateAgent = (agent) => {
 }
 
 const validateCostumer = (Costumer) => {
-    console.log(Costumer)
     const { nom, prenom, email, password, numTel } = Costumer;
     const valideNom = validateInput(nom);
     const validePrenom = validateInput(prenom);
@@ -143,6 +142,24 @@ const validateAM = (AM) => {
      };
 }
 
+const validateAnnonceur = (Annonceur) => {
+    /**
+     * @description validate Annonceur and return it or null if it is not valid
+     * @param {object} Annonceur
+     * @returns {object|null}
+     *  */
+    const { nom, idClient } = Annonceur;
+    const valideNom = validateInput(nom);
+    const valideIdClient = validateId(idClient);
+    if (!valideNom || !valideIdClient) {
+        return null;
+    }
+    return {
+        nom: valideNom,
+        idClient: valideIdClient
+    };
+}
+
 const validateDistributeur = (Distributeur) => {
     /**
      * @description validate Distributeur and return it or null if it is not valid
@@ -197,6 +214,7 @@ module.exports = {
     validateSADM,
     validateADM,
     validateAM,
+    validateAnnonceur,
     validateDistributeur,
     validateSupplement
 }

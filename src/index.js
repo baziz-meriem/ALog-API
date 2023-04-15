@@ -10,7 +10,6 @@ const swaggerDocs = require('./config/swagger');
 require('dotenv').config();
 
 
-
 const app = express();
 
 // Middlewares
@@ -22,6 +21,7 @@ app.use(cors({
 }));
 
 app.use('/api/v1/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+
 
 
 // Routes

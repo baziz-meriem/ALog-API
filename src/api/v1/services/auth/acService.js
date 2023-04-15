@@ -1,11 +1,37 @@
 const prisma = require('../../../../config/dbConfig')
 const bcrypt = require('bcrypt');
 
+const getAcById = async (id) => {
+    /**
+     * @description get the AC with ID from the database and return it as an object or null if there is an error
+     * @param {number} id
+     * @returns {Promise<null| import('@prisma/client').AC>} ac
+    */
+    try {
+        const ac = await prisma.AC.findUnique({
+            where: {
+                id: id
+            },
+            select: {
+                id: true,
+                nom: true,
+                prenom: true,
+                email: true,
+                numTel: true,
+                idClient: true,
+                mot_de_passe: false
+            }
+        });
+        return ac;
+    } catch (error) {
+        return null;
+    }
+}
 
 const getAcByEmail = async (email) => {
     /**
      * @description get the AC with email from the database and return it as an object or null if there is an error
-     * @param {number} id
+     * @param {string} email
      * @returns {Promise<null| import('@prisma/client').AC>} ac
     */
     try {
@@ -20,7 +46,9 @@ const getAcByEmail = async (email) => {
                 email: true,
                 numTel: true,
                 idClient: true,
-                mot_de_passe: false
+                mot_de_passe: true,
+                resetPasswordCode: true,
+                resetPasswordExpire: true,
             }
         });
         return ac;
@@ -29,17 +57,17 @@ const getAcByEmail = async (email) => {
     }
 }
 
-const getAcByResetToken = async (resetPasswordToken) => {
+const getAcByResetToken = async (token) => {
     /**
-     * @description get the AC with resetPassword token from the database and return it as an object or null if there is an error
-     * @param {number} id
+     * @description get the AC with token from the database and return it as an object or null if there is an error
+     * @param {string} token
      * @returns {Promise<null| import('@prisma/client').AC>} ac
     */
     try {
         const ac = await prisma.AC.findFirst({
             where: {
-                resetPasswordToken: resetPasswordToken,
-                resetPasswordExpire: { $gt: Date.now() },
+                resetPasswordCode: token,
+                resetPasswordExpire: { gt: new Date() },
             },
             select: {
                 id: true,
@@ -48,7 +76,9 @@ const getAcByResetToken = async (resetPasswordToken) => {
                 email: true,
                 numTel: true,
                 idClient: true,
-                mot_de_passe: false
+                mot_de_passe: true,
+                resetPasswordCode: true,
+                resetPasswordExpire: true,
             }
         });
         return ac;
@@ -57,13 +87,14 @@ const getAcByResetToken = async (resetPasswordToken) => {
     }
 }
 
-const updateAcResetToken = async (email, ac) => {
+
+const updateAcResetCode = async (email, ac) => {
     /**
-     * @description update the AC with reset password Token in the database and return it as an object or null if there is an error
+     * @description update the AC with reset password code in the database and return it as an object or null if there is an error
      * @param {number} id
      * @param {import('@prisma/client').AC} ac
      * @returns {Promise<null| import('@prisma/client').AC>} ac
-     * @throws {Error} if the token does not exist
+     * @throws {Error} if the code does not exist
      */
     try {
         const updatedAc = await prisma.AC.update({
@@ -71,8 +102,8 @@ const updateAcResetToken = async (email, ac) => {
                 email: email
             },
             data: {
-                resetPasswordToken: ac.resetPasswordToken,
-                resetPasswordExpire: ac.resetPasswordExpire,
+                resetPasswordCode: ac.resetPasswordCode,
+                resetPasswordExpire: ac.resetPasswordExpire,              
             },
             select: {
                 id: true,
@@ -81,7 +112,7 @@ const updateAcResetToken = async (email, ac) => {
                 email: true,
                 numTel: true,
                 idClient: true,
-                resetPasswordToken: true,
+                resetPasswordCode: true,
                 resetPasswordExpire: true,
                 mot_de_passe: false
             }
@@ -101,15 +132,15 @@ const resetAcPassword = async (id, ac) => {
      * @throws {Error} if the id does not exist
      */
     try {
-        const hashPassword = await bcrypt.hash(password, 10);
+        const hashPassword = await bcrypt.hash(ac.password, 10);
         const updatedAc = await prisma.AC.update({
             where: {
                 id: id
             },
             data: {
-                password: hashPassword,
-                resetPasswordToken: ac.resetPasswordToken,
-                resetPasswordExpire: ac.resetPasswordExpire,
+                mot_de_passe: hashPassword,
+                resetPasswordCode: ac.resetPasswordCode,
+                resetPasswordExpire: ac.resetPasswordExpire,              
             },
             select: {
                 id: true,
@@ -118,7 +149,7 @@ const resetAcPassword = async (id, ac) => {
                 email: true,
                 numTel: true,
                 idClient: true,
-                resetPasswordToken: false,
+                resetPasswordCode: false,
                 resetPasswordExpire: false,
                 mot_de_passe: false
             }
@@ -129,4 +160,4 @@ const resetAcPassword = async (id, ac) => {
     }
 }
 
-module.exports = { getAcByEmail, getAcByResetToken, updateAcResetToken, resetAcPassword }
+module.exports = { getAcById,getAcByEmail, updateAcResetCode , resetAcPassword , getAcByResetToken }

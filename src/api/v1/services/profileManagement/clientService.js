@@ -77,7 +77,7 @@ const updateClient = async (id, client) => {
                 email: client.email,
                 numTel: client.numTel
             },
-            select: {
+          select: {
                 id: true,
                 nom: true,
                 email: true,

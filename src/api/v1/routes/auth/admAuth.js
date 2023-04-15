@@ -1,5 +1,5 @@
 const route = require('express').Router();
-const { login, resetPassword, forgotPassword, logout } = require('../../controllers/auth/admAuth');
+const { login, resetPassword, forgotPassword, logout, verifyCode } = require('../../controllers/auth/admAuth');
 
 /**
  * @swagger
@@ -49,10 +49,11 @@ route.post('/login', login);
  *          description: 
  */
 route.post('/forgotPassword', forgotPassword);
+
 /**
  * @swagger
- * /api/v1/auth/adm/resetPassword:
- *    post:
+ * /api/v1/auth/adm/resetPassword/:token:
+ *    put:
  *      tags:
  *       - ADM
  *      summary: ADM reset password'
@@ -72,7 +73,7 @@ route.post('/forgotPassword', forgotPassword);
  *        400:
  *          description: 
  */
-route.post('/resetPassword', resetPassword);
+route.put('/resetPassword/:token', resetPassword);
 
 /**
  * @swagger

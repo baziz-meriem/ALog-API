@@ -1,5 +1,6 @@
 const prisma = require('../../../../config/dbConfig')
 const bcrypt = require('bcrypt');
+const { sendEmail } = require('../../middlewares/utils');
 
 
 const getAllAMs = async () => {
@@ -103,8 +104,22 @@ const createAM = async ({ nom, prenom, email, password, numTel, idClient }) => {
                 mot_de_passe: false
             }
         });
+        const message = `
+        Dear ${nom} ${prenom}
+        I am writing to provide you with your account credentials.
+        You ve been registered with email : ${email} and Password : ${password} \n\n .`;
+        try {
+            await sendEmail({
+              email: email,
+              subject: `Your Account Credentials`,
+              message,
+            });
+          } catch (error) {
+              return error;
+          }
         return AM;
     } catch (error) {
+        console.log(error)
         return null;
     }
 }
