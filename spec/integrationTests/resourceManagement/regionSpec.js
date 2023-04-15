@@ -2,22 +2,17 @@ const superTest = require('supertest');
 const app = require('../../../src/index.js');
 
 const request = superTest(app);
-const route = "/api/v1/profileManagement/sadm";
+const route = "/api/v1/resourceManagement/region";
 
-const SADMTest = {
-    "id": 1,
-    "nom": "SADM1",
-    "prenom": "SADM1",
-    "email": "SADMTest@gmail.com",
-    "password": "Test password",
-    "numTel": "0123456789",
+const regionTest = {
+    "id": 50,
+    "nom": "region1",
 };
-describe("SADM test", () => {
+describe("region test", () => {
     describe(`POST ${route}`, () => {
-        // send post request to route with body
         it('should return 201', async () => {
-            const response = await request.post(route).send(SADMTest);
-            SADMTest.id = response.body.data.id
+            const response = await request.post(route).send(regionTest);
+            regionTest.id = response.body.data.id
             expect(response.status).toBe(201);
         });
         it('should return 400', async () => {
@@ -34,32 +29,32 @@ describe("SADM test", () => {
     });
     describe(`GET ${route}/:id`, () => {
         it('should return 200', async () => {
-            const response = await request.get(`${route}/${SADMTest.id}`);
+            const response = await request.get(`${route}/${regionTest.id}`);
             expect(response.status).toBe(200);
         });
         it('should return 404', async () => {
-            const response = await request.get(`${route}/1`);
+            const response = await request.get(`${route}/0`);
             expect(response.status).toBe(404);
         });
     });
 
     describe(`PUT ${route}/:id`, () => {
         it('should return 200', async () => {
-            const response = await request.put(`${route}/${SADMTest.id}`).send(SADMTest);
+            const response = await request.put(`${route}/${regionTest.id}`).send(regionTest);
             expect(response.status).toBe(200);
         });
         it('should return 400', async () => {
-            const response = await request.put(`${route}/1`).send(SADMTest);
+            const response = await request.put(`${route}/0`).send(regionTest);
             expect(response.status).toBe(400);
         });
     })
     describe(`DELETE ${route}/:id`, () => {
         it('should return 200', async () => {
-            const response = await request.delete(`${route}/${SADMTest.id}`).send();
+            const response = await request.delete(`${route}/${regionTest.id}`).send();
             expect(response.status).toBe(200);
         });
         it('should return 400', async () => {
-            const response = await request.delete(`${route}/1`).send();
+            const response = await request.delete(`${route}/0`).send();
             expect(response.status).toBe(400);
         });
     })

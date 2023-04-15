@@ -3,37 +3,42 @@ const prisma = require('../../../../config/dbConfig')
 
 const getAllReclamation = async () => {
     try {
-        const reclamations = await prisma.Reclamation.findMany();
+        const reclamations = await prisma.Reclamation.findMany({
+            status : true,
+        });
         return reclamations;
     } catch (error) {
+        console.log(error)
         return null;
     }
 }
 
-const getOneReclamation = async (idReclamation) => {
+const getOneReclamation = async (id) => {
     try {
         const reclamation = await prisma.Reclamation.findFirst({
             where: {
-                idReclamation
+                id
             }
         })
         return reclamation;
     } catch (error) {
+        console.log(error);
         return null;
     }
 }
 
-const createReclamation = async (description,idPayement) => {
+const createReclamation = async (description,idPayment) => {
     try {
         const reclamation = await prisma.Reclamation.create({
             data: {
                 description,
-                idPayement,
+                idPayment,
                 status: "Non traite",
             }
         })
         return reclamation;
     } catch (error) {
+        console.log(error);
         return null;
     }
 }

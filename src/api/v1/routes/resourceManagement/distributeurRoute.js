@@ -1,5 +1,5 @@
 const route = require('express').Router();
-const { getAllHandler, getOneHandler, postHandler, deleteHandler, putHandler } = require('../../controllers/resourceManagement/distributeurController');
+const { getAllHandler, getOneHandler, getPannesHandler, postHandler, deleteHandler, putHandler } = require('../../controllers/resourceManagement/distributeurController');
 
 /**
  * @swagger
@@ -45,6 +45,32 @@ route.get('/', getAllHandler);
  *         description: provided id is not valid
  */
 route.get('/:id', getOneHandler);
+/**
+ * @swagger
+ * /api/v1/resourceManagement/distributeur/{id}/pannes:
+ *   get:
+ *     tags:
+ *       - distributeur
+ *     summary: get all pannes of single distributeur by id
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                  $ref: '#/components/schemas/PANNE'
+ *       400:
+ *         description: provided id is not valid
+ */
+route.get('/:id/pannes', getPannesHandler)
 /**
  * @swagger
  * /api/v1/resourceManagement/distributeur/:

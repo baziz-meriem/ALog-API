@@ -1,5 +1,5 @@
 const route = require('express').Router();
-const { login, resetPassword, forgotPassword, logout } = require('../../controllers/auth/acAuth');
+const { login, resetPassword, forgotPassword, logout } = require('../../controllers/auth/amAuth');
 
 /**
  * @swagger
@@ -72,7 +72,7 @@ route.post('/forgotPassword', forgotPassword);
  *        400:
  *          description: token corresponding to email invalid
  */
-route.post('/resetPassword', resetPassword);
+route.put('/resetPassword', resetPassword);
 
 /**
  * @swagger

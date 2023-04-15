@@ -54,12 +54,15 @@ route.use('/reponse', replyRoute);
  *        description:
  *          type: string
  *          description: Reply's description
- *        idPayement:
+ *        idPayment:
  *          type: integer
  *          description: id of the payement transaction
  *        date:
  *          type: string
  *          description: Reclamation's date
+ *        status:
+ *          type: string
+ *          description: Reclamation's status
  *        
  */
 /**

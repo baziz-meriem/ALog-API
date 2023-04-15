@@ -77,10 +77,24 @@ const validatePhoneNumber = (num) => {
     return num;
 }
 
+const validateDate = (date) => {
+    /**
+     * @description validate the date and return it or null if it is not valid
+     * @param {string} date
+     * @returns {String|null}
+    */
+    const valideDate = new Date(date)
+    if (isNaN(valideDate)) {
+        return null
+    }
+    return valideDate.toISOString()
+}
+
 module.exports = {
     validateId,
     validateEmail,
     validatePassword,
+    validateDate,
     validateInput,
     validatePhoneNumber
 }
