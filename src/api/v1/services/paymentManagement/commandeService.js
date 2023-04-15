@@ -32,7 +32,7 @@ const createCommande = async ({ etat, idConsommateur, idDistributeur, idBoisson,
               idBoisson,
               Payment: {
                 connect: { id: idPayment }
-              }
+              } 
             }
           });
         return commande;

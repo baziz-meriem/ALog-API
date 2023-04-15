@@ -4,7 +4,7 @@ const { getAllCommandes, getOneCommande, createCommande, updateCommande, deleteC
 
 const getAllHandler = async (req,res) => { 
     
-    const commandes = await getAllCommandes();
+    const commandes = await getAllCommandes(); 
     if(!commandes){
         return res.status(500).json({
             status: 'Internal Server Error',

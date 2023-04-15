@@ -1,5 +1,7 @@
 const prisma = require('../../../../config/dbConfig');
 const stripe = require('stripe')('sk_test_51MwCe0AIIjdIkPoTmiwKrNNEG2sREDbvj6InAS9Ti86ddeP2szPz7I40PfLfuQr5MfRwGnLDLTVXWtuZ17tfBrTT00cwTqng3X');
+const nodemailer = require('nodemailer');
+const fs = require('fs');
 
 const createPayment = async (data) => {
   try {
@@ -9,18 +11,17 @@ const createPayment = async (data) => {
         number: data.cardNumber,
         exp_month: data.expMonth,
         exp_year: data.expYear,
-        cvc: data.cvc,
+        cvc: data.cvc
       },
       billing_details: {
         email: data.email,
-      },
+      }
     });
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: data.amount,
       currency: data.currency,
       payment_method: paymentMethod.id,
-      description: data.description,
       receipt_email: data.email, //the email where the receipt will be sent
       confirm: false, // set confirm to false to require manual confirmation
     });
@@ -78,27 +79,62 @@ const confirmPayment = async (paymentIntentId) => {
   }
 };
 
+
 const paymentWebhook = async (event) => {
   switch (event.type) {
     case 'payment_intent.succeeded':
-      // Handle successful payment intent
-      console.log('Payment intent succeeded:', event.data.object.id);
-      break;
-    case 'payment_intent.created':
-      // Handle created payment intent
-      console.log('Payment intent created:', event.data.object.id);
+      //create payement in database
+      //send facturation email
+      console.log('Payment successful an email will be sent to the payer:', event.data.object.id);
+      // Send billing email to the payer
+      const transporter = nodemailer.createTransport({
+        host: 'sandbox.smtp.mailtrap.io',
+        port: 2525,
+        auth: {
+          user: '162d18213e1f42',
+          pass: 'ae01f360743af1',
+        },
+      });
+      // Read the HTML file content
+      const invoiceTemplate = fs.readFileSync('./src/api/v1/templates/invoice.html', 'utf-8');
+      
+          // Format the payment data
+      const paymentIntent = event.data.object;
+      console.log('--------------------',paymentIntent.payment_method.card)
+      const paymentData = {
+        amount: (paymentIntent.amount / 100).toFixed(2),
+        currency: paymentIntent.currency.toUpperCase(),
+        date: new Date(paymentIntent.created * 1000).toLocaleString(),
+        paymentMethod: paymentIntent.payment_method_types[0],
+        boisson_label :paymentIntent.payment_method.description
+      };
+          // Replace variables in the template with payment data
+    const formattedInvoice = invoiceTemplate.replace(/{(\w+)}/g, (match, key) => {
+      return paymentData[key] || match;
+    });
+    
+      const info = await transporter.sendMail({
+        from: 'SmartBev@DevLift.dz',
+        to: 'jm_baziz@esi.dz',//event.data.object.receipt_email
+        subject: 'Votre reçu de paiement',
+        html: formattedInvoice,
+      });
+      console.log('Email sent: ', info.messageId);
       break;
     case 'payment_intent.canceled':
-      // Handle canceled payment intent
+      //update commande etat to canceled
+      //update commande etat to canceled
       console.log('Payment intent canceled:', event.data.object.id);
       break;
     case 'payment_intent.payment_failed':
-      // Handle failed payment intent
+      //update commande etat to canceled
+      //update payment etat to failed
       console.log('Payment intent failed:', event.data.object.id);
       break;
     case 'charge.refunded':
-      // Handle refunded charge
-      console.log('Charge refunded:', event.data.object.id);
+      //update commande etat to failed
+      //update payment etat to refunded
+      console.log('Charge refunded :', event.data.object.id);
       break;
     default:
       // Unexpected event type
