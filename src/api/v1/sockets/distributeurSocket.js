@@ -1,6 +1,16 @@
-const distributeurHandler=(socket,data)=>{
-    console.log('data: ', data);
-    socket.emit();
+const {validateDistributeur}= require('../validators/profileValidation');
+const {updateDistributeur}= require('../services/resourceManagement/distributeurService');
+
+const distributeurHandler=async (socket,data)=>{
+    // validate the data before sending it to the client and the database
+    const valideDistributeur = validateDistributeur(data);
+    // if the data is valid, send it to the client and the database
+    if(valideDistributeur){
+        const distributeur = await updateDistributeur(data.id,data);
+        if(distributeur){
+            socket.broadcast.emit('distributeur', valideDistributeur);
+        }
+    }
 }
 
 module.exports = distributeurHandler;
