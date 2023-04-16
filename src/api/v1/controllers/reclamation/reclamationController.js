@@ -20,16 +20,16 @@ const getHandler = async (req, res) => {
             message: 'idReclamation is not valid'
         })
     }
-    // get the reply of this reclamation
+    // get the reclamation of this reclamation
     const reclamation = await getOneReclamation(valideId);
-    // if reply not found return 404
+    // if reclamation not found return 404
     if (!reclamation) {
         return res.status(404).json({
             status: 'Not Found',
             message: 'reclamtion not found'
         })
     }
-    // return 200 with reply
+    // return 200 with reclamation
     return res.status(200).json({
         status: 'success',
         message: 'reclamation found successfully',
@@ -85,7 +85,7 @@ const deleteHandler = async (req, res) => {
     // delete reclamation
     const reclamation = await deleteReclamation(valideId);
     // if reclamation not deleted return 400
-    if (!reply) {
+    if (!reclamation) {
         return res.status(400).json({
             status: 'Bad Request',
             message: 'Error while deleting reclamation, id is not valid'
@@ -98,10 +98,45 @@ const deleteHandler = async (req, res) => {
         data: reclamation
     })
 }
+const putHandler = async (req, res) => {
+    // get id from params and description from body
+    const { id } = req.params;
+    const { description,status} = req.body;
+    // validate id
+    const valideId = validateId(id);
+    // validate description
+    const valideDescription = validateInput(description);
+    // validate status
+    const valideStatus = validateInput(status);
+    // if id or description is not valid return 400
+    if (!valideId || !valideDescription || !valideStatus) {
+        return res.status(400).json({
+            status: 'Bad Request',
+            message: 'invalid inputs, please check your inputs'
+        })
+    }
+    // update the reclamation with the new description and the new status using the id
+    const reclamation = await updateReclamation(valideId, valideDescription ,valideStatus);
+    // if reclamation not updated return 400
+    if (!reclamation) {
+        return res.status(400).json({
+            status: 'Bad Request',
+            message: 'Error while updating reclamation, id is not valid'
+        })
+    }
+    // return 200 with reclamation
+    return res.status(200).json({
+        status: 'success',
+        message: 'reclamation updated successfully',
+        data: reclamation
+    })
+
+}
 
 module.exports = {
     getHandler,
     postHandler,
     deleteHandler,
-    getAllHandler
+    getAllHandler,
+    putHandler
 }

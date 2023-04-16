@@ -3,7 +3,6 @@ const prisma = require('../../../../config/dbConfig')
 
 const getAllReclamation = async () => {
     try {
-
         const reclamations = await prisma.Reclamation.findMany();
         return reclamations;
     } catch (error) {
@@ -55,6 +54,7 @@ const updateReclamation = async (id,description,status) => {
         })
         return reclamation;
     } catch (error) {
+        console.log(error)
         return null;
     }
 }

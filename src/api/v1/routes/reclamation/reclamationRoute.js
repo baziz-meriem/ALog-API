@@ -6,7 +6,7 @@ const { postHandler, deleteHandler, putHandler, getHandler, getAllHandler } = re
  * /api/v1/reclamation/reclamation:
  *    get:
  *      tags:
- *       - RECLAMATIONS
+ *       - RECLAMATION
  *      summary: get all the RECLAMATIONS'
  *      responses:
  *       200:
@@ -49,7 +49,7 @@ route.get('/',getAllHandler);
 route.get('/:idReclamation', getHandler);
 /**
  * @swagger
- * /api/v1/reclamation/reponse/:
+ * /api/v1/reclamation/reclamation/:
  *    post:
  *      tags:
  *       - RECLAMATION
@@ -73,10 +73,10 @@ route.get('/:idReclamation', getHandler);
 route.post('/', postHandler);
 /**
  * @swagger
- * /api/v1/reclamation/reponse/{id}:
+ * /api/v1/reclamation/reclamation/{id}:
  *    delete:
  *      tags:
- *       - REPONSE
+ *       - RECLAMATION
  *      summary: delete a RECLAMATION by id'
  *      parameters:
  *        - in: path
@@ -95,5 +95,43 @@ route.post('/', postHandler);
  *          description: provided id is not valid
  */
 route.delete('/:id', deleteHandler);
+
+/**
+ * @swagger
+ * /api/v1/reclamation/reclamation/{id}:
+ *    put:
+ *      tags:
+ *       - RECLAMATION
+ *      summary: Update a RECLAMATION by id'
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *          schema:
+ *              type: integer
+ *              required: true
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          description:
+ *                              type: string
+ *                              description: Reclamation's description
+ *                          status:
+ *                              type: string
+ *                              description: Reclamation's status
+ *      responses:
+ *        200:
+ *          description: success
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/REPONSE'
+ *        400:
+ *          description: provided id is not valid
+ */
+route.put('/:id', putHandler);
 
 module.exports = route;
