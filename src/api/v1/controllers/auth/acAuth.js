@@ -1,8 +1,8 @@
-const { sendToken, comparePassword, sendEmail, getResetPasswordCode } = require('../../middlewares/utils');
-const { getAcByEmail, resetAcPassword , updateAcResetCode } = require('../../services/auth/acService');
-const { getAllAcs } = require('../../services/profileManagement/acService');
+const { sendToken, comparePassword, sendEmail, getResetPasswordToken } = require('../../middlewares/utils');
+const { getAcByEmail, resetAcPassword , updateAcResetCode, getAcByResetToken } = require('../../services/auth/acService');
 const {  validateEmail, validatePassword } = require('../../validators/inputValidation');
 const bcrypt = require('bcrypt');
+const crypto = require("crypto");
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -52,11 +52,14 @@ const forgotPassword = async (req, res) => {
         return res.status(404).json({ status: 'Not Found', message: 'AC not found, Invalid Email' });
     }  
     // Get ResetPassword code
-    let {resetCode , user:acUpdated } = getResetPasswordCode(ac);
+    let {resetCode , user:acUpdated } = getResetPasswordToken(ac);
   //update the resetPassword code and expirePassword code 
     acUpdated = await updateAcResetCode(req.body.email, acUpdated);
+    const resetPasswordUrl = `${req.protocol}://${req.get(
+      "host"
+    )}/resetPassword/${resetCode}`;
   
-    const message = `Your password reset code is :- \n\n ${resetCode} \n\nIf you have not requested this email then, please ignore it.`;
+    const message = `Your password reset code is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
   
     try {
       await sendEmail({
@@ -70,7 +73,7 @@ const forgotPassword = async (req, res) => {
      });
 
     } catch (error) {
-        acUpdated.resetPasswordCode = undefined;
+        acUpdated.resetPasswordCode = "";
         acUpdatedc.resetPasswordExpire = undefined;
   
         acUpdated = await updateAcResetCode(req.body.email, acUpdated);
@@ -82,17 +85,18 @@ const forgotPassword = async (req, res) => {
 
 const resetPassword = async (req, res) => {
     // getting reset code
-    const resetPasswordCode = req.body.resetPasswordCode;
+    const resetPasswordCode = crypto
+    .createHash("sha256")
+    .update(req.params.token)
+    .digest("hex");
   
-    const ac = await getAcByEmail(req.body.email);
+    const ac = await getAcByResetToken(resetPasswordCode);
 
   
     if (!ac) {
-        return res.status(400).json({ status: 'Bad request', message: "Email not valid" });
+        return res.status(400).json({ status: 'Bad request', message: "Reset token invalid or has been expired" });
     }
-    if (ac.resetPasswordCode!==resetPasswordCode) {
-      return res.status(400).json({ status: 'Bad request', message: "Reset Password code is invalid or has been expired" });
-  }
+
   
     if (req.body.password !== req.body.confirmPassword) {
         return res.status(400).json({ status: 'Bad Request', message: "Password does not password" });
@@ -103,8 +107,8 @@ const resetPassword = async (req, res) => {
   
     const acUpdated = await resetAcPassword(ac.id, ac);
   
-    sendToken(acUpdated,"AC", 200, res);
-  }
+    if(acUpdated)
+    {return res.status(200).json({ success: true});}  }
 
 // Logout Ac
 const logout = async (req, res, next) => {

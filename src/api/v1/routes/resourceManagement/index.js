@@ -4,7 +4,8 @@ const distributeurRoute = require('./distributeurRoute');
 const regionRoute = require('./regionRoute');
 const supplementRoute = require('./supplementRoute');
 const boissonRoute = require('./boissonRoute');
-const panneRoute= require('./panneRoute')
+const panneRoute = require('./panneRoute')
+const typePanneRoute = require('./typePanneRoute')
 
 /**
  * @swagger
@@ -35,7 +36,7 @@ const panneRoute= require('./panneRoute')
  *          type: integer
  *          description: Distributeur's AM id
  */
-route.use('/distributeur',distributeurRoute)
+route.use('/distributeur', distributeurRoute)
 
 /**
  * @swagger
@@ -67,13 +68,13 @@ route.use('/region', regionRoute)
  *          type: string
  *          description: supplement's label
  */
-route.use('/supplement',supplementRoute)
+route.use('/supplement', supplementRoute)
 
 /**
  * @swagger
  * components:
  *  schemas:
- *    Boisson:
+ *    boisson:
  *      type: object
  *      properties:
  *        id:
@@ -85,8 +86,11 @@ route.use('/supplement',supplementRoute)
  *        description:
  *          type: string
  *          description: boisson's description
+ *        prix:
+ *          type: float
+ *          description: boisson's price in this distributor
  */
-route.use('/boisson',boissonRoute)
+route.use('/boisson', boissonRoute)
 /**
  * @swagger
  * components:
@@ -106,6 +110,8 @@ route.use('/boisson',boissonRoute)
  *        idTypeAnomalie:
  *          type: integer
  *          description: the id of this panne Type
+ *        typeAnomalie:
+ *          $ref: '#/components/schemas/TYPEPANNE'
  */
 /**
  * @swagger
@@ -138,5 +144,37 @@ route.use('/boisson',boissonRoute)
  *          type: integer
  *          description: the id of this panne Type
  */
-route.use('/panne',panneRoute)
+route.use('/panne', panneRoute)
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    TYPEPANNE:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: integer
+ *          description: typePanne's id
+ *        type:
+ *          type: string
+ *          description: typePanne's title
+ *        description:
+ *          type: string
+ *          description: the description of this panne Type
+ */
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    TYPEPANNE_POST:
+ *      type: object
+ *      properties:
+ *        type:
+ *          type: string
+ *          description: typePanne's title
+ *        description:
+ *          type: string
+ *          description: the description of this panne Type
+ */
+route.use('/typePanne', typePanneRoute)
 module.exports = route;

@@ -3,6 +3,7 @@ const {  validateEmail } = require('../../validators/inputValidation');
 
 const getRole = async (req, res) => {
   const { email } = req.query;
+
     // call the validateEmail 
     const valideAgent = validateEmail(email) ;
     // if there is an error, return a 400 status code

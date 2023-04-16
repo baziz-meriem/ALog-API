@@ -57,6 +57,36 @@ const getAcByEmail = async (email) => {
     }
 }
 
+const getAcByResetToken = async (token) => {
+    /**
+     * @description get the AC with token from the database and return it as an object or null if there is an error
+     * @param {string} token
+     * @returns {Promise<null| import('@prisma/client').AC>} ac
+    */
+    try {
+        const ac = await prisma.AC.findFirst({
+            where: {
+                resetPasswordCode: token,
+                resetPasswordExpire: { gt: new Date() },
+            },
+            select: {
+                id: true,
+                nom: true,
+                prenom: true,
+                email: true,
+                numTel: true,
+                idClient: true,
+                mot_de_passe: true,
+                resetPasswordCode: true,
+                resetPasswordExpire: true,
+            }
+        });
+        return ac;
+    } catch (error) {
+        return null;
+    }
+}
+
 
 const updateAcResetCode = async (email, ac) => {
     /**
@@ -130,4 +160,4 @@ const resetAcPassword = async (id, ac) => {
     }
 }
 
-module.exports = { getAcById,getAcByEmail, updateAcResetCode , resetAcPassword  }
+module.exports = { getAcById,getAcByEmail, updateAcResetCode , resetAcPassword , getAcByResetToken }
