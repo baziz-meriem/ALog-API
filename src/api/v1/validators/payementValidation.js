@@ -3,9 +3,9 @@ const Joi = require('joi');
 
 async function getSupportedCurrencies() {
   try {
-    const supportedCurrencies = await stripe.supportedPaymentCurrencies.list();
-    console.log('supported currencies', supportedCurrencies);
-    return supportedCurrencies.map((currency) => currency.toUpperCase());
+    const supportedCurrencies = await stripe.paymentMethods.listPaymentCurrencies();
+    console.log('supported currencies', supportedCurrencies.data);
+    return supportedCurrencies.data.map((currency) => currency.toUpperCase());
   } catch (error) {
     console.error('Error getting supported currencies:', error);
     return [];

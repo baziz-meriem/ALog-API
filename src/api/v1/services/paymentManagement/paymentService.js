@@ -2,8 +2,10 @@ const prisma = require('../../../../config/dbConfig');
 const stripe = require('stripe')('sk_test_51MwCe0AIIjdIkPoTmiwKrNNEG2sREDbvj6InAS9Ti86ddeP2szPz7I40PfLfuQr5MfRwGnLDLTVXWtuZ17tfBrTT00cwTqng3X');
 const nodemailer = require('nodemailer');
 const fs = require('fs');
+const axios = require('axios');
 
 const createPayment = async (data) => {
+  //add distributeur id and drink id and commande id in the payment intent
   try {
     const paymentMethod = await stripe.paymentMethods.create({
       type: 'card',
@@ -18,8 +20,24 @@ const createPayment = async (data) => {
       }
     });
 
+    let amountInClientCurrency = data.amount;
+
+    if (data.currency !== 'DZD') {
+      const apiKey = 'oCeaKd2kMzhQOVR58Ciq2Q5U92Br3g5M';
+      const from = 'DZD';
+      const to = data.currency;
+      try {
+        const response = await axios.get(`https://api.apilayer.com/fixer/convert?from=${from}&to=${to}&amount=${data.amount}&apikey=${apiKey}`);
+        amountInClientCurrency = response.data.result;
+        console.log("the amountIn client's currency", amountInClientCurrency);
+      } catch (error) {
+        console.log(error);
+        throw new Error('Error getting exchange rate');
+      }
+    }
+
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: data.amount,
+      amount: Math.round(amountInClientCurrency), //it expects an integer cause it uses the smallest currency unit example if it's usd or eur we use cents
       currency: data.currency,
       payment_method: paymentMethod.id,
       receipt_email: data.email, //the email where the receipt will be sent
@@ -28,13 +46,14 @@ const createPayment = async (data) => {
 
     const clientSecret = paymentIntent.client_secret;
     const paymentIntentId = paymentIntent.id;
-    return {paymentIntentId,clientSecret}; //intentId used for canceling a payement clientSecret used for confirming a payement
-  
-  } catch(error) {
-    console.error(error)
+    return { paymentIntentId, clientSecret }; //intentId used for canceling a payment clientSecret used for confirming a payment
+
+  } catch (error) {
+    console.error(error);
     return null;
   }
 };
+
 
 
 //if the customer clicked on proceed payement but he changed his mind in the middenl of the transaction
@@ -79,11 +98,14 @@ const confirmPayment = async (paymentIntentId) => {
   }
 };
 
-
+//etats commande : en attente (default), annulée , sérvis,échoué, réussi
+//etats payment : annulé , remboursé , réussi , échoué
 const paymentWebhook = async (event) => {
+
   switch (event.type) {
     case 'payment_intent.succeeded':
-      //create payement in database
+      //create payement in database from metadata data and get price from boisson model with etat = 
+      //update commande etat = réussi (will be changed in case there is a reclamation)
       //send facturation email
       console.log('Payment successful an email will be sent to the payer:', event.data.object.id);
       // Send billing email to the payer
@@ -122,18 +144,18 @@ const paymentWebhook = async (event) => {
       console.log('Email sent: ', info.messageId);
       break;
     case 'payment_intent.canceled':
-      //update commande etat to canceled
-      //update commande etat to canceled
+      //update commande etat to annulée
+      //update payment etat to annulé
       console.log('Payment intent canceled:', event.data.object.id);
       break;
     case 'payment_intent.payment_failed':
-      //update commande etat to canceled
-      //update payment etat to failed
+      //update commande etat to annulée
+      //update payment etat to échoué
       console.log('Payment intent failed:', event.data.object.id);
       break;
     case 'charge.refunded':
-      //update commande etat to failed
-      //update payment etat to refunded
+      //update commande etat to échoué
+      //update payment etat to remboursé
       console.log('Charge refunded :', event.data.object.id);
       break;
     default:
