@@ -3,7 +3,7 @@ const nodeMailer = require("nodemailer");
 const bcrypt = require('bcrypt');
 const crypto = require("crypto");
 
-const sendEmail = async (options) => {
+const sendEmail = async (options) => { 
   const transporter = nodeMailer.createTransport({
     host: process.env.SMPT_HOST,
     port: process.env.SMPT_PORT,

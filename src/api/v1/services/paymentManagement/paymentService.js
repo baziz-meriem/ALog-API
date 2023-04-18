@@ -1,4 +1,5 @@
 const prisma = require('../../../../config/dbConfig');
+const {updateCommandeEtat} = require ("../../services/paymentManagement/commandeService")
 const stripe = require('stripe')('sk_test_51MwCe0AIIjdIkPoTmiwKrNNEG2sREDbvj6InAS9Ti86ddeP2szPz7I40PfLfuQr5MfRwGnLDLTVXWtuZ17tfBrTT00cwTqng3X');
 const nodemailer = require('nodemailer');
 const creditCardType = require('credit-card-type');
@@ -108,7 +109,8 @@ const confirmPayment = async (paymentIntentId) => {
 //etats commande : en attente (default), annulée , sérvis,échoué, réussi
 //etats payment : annulé , remboursé , réussi , échoué
 const paymentWebhook = async (event) => {
-  
+  //define global v ar here 
+
 
   switch (event.type) {
     case 'payment_intent.created':
@@ -124,7 +126,7 @@ const paymentWebhook = async (event) => {
       //create payement in database 
        const DBpayment = await createDBPayment({ montant, etat, typeCarte, monnaie, idCommande });
        if(!DBpayment){
-           console.log('error in creating payment')
+           console.log('error creating payment')
           }
           else {
 
@@ -135,11 +137,12 @@ const paymentWebhook = async (event) => {
                 paymentId: DBpayment.id // Add a new field to the metadata
               }
             });
-            console.log("payment intent created successfully")
+            console.log("payment inserted successfully",updatedIntent)
             }
       break;
 
     case 'payment_intent.succeeded':
+
       const intent = event.data.object;
       const CardNumber = intent.metadata.cardNumber;
       const CardType = creditCardType(CardNumber)[0].niceType;
@@ -155,7 +158,7 @@ const paymentWebhook = async (event) => {
        }
        
     else {
-
+       //reuse the existing email sender function
       //send facturation email
       console.log('Payment successful an email will be sent to the payer:', intent.id);
       // Send billing email to the payer
@@ -195,27 +198,41 @@ const paymentWebhook = async (event) => {
       break;
     case 'payment_intent.canceled':
       const Pintent = event.data.object;
+      const CanceledEtat = "annulé";
+      const IdCommande = parseInt(Payintent.metadata.commandeId);
       //update commande etat to annulée
+      const updateCanceledCommande = await updateCommandeEtat(IdCommande, CanceledEtat);
+      if(!updateCanceledCommande){
+          console.log('error updating canceled commande')
+       } else
+      console.log('Commande canceled:', event.data.object.id);
       //update payment etat to annulée
       const Paymentid = parseInt(Pintent.metadata.paymentId);
-      const CanceledEtat = "annulé";
+      
 
       const updateCanceledpayment = await updatePayment(Paymentid, CanceledEtat);
       if(!updateCanceledpayment){
           console.log('error updating refunded payment')
-       }
+       } else
       console.log('Payment intent canceled:', event.data.object.id);
       break;
     case 'charge.refunded':
       const Payintent = event.data.object;
       const Payid = parseInt(Payintent.metadata.paymentId);
+      const CommandeId = parseInt(Payintent.metadata.commandeId);
       //update commande etat to échoué
+      const echecEtat = échoué;
+      const updateCommandeEchoue = await updateCommandeEtat(CommandeId,echecEtat);
+      if(!updateCommandeEchoue){
+        console.log('error updating Commande etat to échoué')
+  } else
+    console.log('Commande state updated to échoué',);
       //update payment etat to remboursé
       const RefundedEtat = "remboursé";
       const updateRefundedpayment = await updatePayment(Payid, RefundedEtat);
       if(!updateRefundedpayment){
           console.log('error updating refunded payment')
-    }
+    } else
       console.log('Charge refunded :', event.data.object.id);
       break;
     default:
