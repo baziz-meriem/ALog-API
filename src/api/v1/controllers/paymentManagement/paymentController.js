@@ -7,10 +7,6 @@ const stripe = require('stripe')('sk_test_51MwCe0AIIjdIkPoTmiwKrNNEG2sREDbvj6InA
 
 
 const paymentHandler = async (req, res) => {
-  // get the id of the drink and id of distributeur from the request params
-
-  // validate the ids
-
   //get the payment data and validate it
   const result = await validatePaymentData(req.body);
   if (result != "valideData") {
@@ -153,6 +149,7 @@ const createHandler = async (req, res) => { //create a new annonce
           message: 'Error while creating payment in database'
       });
   }
+  //console.log("payment id",payment.id)
   return res.status(201).json({
       status: 'success',
       message: 'Payment created successfully',

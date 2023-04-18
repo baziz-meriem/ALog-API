@@ -1,19 +1,7 @@
-const stripe = require('stripe')('sk_test_51MwCe0AIIjdIkPoTmiwKrNNEG2sREDbvj6InAS9Ti86ddeP2szPz7I40PfLfuQr5MfRwGnLDLTVXWtuZ17tfBrTT00cwTqng3X');
 const Joi = require('joi');
 
-async function getSupportedCurrencies() {
-  try {
-    const supportedCurrencies = await stripe.paymentMethods.listPaymentCurrencies();
-    console.log('supported currencies', supportedCurrencies.data);
-    return supportedCurrencies.data.map((currency) => currency.toUpperCase());
-  } catch (error) {
-    console.error('Error getting supported currencies:', error);
-    return [];
-  }
-}
 
 const validatePaymentData = async (data) => {
-  const supportedCurrencies = await getSupportedCurrencies();
 
   // Define Joi schema with dynamically validated currency field
   const paymentSchema = Joi.object({
@@ -48,11 +36,26 @@ const validatePaymentData = async (data) => {
       'number.positive': 'Invalid amount. Please enter a positive value.',
       'any.required': 'Amount is required.',
     }),
-    currency: Joi.string().valid(...supportedCurrencies).required() // dynamically validate supported currencies
+    currency: Joi.string().required() 
     .messages({
-      'any.only': 'Invalid currency. Please choose a supported currency.',
       'any.required': 'Currency is required.',
-    })
+    }),
+    boissonLabel:Joi.string().required().messages({
+      'string.email': 'Invalid boissonLabel. Please enter a string value for boissonLabel.',
+      'any.required': 'boissonLabel is required.',
+    }),
+    distributeurId: Joi.number().integer().required()
+    .messages({
+      'any.required': 'Distributeur ID is required.',
+    }),
+  boissonId: Joi.number().integer().required()
+    .messages({
+      'any.required': 'Boisson ID is required.',
+    }),
+  commandeId: Joi.number().integer().required()
+    .messages({
+      'any.required': 'Commande ID is required.',
+    }),
 });
 
 
