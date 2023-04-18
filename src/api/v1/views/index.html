@@ -10,18 +10,23 @@
 </head>
 
 <body>
+    <h1>Socket.io</h1>
+    <p>press d to disconnect and c to connect again</p>
     <button id="send-distributeur">send new data</button>
     <p id="data">
 
     </p>
     <script>
-        const socket = io('http://localhost:8080/');
+        const socket = io('http://localhost:8080/',{auth:{token:"123456789"}});
         socket.on('disconnect', () => {
-            console.log('Disconnected from server');
+            socket.disconnect();
+        });
+        socket.on('connect_error', (error) => {
+            alert(error);
         });
         socket.on('distributeur', (data) => {
             const dataElement = document.getElementById('data');
-            dataElement.innerHTML = JSON.stringify(data);
+            dataElement.innerHTML += JSON.stringify(data.codeDeverouillage);
         });
         const sendDistributeur = document.getElementById('send-distributeur');
         sendDistributeur.addEventListener('click', () => {
@@ -34,6 +39,15 @@
                 idAM: 1,
                 codeDeverouillage: "1234",
             });
+        });
+        document.addEventListener('keydown', (e) => {
+            if(e.target.matches('input')) return;
+            if (e.key === 'c') {
+                socket.connect();
+            }
+            if (e.key === 'd') {
+                socket.disconnect();
+            }
         });
     </script>
 </body>

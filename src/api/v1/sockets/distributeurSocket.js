@@ -8,7 +8,7 @@ const distributeurHandler=async (socket,data)=>{
     if(valideDistributeur){
         const distributeur = await updateDistributeur(data.id,data);
         if(distributeur){
-            socket.broadcast.emit('distributeur', valideDistributeur);
+            socket.to(socket.idClient).emit('distributeur', valideDistributeur);
         }
     }
 }
