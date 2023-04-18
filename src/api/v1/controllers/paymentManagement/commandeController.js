@@ -1,6 +1,6 @@
 const {validateId} = require('../../validators/inputValidation');
-
-const { getAllCommandes, getOneCommande, createCommande, updateCommande, deleteCommande} = require('../../services/paymentManagement/commandeService');
+const validateCommande = require('../../validators/commandeValidation');
+const { getAllCommandes, getOneCommande, getCommandeByUser,createCommande, updateCommande,updateCommandeEtat, deleteCommande} = require('../../services/paymentManagement/commandeService');
 
 const getAllHandler = async (req,res) => { 
     
@@ -44,8 +44,26 @@ const getOneHandler = async (req, res) => {
         });
 
 }
+const getByUserHandler = async (req, res) => {
+    // retrieve id from request user
+    const { id } = req.params;
+    // call validator
+    const valideId = validateId(id);
 
-const createHandler = async (req, res) => { //create a new annonce
+    if (!valideId) return res.status(400).json({ status: 'Bad request', message: 'Invalid id', data: null });
+    // call getCommandeByUser from service
+    const commandes = await getCommandeByUser(valideId);
+    if (!commandes) {
+        return res.status(400).json({
+            status: 'Bad request',
+            message: 'Error while retrieving commandes for this user, provided id is invalid',
+            data: null
+        });
+    }
+    return res.status(200).json({ status: 'Success', message: 'Commandes retrieved successfully', data: commandes });
+}
+
+const createHandler = async (req, res) => { 
     // get the data from the request body
     const { etat, idConsommateur, idDistributeur, idBoisson, idPayment } = req.body;
 
@@ -63,14 +81,15 @@ const createHandler = async (req, res) => { //create a new annonce
     });
 }
 
-const updateHandler = async (req, res) => { 
+const updateEtatHandler = async (req, res) => { 
+    
         // get the id from the request params
         const { id } = req.params;
         const valideId = validateId(id);
         // get the data from the request body
         const { etat } = req.body;
         // call the service to update the commande
-        const commande = await updateCommande(valideId, etat);
+        const commande = await updateCommandeEtat(valideId, etat);
         if(!commande){
             return res.status(400).json({
                 status: 'Bad Request',
@@ -84,6 +103,37 @@ const updateHandler = async (req, res) => {
         });
     }   
 
+    const updateHandler = async (req, res) => {
+        
+        // retrieve id from request params
+        const { id } = req.params;
+        // retrieve commande from request body
+        const { idConsommateur, etat, idBoisson, idDistributeur } = req.body;
+        // call validator
+        const valideId = validateId(id);
+        const valideCommande = validateCommande({ idConsommateur, etat, idBoisson, idDistributeur });
+        if (!valideId || !valideCommande) {
+            return res.status(400).json({
+                status: 'Bad request',
+                message: 'Invalid input',
+            });
+        }
+        const commande = await updateCommande(valideId , valideCommande);
+        if (!commande) {
+            return res.status(400).json({
+                status: 'Bad request',
+                message: 'Error while updating commande',
+                data:null,
+            })
+        }
+        return res.status(200).json({
+            status: 'Success',
+            message: 'Commande updated successfully',
+            data: commande
+        });
+    
+    }
+
 const deleteHandler = async (req, res) => { 
         // get the id from the request params
         const { id } = req.params;
@@ -95,12 +145,14 @@ const deleteHandler = async (req, res) => {
                 message: 'Invalid id'
             });
         }
-        // call the service to delete the annonceur
+        // call the service to delete command
         const commande = await deleteCommande(valideId);
+        
         if(!commande){
             return res.status(400).json({
                 status: 'Bad Request',
-                message: 'Error while deleting commande, id is not valid'
+                message: 'Error while deleting commande',
+                data:commande
             });
         }
 
@@ -115,7 +167,9 @@ const deleteHandler = async (req, res) => {
 module.exports = {
     getAllHandler,
     getOneHandler,
+    getByUserHandler,
     createHandler,
     updateHandler,
+    updateEtatHandler,
     deleteHandler
 }

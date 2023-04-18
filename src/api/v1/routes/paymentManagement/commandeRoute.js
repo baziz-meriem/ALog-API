@@ -1,5 +1,5 @@
 const route= require('express').Router();
-const {updateHandler ,deleteHandler,createHandler,getAllHandler,getOneHandler} = require('../../controllers/paymentManagement/commandeController');
+const {updateHandler,updateEtatHandler ,deleteHandler,createHandler,getAllHandler,getOneHandler, getByUserHandler} = require('../../controllers/paymentManagement/commandeController');
 
 /**
  * @swagger
@@ -38,8 +38,32 @@ const {updateHandler ,deleteHandler,createHandler,getAllHandler,getOneHandler} =
  */
 
 route.get('/', getAllHandler);
+/** 
+*  @swagger
+*  /api/v1/paymentManagement/commande/user/{id}:
+*  get:
+*    summary: Retrieve commandes by user id the result is returned along with associated payment and distributeur and boisson
+*    tags: [Commande]
+*    parameters:
+*      - in: path
+*        name: id
+*        required: true
+*        description: User id
+*        schema:
+*          type: integer
+*    responses:
+*      200:
+*        description: Commandes retrieved successfully
+*        content:
+*          application/json:
+*            schema:
+*              $ref: '#/components/schemas/Commande'
+*      400:
+*        description: Invalid id or error while retrieving commandes for this user
+*/
+route.get('/user/:id',getByUserHandler);
 /**
- * @swagger
+ *  @swagger
  * /api/v1/payementManagement/commande/{id}:
  *   get:
  *     summary: Get a single commande by ID
@@ -189,9 +213,9 @@ route.get('/:id', getOneHandler);
 route.post('/', createHandler);
 /**
  * @swagger
- * /api/v1/payementManagement/commande/{id}:
+ * /api/v1/payementManagement/commande/etat/{id}:
  *   put:
- *     summary: Update a commande by ID
+ *     summary: Update a commande state by ID
  *     tags: [Commande]
  *     parameters:
  *       - in: path
@@ -231,6 +255,32 @@ route.post('/', createHandler);
  *                   example: 'Error while updating commande'
  */
 
+route.put('/etat/:id',updateEtatHandler);
+
+/**
+ * @swagger
+ * /api/v1/payementManagement/commande/{id}:
+ *   put:
+ *     summary: Update a commande by ID
+ *     description: Update a commande by providing its ID and new values for all its fields
+ *     tags: [Commande]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID of the commande to update
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       description: New values for the commande fields
+ *     responses:
+ *       '200':
+ *         description: OK. Commande updated successfully
+ *       '400':
+ *         description: Bad Request. Invalid input or error while updating commande
+ *       '404':
+ *         description: Not Found. Commande with provided ID not found
+ */
 
 route.put('/:id', updateHandler);
 /**

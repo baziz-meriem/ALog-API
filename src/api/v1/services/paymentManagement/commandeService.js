@@ -21,6 +21,23 @@ const getOneCommande = async (id) => {
         return null;
     }
 }
+const getCommandeByUser = async (id) => {
+    try {
+        const commandes= await prisma.commande.findMany({
+            where:{
+                idConsommateur:id
+            },
+            include:{
+                boisson:true,
+                Payment:true,
+                distributeur:true,
+            }
+        });
+        return commandes;
+    } catch (error) {
+        return null
+    }
+}
 
 const createCommande = async ({ etat, idConsommateur, idDistributeur, idBoisson, idPayment}) => {
     try {
@@ -41,7 +58,7 @@ const createCommande = async ({ etat, idConsommateur, idDistributeur, idBoisson,
     }
 }
 
-const updateCommande = async (id, etat) => {
+const updateCommandeEtat = async (id, etat) => {
     try {
         const updatedCommande = await prisma.commande.update({
           where: { id},
@@ -52,6 +69,29 @@ const updateCommande = async (id, etat) => {
         return null
       }
 }
+const updateCommande = async (id,{ idBoisson, idDistributeur, etat, idConsommateur}) => {
+    try {
+        const commande= await prisma.commande.update({
+            where:{
+                id
+            },
+            data:{
+                idBoisson,
+                idDistributeur,
+                etat,
+                idConsommateur
+            },
+            include:{
+                boisson:true,
+                Payment:true,
+                distributeur:true,
+            }
+        });
+        return commande;
+    } catch (error) {
+        return null
+    }
+}
 
 const deleteCommande = async (id) => {
     try {
@@ -61,7 +101,9 @@ const deleteCommande = async (id) => {
             }
         });
         return commande;
+        
     } catch (error) {
+        console.error(error)
         return null;
     }
 }
@@ -71,5 +113,7 @@ module.exports = {
     getOneCommande,
     createCommande,
     updateCommande,
-    deleteCommande
+    updateCommandeEtat,
+    deleteCommande,
+    getCommandeByUser
 }
