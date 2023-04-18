@@ -190,13 +190,13 @@ model Commande {
   id             Int          @id @default(autoincrement())
   date           DateTime     @default(now())
   etat           String
-  idConsommateur Int
+  idConsommateur Int?
   idDistributeur Int
   idBoisson      Int
   boisson        Boisson      @relation(fields: [idBoisson], references: [id])
-  consommateur   Consommateur @relation(fields: [idConsommateur], references: [id])
+  consommateur   Consommateur? @relation(fields: [idConsommateur], references: [id])
   distributeur   Distributeur @relation(fields: [idDistributeur], references: [id])
-  Payment        Payment[]
+  Payment        Payment[]    
 }
 
 model Payment {
@@ -207,7 +207,7 @@ model Payment {
   typeCarte   String
   monnaie     String
   idCommande  Int
-  commande    Commande      @relation(fields: [idCommande], references: [id])
+  commande    Commande      @relation(fields: [idCommande], references: [id],onDelete: Cascade)
   Reclamation Reclamation[]
 }
 
