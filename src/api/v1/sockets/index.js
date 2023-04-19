@@ -1,7 +1,11 @@
+const { instrument } = require('@socket.io/admin-ui');
 const disconnectHandler = require('./disconnectSocket');
 const distributeurHandler = require('./distributeurSocket');
 
 const socketHandler =(io) => {
+    instrument(io, {
+        auth: false,
+        })
     io.use((socket,next)=>{
         if(socket.handshake.auth.idClient){
             const idClient = socket.handshake.auth.idClient;

@@ -17,7 +17,7 @@
 
     </p>
     <script>
-        const socket = io('http://localhost:8080/',{auth:{token:"123456789"}});
+        const socket = io('http://localhost:8080/',{auth:{idClient:"123456789"}});
         socket.on('disconnect', () => {
             socket.disconnect();
         });
