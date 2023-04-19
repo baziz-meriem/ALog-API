@@ -6,7 +6,7 @@ const route = "/api/v1/resourceManagement/distributeur";
 
 
 
-describe("distribution route", () => {
+describe("distributeur route", () => {
     describe("GET /:id/pannes", () => {
         it("should return 200", async () => {
             const response = await request.get(route + "/1/pannes");

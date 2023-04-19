@@ -169,7 +169,7 @@ const resetCustomerPassword = async (id, customer) => {
                 resetPasswordExpire: false,
                 mot_de_passe: false
             }
-        });
+        }); 
         return updatedCustomer;
     } catch (error) {
         return null;
