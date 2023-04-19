@@ -2,7 +2,7 @@ const {validateId} = require('../../validators/inputValidation');
 const validateCommande = require('../../validators/commandeValidation');
 const { getAllCommandes, getOneCommande, getCommandeByUser,createCommande, updateCommande,updateCommandeEtat, deleteCommande} = require('../../services/paymentManagement/commandeService');
 
-const getAllHandler = async (req,res) => { 
+const getAllHandler = async (req,res) => {  
     
     const commandes = await getAllCommandes(); 
     if(!commandes){
@@ -34,7 +34,8 @@ const getOneHandler = async (req, res) => {
         if(!commande){
             return res.status(400).json({
                 status: 'Bad Request',
-                message: 'Error while getting commande'
+                message: 'Error while getting commande, invalid id',
+                data:null
             });
         }
         return res.status(200).json({
@@ -151,7 +152,7 @@ const deleteHandler = async (req, res) => {
         if(!commande){
             return res.status(400).json({
                 status: 'Bad Request',
-                message: 'Error while deleting commande',
+                message: 'Error while deleting commande, invalid id',
                 data:commande
             });
         }

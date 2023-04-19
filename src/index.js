@@ -19,6 +19,7 @@ app.use(morgan('combined',{stream:fs.createWriteStream(path.join(__dirname, 'log
 
 // Middleware function to check if the route contains 'webhooks' it neeeds raw data
 const webhookMiddleware = (req, res, next) => {
+  
   if (req.originalUrl.includes('webhooks')) {
     return express.raw({ type: '*/*' })(req, res, next);
   }
@@ -68,4 +69,4 @@ app.listen(port, () => {
 }
 );
 
-module.exports = {app};
+module.exports = app;

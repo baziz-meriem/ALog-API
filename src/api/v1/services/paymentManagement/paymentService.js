@@ -53,7 +53,6 @@ const createPayment = async (data) => {
     
     });
      
-    //console.log("paymentIntent",paymentIntent.metadata)
     const clientSecret = paymentIntent.client_secret;
     const paymentIntentId = paymentIntent.id;
     return { paymentIntentId, clientSecret }; //intentId used for canceling a payment clientSecret used for confirming a payment
@@ -65,8 +64,9 @@ const createPayment = async (data) => {
 };
 
 
-
+//move this function to the controller
 const cancelPayment = async (paymentIntentId) => {
+
   try {
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
 
@@ -77,7 +77,7 @@ const cancelPayment = async (paymentIntentId) => {
         payment_intent: paymentIntent.id,
         amount: paymentIntent.amount,
       });
-      console.log("Refund ID:", refund.id);
+      
       return refund.id; 
     } else {
       // Payment has not been captured, cancel the PaymentIntent
@@ -92,16 +92,13 @@ const cancelPayment = async (paymentIntentId) => {
     return null; 
   }
 };
+//move this function to the controller
 // Function to manually confirm a payment
 const confirmPayment = async (paymentIntentId) => {
   try {
     const paymentIntent = await stripe.paymentIntents.confirm(paymentIntentId);
-    console.log("PaymentIntent ID:", paymentIntent.id);
-    console.log("PaymentIntent status:", paymentIntent.status);
-  
     return paymentIntent.status;
-  } catch (error) {
-    console.error(error);
+  } catch (error) { 
     return null;
   }
 };
@@ -109,19 +106,18 @@ const confirmPayment = async (paymentIntentId) => {
 //etats commande : en attente (default), annulée , sérvis,échoué, réussi
 //etats payment : annulé , remboursé , réussi , échoué
 const paymentWebhook = async (event) => {
-  //define global v ar here 
-
+  const paymentIntent = event.data.object;
+  const cardNumber = paymentIntent.metadata.cardNumber;
+  const typeCarte = creditCardType(cardNumber)[0].niceType;
+  let etat;
 
   switch (event.type) {
-    case 'payment_intent.created':
 
-      const paymentIntent = event.data.object;
-      const cardNumber = paymentIntent.metadata.cardNumber;
+    case 'payment_intent.created':
       const idCommande =  parseInt(paymentIntent.metadata.commandeId);
       const monnaie = paymentIntent.currency;
       const montant = paymentIntent.amount;
-      const typeCarte = creditCardType(cardNumber)[0].niceType;
-      const etat = "en attente";
+      etat = "en attente";
        
       //create payement in database 
        const DBpayment = await createDBPayment({ montant, etat, typeCarte, monnaie, idCommande });
@@ -142,25 +138,20 @@ const paymentWebhook = async (event) => {
       break;
 
     case 'payment_intent.succeeded':
-
-      const intent = event.data.object;
-      const CardNumber = intent.metadata.cardNumber;
-      const CardType = creditCardType(CardNumber)[0].niceType;
       
       //update commande etat = réussi (will be changed in case there is a reclamation)
         
       //update payment etat to réussi
-      const id = parseInt(intent.metadata.paymentId);
-      const SuccededEtat = "réussi";
-      const updateSucceedpayment = await updatePayment(id, SuccededEtat);
+      const id = parseInt(paymentIntent.metadata.paymentId);
+       etat = "réussi";
+      const updateSucceedpayment = await updatePayment(id, etat);
       if(!updateSucceedpayment){
           console.log('error updating succeeded payment')
        }
        
     else {
-       //reuse the existing email sender function
+
       //send facturation email
-      console.log('Payment successful an email will be sent to the payer:', intent.id);
       // Send billing email to the payer
       const transporter = nodemailer.createTransport({
         host: 'sandbox.smtp.mailtrap.io',
@@ -175,12 +166,12 @@ const paymentWebhook = async (event) => {
       
       // Format the payment data
       const paymentData = {
-        amount: (intent.amount / 100).toFixed(2),
-        currency: intent.currency.toUpperCase(),
-        date: new Date(intent.created * 1000).toLocaleString(),
+        amount: (paymentIntent.amount / 100).toFixed(2),
+        currency: paymentIntent.currency.toUpperCase(),
+        date: new Date(paymentIntent.created * 1000).toLocaleString(),
         cardType:CardType,
-        cardNumber:CardNumber,
-        boissonLabel:intent.metadata.boissonLabel
+        cardNumber:cardNumber,
+        boissonLabel:paymentIntent.metadata.boissonLabel
       };
           // Replace variables in the template with payment data
     const formattedInvoice = invoiceTemplate.replace(/{(\w+)}/g, (match, key) => {
@@ -193,36 +184,36 @@ const paymentWebhook = async (event) => {
         subject: 'Votre reçu de paiement',
         html: formattedInvoice,
       });
-      console.log('Email sent: ', info.messageId);
     }
       break;
     case 'payment_intent.canceled':
-      const Pintent = event.data.object;
-      const CanceledEtat = "annulé";
-      const IdCommande = parseInt(Payintent.metadata.commandeId);
+
+      etat = "annulé";
+      const IdCommande = parseInt(paymentIntent.metadata.commandeId);
+
       //update commande etat to annulée
-      const updateCanceledCommande = await updateCommandeEtat(IdCommande, CanceledEtat);
+      const updateCanceledCommande = await updateCommandeEtat(IdCommande, etat);
       if(!updateCanceledCommande){
           console.log('error updating canceled commande')
        } else
-      console.log('Commande canceled:', event.data.object.id);
+        {
       //update payment etat to annulée
-      const Paymentid = parseInt(Pintent.metadata.paymentId);
+      const Paymentid = parseInt(paymentIntent.metadata.paymentId);
       
 
-      const updateCanceledpayment = await updatePayment(Paymentid, CanceledEtat);
+      const updateCanceledpayment = await updatePayment(Paymentid, etat);
       if(!updateCanceledpayment){
           console.log('error updating refunded payment')
        } else
       console.log('Payment intent canceled:', event.data.object.id);
+        }
       break;
     case 'charge.refunded':
-      const Payintent = event.data.object;
-      const Payid = parseInt(Payintent.metadata.paymentId);
-      const CommandeId = parseInt(Payintent.metadata.commandeId);
+      const Payid = parseInt(paymentIntent.metadata.paymentId);
+      const CommandeId = parseInt(paymentIntent.metadata.commandeId);
       //update commande etat to échoué
-      const echecEtat = échoué;
-      const updateCommandeEchoue = await updateCommandeEtat(CommandeId,echecEtat);
+      etat = échoué;
+      const updateCommandeEchoue = await updateCommandeEtat(CommandeId,etat);
       if(!updateCommandeEchoue){
         console.log('error updating Commande etat to échoué')
   } else

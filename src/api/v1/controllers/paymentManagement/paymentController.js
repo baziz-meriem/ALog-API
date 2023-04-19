@@ -48,6 +48,8 @@ const cancelPayementHandler = async (req, res) => {
     message: "payment canceled successfully",
   });
 };
+
+
 const confirmPayementHandler = async (req, res) => {
   // Retrieve the PaymentIntent object using the client secret
   const paymentIntentId = req.body.paymentIntentId;
@@ -65,15 +67,9 @@ const confirmPayementHandler = async (req, res) => {
 };
 
 /*
-commands for testing in stripe cli:
+commande for testing in stripe cli:
 
 stripe listen --forward-to http://localhost:8080/api/v1/paymentManagement/payment/webhooks
-stripe trigger payment_intent.created
-stripe trigger payment_intent.canceled
-stripe trigger payment_intent.payment_failed
-stripe trigger payment_intent.succeeded
-stripe refunds create --payment-intent <payment_intent_id> --reason duplicate ; payement intent should have asuccessful charge 
-
 */ 
 
 const webhookHandler = async (req, res) => {
