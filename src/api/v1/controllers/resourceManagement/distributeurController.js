@@ -8,12 +8,13 @@ const {
 const { getPanneByDistributeur } = require("../../services/resourceManagement/panneService");
 
 const { validateId } = require('../../validators/inputValidation');
-const { validateSADM, validateDistributeur } = require('../../validators/profileValidation');
+const { validateDistributeur } = require('../../validators/profileValidation');
 
 const getAllHandler = async (req, res) => {
     const distributeurs = await getAllDistributeurs();
     return res.status(200).json({ status: "success", data: distributeurs });
 };
+
 const getOneHandler = async (req, res) => {
     const { id } = req.params;
 
@@ -71,8 +72,9 @@ const postHandler = async (req, res) => {
 
 
     const newDistributeur = await createDistributeur(valideDistributeur);
-    if (!newDistributeur) {
-        return res.status(400).json({ status: 'Bad Request', message: "Distributeur has not been created" });
+    if( typeof newDistributeur === "string" )
+    {
+        return res.status(400).json({ status: 'Bad Request', message: newDistributeur });
     }
 
     return res.status(201).json({ status: 'success', data: newDistributeur });
@@ -86,8 +88,9 @@ const deleteHandler = async (req, res) => {
         return res.status(400).json({ status: 'Bad Request', message: "provided id is not valid" });
     }
     const deletedDistributeur = await deleteDistributeur(valideId);
-    if (!deletedDistributeur) {
-        return res.status(400).json({ status: 'Bad Request', message: 'Error while deleting the Distributeur, provided id is not valid' });
+    if( typeof deletedDistributeur === "string" )
+    {
+        return res.status(400).json({ status: 'Bad Request', message: deletedDistributeur });
     }
 
     return res.status(200).json({ status: 'success', data: deletedDistributeur });
@@ -106,11 +109,12 @@ const putHandler = async (req, res) => {
     if (!valideDistributeur) {
         return res.status(400).json({ status: 'Bad Request', message: "provided distributeur is not valid" });
     }
-
     const updatedDistributeur = await updateDistributeur(valideId, valideDistributeur);
-    if (!updatedDistributeur) {
-        return res.status(400).json({ status: 'Bad Request', message: "Error while updating the distributeur, provided distributeur is not valid" });
+    if( typeof updatedDistributeur === "string" )
+    {
+        return res.status(400).json({ status: 'Bad Request', message: updatedDistributeur });
     }
+    
     return res.status(200).json({ status: 'success', data: updatedDistributeur });
 }
 

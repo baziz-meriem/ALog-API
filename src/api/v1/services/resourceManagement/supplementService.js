@@ -1,4 +1,5 @@
 const prisma = require('../../../../config/dbConfig')
+const { catchPrismaClientError } = require('../../validators/catchPrismaClientError');
 
 
 const getAllSupplements = async () => {
@@ -14,7 +15,7 @@ const getAllSupplements = async () => {
         return supplements;
     } catch (error) {
         console.log(error)
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -32,7 +33,7 @@ const getSupplementById = async (id) => {
         });
         return supplement;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -51,7 +52,7 @@ const createSupplement = async (label) => {
         return supplement;
     } catch (error) {
         console.log(error);
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -68,7 +69,7 @@ const deleteSupplement = async (id) => {
         });
         return deletedSupplement;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -89,7 +90,7 @@ const updateSupplement = async (id, supplement) => {
         return updatedSupplement;
     } catch (error) {
         console.log(error)
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 

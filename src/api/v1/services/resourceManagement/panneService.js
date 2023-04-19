@@ -1,4 +1,5 @@
 const prisma = require('../../../../config/dbConfig')
+const { catchPrismaClientError } = require('../../validators/catchPrismaClientError');
 
 const getPanneById = async (id) => {
     try {
@@ -66,7 +67,7 @@ const createPanne = async (idDistributeur, idTypeAnomalie) => {
         return panne;
     } catch (error) {
         // return null if there is an error
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -90,7 +91,7 @@ const updatePanne= async ({id, idDistributeur, idTypeAnomalie,date}) => {
         return panne;
     } catch (error) {
         // return null if there is an error
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -109,7 +110,7 @@ const deletePanne = async (id) => {
         return panne;
     } catch (error) {
         // return null if there is an error
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 

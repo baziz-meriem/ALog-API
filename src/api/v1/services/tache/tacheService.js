@@ -1,4 +1,5 @@
 const prisma = require('../../../../config/dbConfig')
+const { catchPrismaClientError } = require('../../validators/catchPrismaClientError');
 
 const getAllAmTaches = async (idAM) => {
     /**
@@ -27,8 +28,8 @@ const getAllAmTaches = async (idAM) => {
         });
         return Taches;
     } catch (error) {
-        console.log(error);
-        return null;
+        console.log(error.message);
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -58,8 +59,8 @@ const getAllDistributeurTaches = async (idDistributeur) => {
         });
         return Taches;
     } catch (error) {
-        console.log(error);
-        return null;
+        console.log(error.message);
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -90,8 +91,8 @@ const getTacheById = async (id) => {
         });
         return Tache;
     } catch (error) {
-        console.log(error);
-        return null;
+        console.log(error.message);
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -148,8 +149,8 @@ const createTache = async ({ idDistributeur, idAM, type, Soustype, description, 
         });
         return Tache;
     } catch (error) {
-        console.log(error);
-        return null;
+        console.log(error.message);
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -211,8 +212,8 @@ const updateTache = async (id, Tache) => {
         });
         return updatedTache;
     } catch (error) {
-        console.log(error);
-        return null;
+        console.log(error.message);
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -243,8 +244,8 @@ const deleteTache = async(id) => {
         });
         return deletedTache;
     } catch (error) {
-        console.log(error);
-        return null;
+        console.log(error.message);
+        return (catchPrismaClientError(error));
     }
 }
 

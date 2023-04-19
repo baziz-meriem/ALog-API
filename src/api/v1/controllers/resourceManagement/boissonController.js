@@ -5,9 +5,7 @@ const getAllHandler = async (req, res) => {
     try {
       const { id } =  req.params;
       const boissons = await getAll(id);
-      if (boissons.length === 0) {
-        return res.status(404).json({ status: 'Not Found', message: 'no drink found' });
-      }
+      
       return res.status(200).json({ status: 'success', data: boissons });
     } catch (error) {
       console.log(error);
@@ -46,10 +44,11 @@ const postHandler = async (req, res) => {
 
     console.log(req.body)
     const newboisson = await createboisson(distributeurId,prix,label,description);
-
-    if (!newboisson) {
-        return res.status(404).json({ status: 'Not Found', message: 'boisson was not created' });
-    } else
+    
+    if( typeof newboisson === "string" )
+    {
+        return res.status(400).json({ status: 'Bad Request', message: newboisson });
+    }
     return res.status(201).json({ status: 'success', data: newboisson });
 }
 //delete a specific drink from a specific distributeur
@@ -71,9 +70,7 @@ const deleteAllHandler = async (req, res) => {
 
   if (!deletedboisson) {
       return res.status(404).json({ status: 'Not Found', message: 'boisson was not deleted from all distpensors' });
-  
-    } else
-
+    } 
   return res.status(200).json({ status: 'success', data: deletedboisson });
 
 }
@@ -85,9 +82,11 @@ const putHandler = async (req, res) => {
     const { label,description,prix,disponible } = req.body;
     
     const updatedboisson = await updateboisson(distributeurId,boissonId,label,description,prix,disponible);
-    if (!updatedboisson) {
-        return res.status(400).json({ status: 'Bad Request', message: "boisson wasn't updated successfully" });
+    if( typeof updatedboisson === "string" )
+    {
+        return res.status(400).json({ status: 'Bad Request', message: updatedboisson });
     }
+  
     return res.status(200).json({ status: 'success', data: updatedboisson });
 }
 
