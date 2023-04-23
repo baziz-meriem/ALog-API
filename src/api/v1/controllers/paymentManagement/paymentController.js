@@ -123,7 +123,7 @@ const getOneHandler = async (req, res) => {
       if(!payment){
           return res.status(400).json({
               status: 'Bad Request',
-              message: 'Error while getting payment'
+              message: 'Error while getting payment, invalid id'
           });
       }
       return res.status(200).json({
@@ -142,7 +142,7 @@ const createHandler = async (req, res) => { //create a new annonce
   if(!payment){
       return res.status(400).json({
           status: 'Bad Request',
-          message: 'Error while creating payment in database'
+          message: 'Error while creating a new payment in database'
       });
   }
   //console.log("payment id",payment.id)

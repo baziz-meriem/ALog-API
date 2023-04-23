@@ -11,7 +11,7 @@ route.use(express.raw({type:"*/*"}))
 route.post('/webhooks', webhookHandler); //stripe requires raw body
 
 
-//-------------basic CRUD--------//
+//-------------basic CRUD--------// 
 
 route.get('/', getAllHandler); 
 

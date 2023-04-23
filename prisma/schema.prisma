@@ -217,7 +217,7 @@ model Reclamation {
   date        DateTime  @default(now())
   idPayment   Int
   status      String
-  payment     Payment   @relation(fields: [idPayment], references: [id])
+  payment     Payment   @relation(fields: [idPayment], references: [id],onDelete: Cascade)
   Reponse     Reponse[]
 }
 

@@ -1,5 +1,4 @@
 const request = require('supertest');
-const prisma = require('../../../src/config/dbConfig');
 const app = require('../../../src/index.js');
 
 const route = "/api/v1/paymentManagement/commande/";
@@ -8,7 +7,7 @@ const newCommande = {
     idConsommateur: 1,
     idDistributeur: 1,
     idBoisson: 1,
-    idPayment: 1
+    idPayment: 45
   };
 
   let newcommandeId  ;
