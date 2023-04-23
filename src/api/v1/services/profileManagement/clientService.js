@@ -1,4 +1,5 @@
 const prisma = require('../../../../config/dbConfig')
+const { catchPrismaClientError } = require('../../validators/catchPrismaClientError');
 
 
 
@@ -15,7 +16,7 @@ const getAll = async () => {
         });
         return clients;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -35,7 +36,7 @@ const getClientById = async (id) => {
         });
         return Client;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -61,7 +62,7 @@ const createClient = async (data) => {
         return client;
     } catch (error) {
         console.log(error);
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -86,7 +87,7 @@ const updateClient = async (id, client) => {
         });
         return updatedClient;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -103,7 +104,7 @@ const deleteClient = async(id) => {
         });
         return deletedClient;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 

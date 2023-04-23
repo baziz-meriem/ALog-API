@@ -1,4 +1,5 @@
 const prisma = require('../../../../config/dbConfig')
+const { catchPrismaClientError } = require('../../validators/catchPrismaClientError');
 
 //get all drinks label desc price and availability of a specific dispenser
 const getAll = async (id) => {
@@ -22,7 +23,7 @@ const getAll = async (id) => {
         return boissons; //array of boissons
     } catch (error) {
         console.log(error)
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 const getAllAvailable = async (id) => {
@@ -47,7 +48,7 @@ const getAllAvailable = async (id) => {
     } catch (error) {
         console.log(error)
         throw new Error('Error getting drinks');
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -77,7 +78,7 @@ const getboissonById = async ( distributeurId,boissonId) => {
       return boisson;
     } catch (error) {
       console.log(error);
-      return null;
+      return (catchPrismaClientError(error));
     }
   };
   
@@ -120,7 +121,7 @@ const getboissonById = async ( distributeurId,boissonId) => {
         return newBoissonDistributeur;
     } catch (error) {
         console.log(error);
-        return null;
+        return (catchPrismaClientError(error));
         
     }
 }
@@ -150,7 +151,7 @@ const deleteboisson = async (distributeurId,boissonId) => {
         });
         return deletedboisson;
     } catch (error) {
-      return null
+      return (catchPrismaClientError(error));
     }
 }
 
@@ -214,10 +215,8 @@ const updateboisson = async (distributeurId,boissonId,label,description,prix,dis
         else return 1  ;
     } catch (error) {
         console.log(error)
-        throw new Error('Error updating boisson')
+        return (catchPrismaClientError(error));
     }
 }
-
-
 
 module.exports = { getAll,getAllAvailable, getboissonById, createboisson, deleteboisson,deleteAllboisson, updateboisson }

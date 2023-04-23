@@ -1,4 +1,5 @@
 const prisma = require('../../../../config/dbConfig')
+const { catchPrismaClientError } = require('../../validators/catchPrismaClientError');
 
 const getAllRegions = async () => {
     /**
@@ -16,7 +17,7 @@ const getAllRegions = async () => {
         return regions;
     } catch (error) {
         console.log(error);
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -39,7 +40,7 @@ const getRegionById = async (id) => {
         return region;
     } catch (error) {
         console.log(error);
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -71,7 +72,7 @@ const createRegion = async ({ nom }) => {
         return region;
     } catch (error) {
         console.log(error);
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -99,7 +100,7 @@ const updateRegion = async (id, region) => {
         return updatedRegion;
     } catch (error) {
         console.log(error);
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -122,7 +123,7 @@ const deleteRegion = async(id) => {
         return deletedRegion;
     } catch (error) {
         console.log(error);
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
