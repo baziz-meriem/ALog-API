@@ -125,15 +125,16 @@ model SADM {
 }
 
 model Consommateur {
-  id                  Int        @id @default(autoincrement())
+  id                  Int          @id @default(autoincrement())
   nom                 String
   prenom              String
-  email               String     @unique
+  email               String       @unique
   mot_de_passe        String
   numTel              String
-  resetPasswordCode   String     @default("")
-  resetPasswordExpire DateTime   @default(now())
+  resetPasswordCode   String       @default("")
+  resetPasswordExpire DateTime     @default(now())
   Commande            Commande[]
+  CreditCard          CreditCard[]
 }
 
 model Produit {
@@ -331,4 +332,23 @@ model BoissonClient {
   client    Client  @relation(fields: [idClient], references: [id], onDelete: Cascade)
 
   @@id([idBoisson, idClient])
+}
+
+model CreditCardType {
+  id         Int          @id @default(autoincrement())
+  name       String
+  logo       String
+  CreditCard CreditCard[]
+}
+
+model CreditCard {
+  id               Int            @id @default(autoincrement())
+  number           String
+  expMonth         String
+  expYear          String
+  cvc              String
+  idCreditCardType Int
+  creditCardType   CreditCardType @relation(fields: [idCreditCardType], references: [id])
+  idConsommateur   Int
+  consommateur     Consommateur   @relation(fields: [idConsommateur], references: [id])
 }
