@@ -4,6 +4,36 @@ const commandeRoute= require('./commandeRoute')
 
 
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Payment:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: Payment's ID
+ *         montant:
+ *           type: number
+ *           description: The amount paid
+ *         date:
+ *           type: string
+ *           format: date-time
+ *           description: Date the Payment was made
+ *         etat:
+ *           type: string
+ *           description: The state of the Payment
+ *         typeCarte:
+ *           type: string
+ *           description: The type of card used for payment
+ *         monnaie:
+ *           type: string
+ *           description: The currency used for payment
+ *         idCommande:
+ *           type: integer
+ *           description: ID of the Commande for which payment was made
+ */
 
 route.use('/payment', paymentRoute);
 /**

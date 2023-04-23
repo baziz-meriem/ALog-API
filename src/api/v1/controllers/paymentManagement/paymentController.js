@@ -234,9 +234,16 @@ const webhookHandler = async (req, res) => {
       case "payment_intent.succeeded":
         // Update commande etat to réussi (will be changed in case there is a reclamation)
 
-        // Update payment etat to réussi
         const id = parseInt(paymentIntent.metadata.paymentId);
+        const commandeId = parseInt(paymentIntent.metadata.commandeId);
         try {
+        const updateCommande = await updateCommandeEtat(commandeId,"réussi" );
+        if (!updateCommande) {
+          return res.status(400).json({
+            status: "Bad Request",
+            message: "Error while updating commande",
+          });
+        } else {
         const updateSucceedpayment = await updatePayment(id, "réussi");
 
         if (!updateSucceedpayment) {
@@ -266,20 +273,17 @@ const webhookHandler = async (req, res) => {
             });
           }
         }
-        
+      }
       } catch(error){
         res.status(400).send("payment failed to update: " + error.message);
       }
         break;
       case "payment_intent.canceled":
-       etatAnnulé ="annulé";
         const IdCommande = parseInt(paymentIntent.metadata.commandeId);
       try {
         //update commande etat to annulée
-        const updateCanceledCommande = await updateCommandeEtat(
-          IdCommande,
-          etatAnnulé
-        );
+        const updateCanceledCommande = await updateCommandeEtat(IdCommande,"annulé");
+
         if (!updateCanceledCommande) {
 
           return res.status(400).json({
