@@ -1,6 +1,7 @@
 const prisma = require('../../../../config/dbConfig')
 const bcrypt = require('bcrypt');
 const { sendEmail } = require('../../middlewares/utils');
+const { catchPrismaClientError } = require('../../validators/catchPrismaClientError');
 
 
 const getAllADMs = async () => {
@@ -23,7 +24,7 @@ const getAllADMs = async () => {
         });
         return ADMs;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -50,7 +51,7 @@ const getADMById = async (id) => {
         });
         return ADM;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -119,7 +120,7 @@ const createADM = async ({ nom, prenom, email, password, numTel, idClient }) => 
           }
         return ADM;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -158,7 +159,7 @@ const updateADM = async (id, ADM) => {
         });
         return updatedADM;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -181,7 +182,7 @@ const deleteADM = async (id) => {
         });
         return deletedADM;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 

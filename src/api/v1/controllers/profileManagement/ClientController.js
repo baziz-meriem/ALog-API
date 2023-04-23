@@ -16,9 +16,10 @@ const postHandler = async (req, res) => {
   // call the service to create the client
   const newClient = await createClient(valideClient);
   // if there is an error, return a 400 status code
-  if(!newClient){
-      return res.status(400).json({ status: 'Bad Request', message: "client not created" });
-  }
+  if( typeof newClient === "string" )
+    {
+        return res.status(400).json({ status: 'Bad Request', message: newClient });
+    }
   // return the new client
   return res.status(200).json({ status: 'OK', data: newClient });
 
@@ -69,10 +70,10 @@ const putHandler = async (req, res) => {
   }
   // call the service to update the client
   const updatedClient = await updateClient(valideId, valideClient);
-  if(!updatedClient){
-    return res.status(400).json({ status: 'Bad Request', message: "Error while Updating Client, provided client is not valid" });
-  }
-
+  if( typeof updatedClient === "string" )
+    {
+        return res.status(400).json({ status: 'Bad Request', message: updatedClient });
+    }
   // return the updated ac
   return res.status(200).json({ status: 'success', data: updatedClient });
 }
@@ -88,9 +89,9 @@ const putHandler = async (req, res) => {
     }
     // call the service to delete the Client
     const deletedClient = await deleteClient(valideId);
-   
-    if(!deletedClient){
-      return res.status(400).json({ status: 'Bad Request', message: "provided id is not valid" });
+    if( typeof deletedClient === "string" )
+    {
+        return res.status(400).json({ status: 'Bad Request', message: deletedClient });
     }
      // return the deleted Client
     return res.status(200).json({ status: 'Client deleted', data: deletedClient });

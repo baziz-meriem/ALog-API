@@ -25,34 +25,34 @@ const sendEmail = async (options) => {
 
 };
 
-const getJWTToken =(user)=>{
-   const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRE,
-      });
-      return token
+const getJWTToken = (user, role) => {
+  const token = jwt.sign({ id: user.id, role, idClient: user.idClient }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRE,
+  });
+  return token
 }
 
 // Create Token and saving in cookie
-const sendToken = (user,role, statusCode, res) => {
-    const token = getJWTToken(user);
-  
-    // options for cookie
-    const options = {
-      expires: new Date(
-        Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
-      ),
-      httpOnly: true,
-    };
-  
-    res.status(statusCode).cookie("token", token, options).json({
-      success: true,
-      user,
-      token,
-      role
-    });
+const sendToken = (user, role, statusCode, res) => {
+  const token = getJWTToken(user, role);
+
+  // options for cookie
+  const options = {
+    expires: new Date(
+      Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
   };
+
+  res.status(statusCode).cookie("token", token, options).json({
+    success: true,
+    user,
+    token,
+    role
+  });
+};
 //create a code
-const getResetPasswordCode =   (user)=> {
+const getResetPasswordCode = (user) => {
   const code = Math.floor(Math.random() * 900000) + 100000; // Generates a random number between 100000 and 999999
 
   // adding resetPasswordCode to userSchema
@@ -60,10 +60,10 @@ const getResetPasswordCode =   (user)=> {
 
   user.resetPasswordExpire = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
-  return {resetCode:code , user:user};
+  return { resetCode: code, user: user };
 };
 //reset password token
-const getResetPasswordToken =  (user)=> {
+const getResetPasswordToken = (user) => {
   // Generating Token
   const resetToken = crypto.randomBytes(20).toString("hex");
 
@@ -74,20 +74,20 @@ const getResetPasswordToken =  (user)=> {
     .digest("hex");
 
   user.resetPasswordExpire = new Date(Date.now() + 24 * 60 * 60 * 1000);
-  return {resetCode:resetToken , user:user};
+  return { resetCode: resetToken, user: user };
 
 };
 
-  const comparePassword = async function (addedPassword , userPassword) {
-    try {
-      return await bcrypt.compare(addedPassword, userPassword);
+const comparePassword = async function (addedPassword, userPassword) {
+  try {
+    return await bcrypt.compare(addedPassword, userPassword);
 
-    } catch (error) {
-      console.error(error);
-      throw new Error('Error comparing passwords');
-    }
+  } catch (error) {
+    console.error(error);
+    throw new Error('Error comparing passwords');
+  }
 
-  };
-  
-  
-  module.exports = {sendToken , getJWTToken , getResetPasswordCode , sendEmail , comparePassword,getResetPasswordToken }
+};
+
+
+module.exports = { sendToken, getJWTToken, getResetPasswordCode, sendEmail, comparePassword, getResetPasswordToken }
