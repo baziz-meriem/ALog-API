@@ -39,12 +39,12 @@ const postHandler = async (req, res) => {
     // call the service to create the Decideur
     const newDecideur = await createDecideur(valideDecideur);
     // if there is an error, return a 400 status code
-    if(!newDecideur){
-        return res.status(400).json({ status: 'Bad Request', message: "provided Decideur is not valid" });
+    if( typeof newDecideur === "string" )
+    {
+        return res.status(400).json({ status: 'Bad Request', message: newDecideur });
     }
     // return the new Decideur
     return res.status(201).json({ status: 'success', data: newDecideur });
-
 }
 
 const putHandler = async (req, res) => {
@@ -66,8 +66,9 @@ const putHandler = async (req, res) => {
     // call the service to update the Decideur
     const updatedDecideur = await updateDecideur(valideId, valideDecideur);
     // if there is an error, return a 400 status code
-    if (!updatedDecideur) {
-        return res.status(400).json({ status: 'Bad Request', message: "Error while updating Decideur, provided id is not valid" });
+    if( typeof updatedDecideur === "string" )
+    {
+        return res.status(400).json({ status: 'Bad Request', message: updatedDecideur });
     }
     // return the updated Decideur
     return res.status(200).json({ status: 'success', data: updatedDecideur });
@@ -85,8 +86,9 @@ const deleteHandler = async (req, res) => {
     // call the service to delete the Decideur
     const deletedDecideur = await deleteDecideur(valideId);
     // if there is an error, return a 400 status code
-    if (!deletedDecideur) {
-        return res.status(400).json({ status: 'Bad Request', message: "Error while deleting Decideur, provided id is not valid" });
+    if( typeof deletedDecideur === "string" )
+    {
+        return res.status(400).json({ status: 'Bad Request', message: deletedDecideur });
     }
     // return the deleted Decideur
     return res.status(200).json({ status: 'success', data: deletedDecideur });

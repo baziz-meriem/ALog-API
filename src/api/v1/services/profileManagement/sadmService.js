@@ -1,6 +1,7 @@
 const prisma = require('../../../../config/dbConfig')
 const bcrypt = require('bcrypt');
 const { sendEmail } = require('../../middlewares/utils');
+const { catchPrismaClientError } = require('../../validators/catchPrismaClientError');
 
 
 const getAllSADMs = async () => {
@@ -22,7 +23,7 @@ const getAllSADMs = async () => {
         });
         return sadms;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -48,7 +49,7 @@ const getSADMById = async (id) => {
         });
         return sadm;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -111,7 +112,7 @@ const createSADM = async ({ nom, prenom, email, password, numTel}) => {
         PrismaClientInitializationError: err configuration ou initialisation de base donné
         PrismaClientUnknownError : reste unkown
         */
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -148,7 +149,7 @@ const updateSADM = async (id, sadm) => {
         });
         return updatedSADM;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -171,7 +172,7 @@ const deleteSADM = async(id) => {
         });
         return deletedSADM;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 } 
 
