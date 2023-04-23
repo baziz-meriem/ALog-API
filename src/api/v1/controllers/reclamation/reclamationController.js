@@ -4,6 +4,13 @@ const { getOneReclamation,createReclamation,updateReclamation,deleteReclamation,
 const getAllHandler = async (req, res) => {
    
     const reclamations = await getAllReclamation();
+    if(!reclamations){
+       return res.status(500).json({
+          status:"Internal Server Error",
+          message:"something went wrong, please try again!",
+          data:null
+       });
+    }
     return res.status(200).json({ status: 'success', data: reclamations });
 }
 
