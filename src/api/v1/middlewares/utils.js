@@ -37,7 +37,7 @@ async function sendBillingEmail(paymentIntent, reciept_email) {
 
   // Send the email
   const mailOptions = {
-    from: process.env.SENDER_EMAIL,
+    from: process.env.SMPT_MAIL,
     to: reciept_email,
     subject: "Votre reçu de paiement",
     html: formattedInvoice,
