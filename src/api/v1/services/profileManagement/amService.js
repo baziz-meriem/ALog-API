@@ -1,6 +1,9 @@
 const prisma = require('../../../../config/dbConfig')
 const bcrypt = require('bcrypt');
 const { sendEmail } = require('../../middlewares/utils');
+const { Prisma } = require('.prisma/client');
+const { catchPrismaClientError } = require('../../validators/catchPrismaClientError');
+
 
 
 const getAllAMs = async () => {
@@ -23,7 +26,7 @@ const getAllAMs = async () => {
         });
         return AMs;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -50,7 +53,7 @@ const getAMById = async (id) => {
         });
         return AM;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -120,7 +123,7 @@ const createAM = async ({ nom, prenom, email, password, numTel, idClient }) => {
         return AM;
     } catch (error) {
         console.log(error)
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -159,7 +162,7 @@ const updateAM = async (id, AM) => {
         });
         return updatedAM;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -182,8 +185,7 @@ const deleteAM = async (id) => {
         });
         return deletedAM;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
-
 module.exports = { getAllAMs, getAMById, createAM, updateAM, deleteAM }

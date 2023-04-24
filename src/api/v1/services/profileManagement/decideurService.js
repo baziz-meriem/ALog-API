@@ -1,6 +1,7 @@
 const prisma = require('../../../../config/dbConfig')
 const bcrypt = require('bcrypt');
 const { sendEmail } = require('../../middlewares/utils');
+const { catchPrismaClientError } = require('../../validators/catchPrismaClientError');
 
 
 const getAllDecideurs = async () => {
@@ -23,7 +24,7 @@ const getAllDecideurs = async () => {
         });
         return decideurs;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -50,7 +51,7 @@ const getDecideurById = async (id) => {
         });
         return decideur;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -120,7 +121,7 @@ const createDecideur = async ({ nom, prenom, email, password, numTel, idClient }
         return decideur;
     } catch (error) {
         console.log(error)
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -159,7 +160,7 @@ const updateDecideur = async (id, decideur) => {
         });
         return updatedDecideur;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -182,7 +183,7 @@ const deleteDecideur = async (id) => {
         });
         return deletedDecideur;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 

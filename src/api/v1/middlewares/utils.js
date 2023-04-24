@@ -66,16 +66,16 @@ const sendEmail = async (options) => {
   await transporter.sendMail(mailOptions);
 };
 
-const getJWTToken = (user) => {
-  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+const getJWTToken = (user, role) => {
+  const token = jwt.sign({ id: user.id, role, idClient: user.idClient }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE,
   });
-  return token;
-};
+  return token
+}
 
 // Create Token and saving in cookie
 const sendToken = (user, role, statusCode, res) => {
-  const token = getJWTToken(user);
+  const token = getJWTToken(user, role);
 
   // options for cookie
   const options = {
@@ -89,7 +89,7 @@ const sendToken = (user, role, statusCode, res) => {
     success: true,
     user,
     token,
-    role,
+    role
   });
 };
 //create a code

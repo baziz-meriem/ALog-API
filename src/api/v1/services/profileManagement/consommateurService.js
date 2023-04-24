@@ -1,5 +1,6 @@
 const prisma = require('../../../../config/dbConfig')
 const bcrypt = require('bcrypt');
+const { catchPrismaClientError } = require('../../validators/catchPrismaClientError');
 
 
 const getAllCostumers = async () => {
@@ -21,7 +22,7 @@ const getAllCostumers = async () => {
         });
         return costumers;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -47,7 +48,7 @@ const getCostumerById = async (id) => {
         });
         return costumer;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -91,7 +92,7 @@ const createCostumer = async ({ nom, prenom, email, password, numTel }) => {
         });
         return costumer;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -127,7 +128,7 @@ const updateCostumer = async (id, ac) => {
         });
         return updatedCostumer;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -150,7 +151,7 @@ const deleteCostumer =async (id) => {
         });
         return deletedCostumer;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 

@@ -1,11 +1,12 @@
 const prisma= require('../../../../config/dbConfig')
+const { catchPrismaClientError } = require('../../validators/catchPrismaClientError');
 
 const getAllTypeAnnomalies = async () => {
     try {
         const typeAnnomalies = await prisma.typeAnomalie.findMany();
         return typeAnnomalies;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -29,7 +30,7 @@ const createTypeAnnomalie = async (typeAnnomalie) => {
         });
         return newTypeAnnomalie;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -43,7 +44,7 @@ const updateTypeAnnomalie = async (id, typeAnnomalie) => {
         });
         return updatedTypeAnnomalie;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -56,7 +57,7 @@ const deleteTypeAnnomalie = async (id) => {
         });
         return deletedTypeAnnomalie;
     } catch (error) {
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 

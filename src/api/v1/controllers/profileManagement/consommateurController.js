@@ -39,8 +39,9 @@ const postHandler = async (req, res) => {
     // call the service to create the costumer
     const newCostumer = await createCostumer(valideCostumer);
     // if there is an error, return a 400 status code
-    if (!newCostumer) {
-        return res.status(400).json({ status: 'Bad Request', message: "provided costumer is not valid" });
+    if( typeof newCostumer === "string" )
+    {
+        return res.status(400).json({ status: 'Bad Request', message: newCostumer });
     }
     // return the new ac
     return res.status(201).json({ status: 'success', data: newCostumer });
@@ -65,8 +66,9 @@ const putHandler = async (req, res) => {
     }
     // call the service to update the costumer
     const updatedCostumer = await updateCostumer(valideId, valideCostumer);
-    if (!updatedCostumer) {
-        return res.status(400).json({ status: 'Bad Request', message: "provided costumer is not valid" });
+    if( typeof updatedCostumer === "string" )
+    {
+        return res.status(400).json({ status: 'Bad Request', message: updatedCostumer });
     }
     // return the updated costumer
     return res.status(200).json({ status: 'success', data: updatedCostumer });
@@ -84,8 +86,9 @@ const deleteHandler = async (req, res) => {
     // call the service to delete the Costumer
     const deletedCostumer = await deleteCostumer(valideId);
     // if there is an error, return a 400 status code
-    if (!deletedCostumer) {
-        return res.status(400).json({ status: 'Bad Request', message: "provided costumer is not valid" });
+    if( typeof deletedCostumer === "string" )
+    {
+        return res.status(400).json({ status: 'Bad Request', message: deletedCostumer });
     }
     // return the deleted costumer
     return res.status(200).json({ status: 'success', data: deletedCostumer });

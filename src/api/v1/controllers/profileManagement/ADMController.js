@@ -29,10 +29,10 @@ const postHandler = async (req, res) => {
     }
 
     const newADM = await createADM(valideADM);
-    if (!newADM) {
-        return res.status(400).json({ status: 'Bad Request', message: "provided ADM is not valid" });
+    if( typeof newADM === "string" )
+    {
+        return res.status(400).json({ status: 'Bad Request', message: newADM });
     }
-
     return res.status(201).json({ status: 'success', data: newADM });
 }
 
@@ -51,10 +51,10 @@ const putHandler = async (req, res) => {
     }
 
     const updatedADM = await updateADM(valideId, valideADM);
-    if (!updatedADM) {
-        return res.status(400).json({ status: 'Bad Request', message: "Error while updating ADM, provided ADM is not valid" });
+    if( typeof updatedADM === "string" )
+    {
+        return res.status(400).json({ status: 'Bad Request', message: updatedADM });
     }
-
     return res.status(200).json({ status: 'success', data: updatedADM });
 }
 
@@ -65,8 +65,9 @@ const deleteHandler = async (req, res) => {
         return res.status(400).json({ status: 'Bad Request', message: "provided id is not valid" });
     }
     const deletedADM = await deleteADM(valideId);
-    if (!deletedADM) {
-        return res.status(400).json({ status: 'Bad Request', message: "Error while deleting ADM, provided id is not valid" });
+    if( typeof deletedADM === "string" )
+    {
+        return res.status(400).json({ status: 'Bad Request', message: deletedADM });
     }
     return res.status(200).json({ status: 'success', data: deletedADM });
 }
