@@ -164,7 +164,7 @@ const createProduct = async (label) => {
 }
 
 
-const createProduitDistributeur = async (distributeurId,produitId,quantite) => {
+const createProduitDistributeur = async (distributeurId,label,quantite) => {
       /**
      * @description create a new product in a disributeur in the database and return it as an object or null if there is an error
      * @param {number} (distributeurId,produitId,quantite)
@@ -172,9 +172,19 @@ const createProduitDistributeur = async (distributeurId,produitId,quantite) => {
      * @throws {Error} if the product already exists
     */
     try {
+      const product = await prisma.Produit.create({
+        data: {
+            label: label,
+           
+        },
+        select: {
+            id: true,
+            label: true,
+        }
+    });
         const newProduitDistributeur = await prisma.ProduitDistributeur.create({
             data: {
-                produit: { connect: { id: parseInt(produitId) } },
+                produit: { connect: { id: parseInt(product.id) } },
                 distributeur: { connect: { id: parseInt(distributeurId) } },//establish connection with an existing record
                 quantite:parseFloat(quantite),
             },
@@ -229,7 +239,7 @@ const updateProduct = async (productId, data) => {
     }
 }
 
-const updateProductDistributeur = async (distributeurId,productId, quantite) => {
+const updateProductDistributeur = async (distributeurId,productId, data) => {
       /**
      * @description update the product quantity with produitID and distributeur distributeurId in the database and return it as an object or null if there is an error
      * @param {number} (distributeurId,productId,quantity)
@@ -238,6 +248,18 @@ const updateProductDistributeur = async (distributeurId,productId, quantite) => 
      * @throws {Error} if the product or distributeur does not exist
      */
     try {
+      const updatedProduct = await prisma.Produit.update({
+        where: {
+            id: parseInt(productId)
+        },
+        data: {
+            label: data.label,
+        },
+        select: {
+            id: true,
+            label: true,
+        }
+    });
         const updatedProduitDistributeur = await prisma.ProduitDistributeur.update({
             where: {
               idProduit_idDistributeur: {
@@ -246,7 +268,7 @@ const updateProductDistributeur = async (distributeurId,productId, quantite) => 
               },
             },
             data: {
-                quantite: quantite,
+                quantite: data.quantite,
               },
             select: {
               idDistributeur: true,
@@ -260,7 +282,8 @@ const updateProductDistributeur = async (distributeurId,productId, quantite) => 
                     }
                   }
           });
-          return updatedProduitDistributeur
+          if (updatedProduct.count === 0 || updatedProduitDistributeur.count === 0) return null
+          else return 1  ;
       ;
     } catch (error) {
       console.log(error)

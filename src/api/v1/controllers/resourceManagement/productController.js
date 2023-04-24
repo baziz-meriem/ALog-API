@@ -58,10 +58,10 @@ const postHandler = async (req, res) => {
 }
 
 const postProduitDistributeurHandler = async (req, res) => { 
-    const {distributeurId,produitId} = req.params;
-    const {quantite} = req.body;
+    const {distributeurId} = req.params;
+    const {label, quantite} = req.body;
 
-    const newProduit = await createProduitDistributeur(distributeurId,produitId,quantite);
+    const newProduit = await createProduitDistributeur(distributeurId,label,quantite);
     
     if( !newProduit )
     {
@@ -87,13 +87,12 @@ const putHandler = async (req, res) => {
 
 const putProduitDistributeurHandler = async (req, res) => { 
     const {distributeurId,produitId} = req.params;
-    const {quantite} = req.body;
     const produit = await getProductDistributeurById(distributeurId,produitId);
     if (!produit) {
         return res.status(404).json({ status: 'Not Found', message: 'product not found in specified distributeur' });
     }
 
-    const newProduit = await updateProductDistributeur(distributeurId,produitId,quantite);
+    const newProduit = await updateProductDistributeur(distributeurId,produitId,req.body);
     
     if( !newProduit )
     {

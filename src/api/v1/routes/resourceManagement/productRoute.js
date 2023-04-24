@@ -169,7 +169,7 @@ route.get('/distributeur/:distributeurId/:produitId', getOneProductDistributeurH
 route.post('/', postHandler);
 /**
  * @swagger
- * /api/v1/resourceManagement/produit/distributeur/{distributeurId}/{produitId}:
+ * /api/v1/resourceManagement/produit/distributeur/{distributeurId}:
  *   post:
  *     tags:
  *       - produit
@@ -195,7 +195,7 @@ route.post('/', postHandler);
  *       '500':
  *         description: Internal server error.
  */
-route.post('/distributeur/:distributeurId/:produitId', postProduitDistributeurHandler);
+route.post('/distributeur/:distributeurId', postProduitDistributeurHandler);
 
 /**
  * @swagger
