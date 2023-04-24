@@ -1,20 +1,14 @@
 const route = require('express').Router();
 
 const distributeurRoute = require('./distributeurRoute');
-<<<<<<< HEAD
-<<<<<<< HEAD
-const productRoute = require('./productRoute');
-=======
-const supplementRoute = require('./supplementRoute');
->>>>>>> 678ca29168ba304adf33d718e83242441e095c70
 
-=======
-const regionRoute = require('./regionRoute');
+const productRoute = require('./productRoute');
 const supplementRoute = require('./supplementRoute');
+
+const regionRoute = require('./regionRoute');
 const boissonRoute = require('./boissonRoute');
 const panneRoute = require('./panneRoute')
 const typePanneRoute = require('./typePanneRoute')
->>>>>>> c830bb4b3e6c32f1233b96928ab1965afe70ca3e
 
 /**
  * @swagger
@@ -63,41 +57,11 @@ route.use('/distributeur', distributeurRoute)
  */
 route.use('/region', regionRoute)
 
-<<<<<<< HEAD
+route.use('/produit', productRoute)
 
-=======
->>>>>>> 678ca29168ba304adf33d718e83242441e095c70
-/**
- * @swagger
- * components:
- *  schemas:
-<<<<<<< HEAD
- *    produit:
-=======
- *    supplement:
->>>>>>> 678ca29168ba304adf33d718e83242441e095c70
- *      type: object
- *      properties:
- *        id:
- *          type: integer
-<<<<<<< HEAD
- *          description: product's id
- *        label:
- *          type: string
- *          description: product's label 
- */
-route.use('/product',productRoute)
-=======
- *          description: supplement's id
- *        label:
- *          type: string
- *          description: supplement's label
- */
 route.use('/supplement', supplementRoute)
 
-<<<<<<< HEAD
->>>>>>> 678ca29168ba304adf33d718e83242441e095c70
-=======
+
 /**
  * @swagger
  * components:
@@ -205,5 +169,4 @@ route.use('/panne', panneRoute)
  *          description: the description of this panne Type
  */
 route.use('/typePanne', typePanneRoute)
->>>>>>> c830bb4b3e6c32f1233b96928ab1965afe70ca3e
 module.exports = route;

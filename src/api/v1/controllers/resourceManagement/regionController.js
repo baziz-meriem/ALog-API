@@ -22,8 +22,9 @@ const postHandler = async (req, res) => {
     const { nom } = req.body;
 
     const newRegion = await createRegion( {nom} );
-    if(!newRegion){
-        return res.status(400).json({ status: 'Bad Request', message: "Region has not been created" });
+    if( typeof newRegion === "string" )
+    {
+        return res.status(400).json({ status: 'Bad Request', message: newRegion });
     }
 
     return res.status(201).json({ status: 'success', data: newRegion });
@@ -39,10 +40,10 @@ const putHandler = async (req, res) => {
     }
 
     const { nom } = req.body;
-
     const updatedRegion = await updateRegion(valideId, {nom});
-    if(!updatedRegion){
-        return res.status(400).json({ status: 'Bad Request', message: 'Error while updating the Region, provided Region is not valid' });
+    if( typeof updatedRegion === "string" )
+    {
+        return res.status(400).json({ status: 'Bad Request', message: updatedRegion });
     }
     return res.status(200).json({ status: 'success', data: updatedRegion });
 }
@@ -55,8 +56,9 @@ const deleteHandler = async (req, res) => {
         return res.status(400).json({ status: 'Bad Request', message: "provided id is not valid" });
     }
     const deletedRegion = await deleteRegion(valideId);
-    if(!deletedRegion){
-        return res.status(400).json({ status: 'Bad Request', message: 'Error while deleting the Region, provided id is not valid' });
+    if( typeof deletedRegion === "string" )
+    {
+        return res.status(400).json({ status: 'Bad Request', message: deletedRegion });
     }
     return res.status(200).json({ status: 'success', data: deletedRegion });
 }

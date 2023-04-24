@@ -15,8 +15,9 @@ const getOneHandler = async (req, res) => {
         return res.status(400).json({ status: 'Bad Request', message: "provided id is not valid" });
     }
     const AM = await getAMById(valideId);
-    if (!AM) {
-        return res.status(404).json({ status: 'Not Found', message: 'AM not found' });
+    if( typeof AM === "string" )
+    {
+        return res.status(400).json({ status: 'Bad Request', message: AM });
     }
     return res.status(200).json({ status: 'success', data: AM });
 }
@@ -29,10 +30,10 @@ const postHandler = async (req, res) => {
     }
 
     const newAM = await createAM(valideAM);
-    if (!newAM) {
-        return res.status(400).json({ status: 'Bad Request', message: "Error while creating AM,provided AM is not valid" });
+    if( typeof newAM === "string" )
+    {
+        return res.status(400).json({ status: 'Bad Request', message: newAM });
     }
-
     return res.status(201).json({ status: 'success', data: newAM });
 }
 
@@ -51,10 +52,10 @@ const putHandler = async (req, res) => {
     }
 
     const updatedAM = await updateAM(valideId, valideAM);
-    if (!updatedAM) {
-        return res.status(400).json({ status: 'Bad Request', message: "Error while updating AM, provided AM is not valid" });
+    if( typeof updatedAM === "string" )
+    {
+        return res.status(400).json({ status: 'Bad Request', message: updatedAM });
     }
-
     return res.status(200).json({ status: 'success', data: updatedAM });
 }
 
@@ -65,8 +66,9 @@ const deleteHandler = async (req, res) => {
         return res.status(400).json({ status: 'Bad Request', message: "provided id is not valid" });
     }
     const deletedAM = await deleteAM(valideId);
-    if (!deletedAM) {
-        return res.status(400).json({ status: 'Bad Request', message: 'Error while deleting AM, provided id is not valid' });
+    if( typeof deletedAM === "string" )
+    {
+        return res.status(400).json({ status: 'Bad Request', message: deletedAM });
     }
     return res.status(200).json({ status: 'success', data: deletedAM });
 }

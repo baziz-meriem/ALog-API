@@ -1,4 +1,5 @@
 const prisma = require('../../../../config/dbConfig')
+const { catchPrismaClientError } = require('../../validators/catchPrismaClientError');
 
 const getAllDistributeurs = async () => {
   try {
@@ -18,7 +19,7 @@ const getAllDistributeurs = async () => {
     return distributeurs;
   } catch (error) {
     console.log(error);
-    return null;
+    return (catchPrismaClientError(error));
   }
 };
 
@@ -41,7 +42,7 @@ const getDistributeurById = async (id) => {
     });
     return distributeur;
   } catch (error) {
-    return null;
+    return (null);
   }
 };
 
@@ -72,7 +73,7 @@ const createDistributeur = async ({etat, type, position,idClient, idRegion, idAM
         return distributeur;
     } catch (error) {
         console.log(error);
-        return null;
+        return (catchPrismaClientError(error));
     }
 }
 
@@ -91,7 +92,7 @@ const deleteDistributeur = async (id) => {
     });
     return deletedDistributeur;
   } catch (error) {
-    return null;
+    return (catchPrismaClientError(error));
   }
 };
 
@@ -124,7 +125,7 @@ const updateDistributeur = async (id, distributeur) => {
     return updatedDistributeur;
   } catch (error) {
     console.log(error);
-    return null;
+    return (catchPrismaClientError(error));
   }
 };
 
