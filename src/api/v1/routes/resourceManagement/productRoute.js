@@ -1,5 +1,5 @@
 const route = require('express').Router();
-const { getAllHandler, getAllProductsDistributeurHandler, getAllAvailableHandler, getOneHandler, getOneProductDistributeurHandler, postHandler, postProduitDistributeurHandler, putHandler, putProduitDistributeurHandler, deleteHandler, deleteProduitDistributeurHandler } = require('../../controllers/resourceManagement/productController');
+const { getAllHandler, getAllProductsDistributeurHandler, getAllAvailableHandler, getOneHandler, getOneProductDistributeurHandler, postHandler, postProduitDistributeurHandler, putHandler, putProduitDistributeurHandler, deleteHandler, deleteProduitDistributeurHandler, getAllProductsBoissonHandler, getOneProductBoissonHandler, postProduitBoissonHandler, deleteProduitBoissonHandler } = require('../../controllers/resourceManagement/productController');
 
 
 /**
@@ -49,6 +49,33 @@ route.get('/', getAllHandler);
  *         description: Internal server error.
  */
 route.get('/distributeur/:id', getAllProductsDistributeurHandler);
+/**
+ * @swagger
+ * /api/v1/resourceManagement/produit/boisson/{boissonId}:
+ *   get:
+ *     tags:
+ *       - produit
+ *     summary: Get all products associated with a drink
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The ID of the drink to filter by
+ *     responses:
+ *       '200':
+ *         description: A list of products associated with the dispensor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/produit'
+ *       '400':
+ *         description: Bad request. The ID parameter is missing or invalid.
+ *       '500':
+ *         description: Internal server error.
+ */
+route.get('/boisson/:id', getAllProductsBoissonHandler);
 /**
  * @swagger
  * /api/v1/resourceManagement/produit/distributeur/available/{distributeurId}:
@@ -140,6 +167,40 @@ route.get('/distributeur/:distributeurId/:produitId', getOneProductDistributeurH
 
 /**
  * @swagger
+ * /api/v1/resourceManagement/produit/boisson/{boissonId}/{produitId}:
+ *   get:
+ *     tags:
+ *       - produit
+ *     summary: Get a specific product by ID and drink
+ *     parameters:
+ *       - in: path
+ *         name: boissonId
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The ID of the drink to filter by
+ *       - in: path
+ *         name: produitId
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The ID of the product to retrieve
+ *     responses:
+ *       '200':
+ *         description: A specific product associated with the drink
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/produit'
+ *       '404':
+ *         description: product not found.
+ *       '500':
+ *         description: Internal server error.
+ */
+route.get('/boisson/:boissonId/:produitId', getOneProductBoissonHandler);
+
+/**
+ * @swagger
  * /api/v1/resourceManagement/produit:
  *   post:
  *     tags:
@@ -196,6 +257,35 @@ route.post('/', postHandler);
  *         description: Internal server error.
  */
 route.post('/distributeur/:distributeurId', postProduitDistributeurHandler);
+/**
+ * @swagger
+ * /api/v1/resourceManagement/produit/boisson/{boissonId}/{produitId}:
+ *   post:
+ *     tags:
+ *       - produit
+ *     summary: Create a new product in a specific drink
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               quantite:
+ *                 type: float
+ *     responses:
+ *       '200':
+ *         description: The newly created product
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/produit'
+ *       '400':
+ *         description: Invalid request body
+ *       '500':
+ *         description: Internal server error.
+ */
+route.post('/boisson/:boissonId/:produitId', postProduitBoissonHandler);
 
 /**
  * @swagger
@@ -239,7 +329,7 @@ route.put('/:id', putHandler);
  *   put:
  *     tags:
  *       - produit
- *     summary: Update a product's quantity.
+ *     summary: Update a product.
  *     parameters:
  *       - in: path
  *         name: distributeurId
@@ -347,6 +437,45 @@ route.delete('/:id', deleteHandler);
  */
 route.delete('/distributeur/:distributeurId/:produitId', deleteProduitDistributeurHandler);
 
+
+/**
+ * @swagger
+ * /api/v1/resourceManagement/produit/boisson/{boissonId}/{produitId}:
+ *   delete:
+ *     tags:
+ *       - produit
+ *     summary: Delete a products from a drink.
+ *     parameters:
+ *       - in: path
+ *         name: boissonId
+ *         required: true
+ *         description: The ID of the drink.
+ *         schema:
+ *           type: integer
+ *       - in: path
+ *         name: produitId
+ *         required: true
+ *         description: The ID of the product.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       '200':
+ *         description: The ID of the deleted product.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               oneOf:
+ *                 - $ref: '#/components/schemas/produit'
+ *                 - type: object
+ *                   properties:
+ *                     idProduit:
+ *                       type: integer
+ *       '404':
+ *         description: The specified product or distributor was not found.
+ *       '500':
+ *         description: An error occurred while deleting the product.
+ */
+route.delete('/boisson/:boissonId/:produitId', deleteProduitBoissonHandler);
 
 
 

@@ -50,6 +50,30 @@ const getAll = async (id) => {
     }
 }
 
+const getAllInBoisson = async (id) => {
+
+try {
+    const produits = await prisma.BoissonProduit.findMany({
+        where: {
+          idBoisson:  parseInt(id),
+        },
+        select: {
+          produit: {
+            select: {
+              id: true,
+              label: true,
+            }
+          },
+          quantite: true,
+        },
+      });
+      
+    return produits; //array of produits
+} catch (error) {
+    return (catchPrismaClientError(error));
+}
+}
+
 const getAllAvailable = async (id) => {
     /**
      * @description get all products avaialble in distributor with id from the database and return them as an array of objects or null if there is an error
@@ -137,6 +161,37 @@ const getProductDistributeurById = async ( distributeurId,productId) => {
     }
   };
 
+  const getProductBoissonById = async ( boissonId,productId) => {
+    /**
+   * @description get the product with produitID in boisson with boissonId from the database and return it as an object or null if there is an error
+   * @param {number} ( boissonId,productId)
+   * @returns {Promise<null| import('@prisma/client').BoissonProduit>} boissonProduit
+  */
+  try {
+    const produit = await prisma.BoissonProduit.findUnique({
+      where: {
+        idBoisson_idProduit: {
+          idProduit: parseInt(productId),
+          idBoisson: parseInt(boissonId),
+        },
+      },
+      select: {
+        quantite:true,
+        produit: {
+          select: {
+            id: true,
+            label: true,
+          },
+        },
+      },
+    });
+    
+    return produit;
+  } catch (error) {
+    console.log(error);
+    return (catchPrismaClientError(error));
+  }
+};
 
 
 const createProduct = async (label) => {
@@ -209,6 +264,35 @@ const createProduitDistributeur = async (distributeurId,label,quantite) => {
     }
 }
 
+const createProduitBoisson = async (boissonId,produitId) => {
+
+try {
+
+    const newProduitBoisson = await prisma.BoissonProduit.create({
+        data: {
+            produit: { connect: { id: parseInt(produitId) } },
+            boisson: { connect: { id: parseInt(boissonId) } },//establish connection with an existing record
+        },
+        select: {
+            idBoisson: true,
+            idProduit: true,
+            quantite: true,
+            produit: {
+                select: {
+                    id: true,
+                    label: true,
+                }
+            }
+        }
+    });
+
+    return newProduitBoisson;
+} catch (error) {
+    console.log(error);
+    return (catchPrismaClientError(error));
+    
+}
+}
 
 
 const updateProduct = async (productId, data) => {
@@ -346,8 +430,40 @@ const deleteProduitDistributeur = async (distributeurId,produitId) => {
     }
 }
 
+const deleteProduitBoisson = async (boissonId,produitId) => {
+  /**
+  * @description delete the product with produitId from boisson with boissonId from the database and return it as an object or null if there is an error
+  * @param {number} (boissond,produitId)
+  * @returns {Promise<null| import('@prisma/client').BoissonProduit>} boissonProduit
+ */
+ try {
+     const deletedProduit =await prisma.BoissonProduit.delete({
+       where: {
+         idBoisson_idProduit: {
+           idProduit: parseInt(produitId),
+           idBoisson: parseInt(boissonId),
+         },
+       },
+         select: {
+           idBoisson: true,
+           idProduit: true,
+           quantite: true,
+           produit: {
+               select: {
+                   id: true,
+                   label: true,
+               }
+           }
+       }
+     });
+     return deletedProduit;
+ } catch (error) {
+   return (catchPrismaClientError(error));
+ }
+}
 
 
 
 
-module.exports = { getAllProducts, getProductById, createProduct, deleteProduct, updateProduct , getAll , getAllAvailable ,getProductDistributeurById  ,createProduitDistributeur , updateProductDistributeur  , deleteProduitDistributeur  }
+
+module.exports = { getAllProducts, getProductById, createProduct, deleteProduct, updateProduct , getAll , getAllAvailable ,getProductDistributeurById  ,createProduitDistributeur , updateProductDistributeur  , deleteProduitDistributeur , createProduitBoisson ,getProductBoissonById  , getAllInBoisson , deleteProduitBoisson }
