@@ -12,8 +12,8 @@ async function sendBillingEmail(paymentIntent, reciept_email) {
     host: process.env.SMTP_HOST,
     port: process.env.SMTP_PORT,
     auth: {
-      user: process.env.MAILTRAP_USER,
-      pass: process.env.MAILTRAP_PASS,
+      user: process.env.SMPT_MAIL,
+      pass: process.env.SMPT_PASSWORD,
     },
   });
   // Read the HTML file content
