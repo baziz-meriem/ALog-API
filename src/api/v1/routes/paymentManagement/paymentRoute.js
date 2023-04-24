@@ -1,9 +1,216 @@
 const route= require('express').Router();
 const { paymentHandler ,cancelPayementHandler,confirmPayementHandler,webhookHandler,updateHandler ,deleteHandler,createHandler,getAllHandler,getOneHandler} = require('../../controllers/paymentManagement/paymentController');
 
+/**
+ * @swagger
+ *
+ * /api/v1/payementManagement/payment/:
+ *   post:
+ *     summary: Create a payment intent with Stripe API
+ *     tags:
+ *       - Payment
+ *     requestBody:
+ *       description: Payment information
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               boissonId:
+ *                 type: string
+ *               boissonLabel:
+ *                 type: string
+ *               distributeurId:
+ *                 type: string
+ *               commandeId:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               amount:
+ *                 type: number
+ *               currency:
+ *                 type: string
+ *               cardNumber:
+ *                 type: string
+ *               expMonth:
+ *                 type: number
+ *               expYear:
+ *                 type: number
+ *               cvc:
+ *                 type: string
+ *             required:
+ *               - boissonId
+ *               - boissonLabel
+ *               - distributeurId
+ *               - commandeId
+ *               - email
+ *               - amount
+ *               - currency
+ *               - cardNumber
+ *               - expMonth
+ *               - expYear
+ *               - cvc
+ *     responses:
+ *       '200':
+ *         description: Payment intent created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   enum: [OK]
+ *                 message:
+ *                   type: string
+ *                   example: Payment intent created
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     paymentIntentId:
+ *                       type: string
+ *                       description: The ID of the payment intent
+ *                     clientSecret:
+ *                       type: string
+ *                       description: The client secret used for confirming a payment
+ *       '400':
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   enum: [Bad Request]
+ *                 message:
+ *                   type: string
+ *                   description: A description of the error
+ *                 error:
+ *                   type: string
+ *                   description: A message containing the error details
+ */
+
 route.post('/pay', paymentHandler);
 
+/**
+ * @swagger
+ * /api/v1/payementManagement/payment/cancel:
+ *   post:
+ *     summary: Cancel a payment.
+ *     description: Cancels a payment intent using the Stripe API. If the payment has already been captured, a refund will be issued automatically. Otherwise, the payment intent will be cancelled and the funds will not be collected.
+ *     tags:
+ *       - Payment
+ *     requestBody:
+ *       description: The ID of the payment intent to be cancelled.
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               paymentIntentId:
+ *                 type: string
+ *                 description: The ID of the payment intent to be cancelled.
+ *                 example: "pi_123456789"
+ *             required:
+ *               - paymentIntentId
+ *     responses:
+ *       200:
+ *         description: The payment was cancelled successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: The status of the response.
+ *                   example: "OK"
+ *                 message:
+ *                   type: string
+ *                   description: A message describing the result of the operation.
+ *                   example: "payment canceled successfully"
+ *                 data:
+ *                   type: string
+ *                   description: The status of the cancelled payment intent.
+ *                   example: "canceled"
+ *       400:
+ *         description: The request was invalid or the payment cancellation failed.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: The status of the response.
+ *                   example: "Bad Request"
+ *                 message:
+ *                   type: string
+ *                   description: A message describing the reason for the error.
+ *                   example: "payment cancellation failed"
+ *                 error:
+ *                   type: string
+ *                   description: The error message returned by the Stripe API (if any).
+ *                   example: "The payment intent has already been cancelled."
+ */
+
+
 route.put('/cancel', cancelPayementHandler);
+/**
+ * @swagger
+ * /api/v1/payementManagement/payment/confirm:
+ *   post:
+ *     summary: Confirms a payment using the provided paymentIntentId
+ *     description: Confirms a payment using the provided paymentIntentId.
+ *     tags:
+ *       - Payment
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               paymentIntentId:
+ *                 type: string
+ *                 description: The ID of the payment intent to confirm.
+ *                 example: pi_1234567890
+ *             required:
+ *               - paymentIntentId
+ *     responses:
+ *       200:
+ *         description: OK. Payment confirmed successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: OK
+ *                 message:
+ *                   type: string
+ *                   example: payment confirmed successfully
+ *                 data:
+ *                   type: string
+ *                   example: succeeded
+ *       400:
+ *         description: Bad Request. Payment confirmation failed.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: Bad Request
+ *                 message:
+ *                   type: string
+ *                   example: payment confirmation failed
+ */
 
 route.put('/confirm', confirmPayementHandler);
 

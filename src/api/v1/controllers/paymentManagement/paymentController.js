@@ -89,7 +89,7 @@ const paymentHandler = async (req, res) => {
       
       return res.status(400).json({
         status: "Bad Request",
-        message: "payement failed",
+        message: "payement via Stripe failed",
         error: error.message,
       });
     }
