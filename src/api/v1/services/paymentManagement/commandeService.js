@@ -39,7 +39,7 @@ const getCommandeByUser = async (id) => {
     }
 }
 
-const createCommande = async ({ etat, idConsommateur, idDistributeur, idBoisson, idPayment}) => {
+const createCommande = async ({ etat, idConsommateur, idDistributeur, idBoisson}) => {
     try {
         const commande = await prisma.commande.create({
             data: {
@@ -47,9 +47,6 @@ const createCommande = async ({ etat, idConsommateur, idDistributeur, idBoisson,
               idConsommateur,
               idDistributeur,
               idBoisson,
-              Payment: {
-                connect: { id: idPayment }
-              } 
             }
           });
         return commande;

@@ -127,15 +127,11 @@ route.get('/:id', getOneHandler);
  *               idBoisson:
  *                 type: integer
  *                 description: The ID of the boisson associated with the commande.
- *               idPayment:
- *                 type: integer
- *                 description: The ID of the payment associated with the commande.
  *             required:
  *               - etat
  *               - idConsommateur
  *               - idDistributeur
  *               - idBoisson
- *               - idPayment
  *     responses:
  *       '201':
  *         description: Created
@@ -175,26 +171,6 @@ route.get('/:id', getOneHandler);
  *                     idBoisson:
  *                       type: integer
  *                       description: The ID of the boisson associated with the commande.
- *                     Payment:
- *                       type: array
- *                       description: An array of Payment objects associated with the commande.
- *                       items:
- *                         type: object
- *                         properties:
- *                           id:
- *                             type: integer
- *                             description: The ID of the payment.
- *                           date:
- *                             type: string
- *                             format: date-time
- *                             description: The date and time the payment was made.
- *                           montant:
- *                             type: number
- *                             format: float
- *                             description: The amount of the payment.
- *                           commandeId:
- *                             type: integer
- *                             description: The ID of the commande associated with the payment.
  *       '400':
  *         description: Bad Request
  *         content:

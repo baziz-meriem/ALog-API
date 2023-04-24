@@ -82,7 +82,7 @@ const getByUserHandler = async (req, res) => {
 
 const createHandler = async (req, res) => {
   // get the data from the request body
-  const { etat, idConsommateur, idDistributeur, idBoisson, idPayment } =
+  const { etat, idConsommateur, idDistributeur, idBoisson } =
     req.body;
 
   const commande = await createCommande({
@@ -90,7 +90,6 @@ const createHandler = async (req, res) => {
     idConsommateur,
     idDistributeur,
     idBoisson,
-    idPayment,
   });
   if (!commande) {
     return res.status(400).json({

@@ -202,6 +202,7 @@ model Commande {
 
 model Payment {
   id          Int           @id @default(autoincrement())
+  paymentIntentId String
   montant     Float
   date        DateTime      @default(now())
   etat        String
