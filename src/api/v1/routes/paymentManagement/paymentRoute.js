@@ -4,7 +4,7 @@ const { paymentHandler ,cancelPayementHandler,confirmPayementHandler,webhookHand
 /**
  * @swagger
  *
- * /api/v1/payementManagement/payment/:
+ * /api/v1/payementManagement/payment/pay:
  *   post:
  *     summary: Create a payment intent with Stripe API
  *     tags:

@@ -18,8 +18,6 @@ const tache = require('./tache');
 const stats = require('./stats')
 // client routes
 const specific_get = require('./specific_get');
-// payment routes
-const paymentManagement = require('./paymentManagement');
 
 route.use('/profileManagement', profileManagement);
 
@@ -40,6 +38,5 @@ route.use('/stats', stats);
 
 route.use('', specific_get);
 
-route.use('/paymentManagement', paymentManagement);
 
 module.exports = route;
