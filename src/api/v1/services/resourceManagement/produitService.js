@@ -6,7 +6,7 @@ const getAllProducts = async () => {
       /**
      * @description get all product avaialble in distributor with id from the database and return them as an array of objects or null if there is an error
     * @param 
-     * @returns {Promise<null| import('@prisma/client').Produit>} produit
+     * @returns {Promise<null| import ('@prisma/client').Produit>} produit
      */
     try {
         const products = await prisma.Produit.findMany({
