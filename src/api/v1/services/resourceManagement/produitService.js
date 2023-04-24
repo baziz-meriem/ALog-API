@@ -3,8 +3,12 @@ const bcrypt = require('bcrypt');
 
 
 const getAllProducts = async () => {
+      /**
+     * @description get all product avaialble in distributor with id from the database and return them as an array of objects or null if there is an error
+    * @param 
+     * @returns {Promise<null| import('@prisma/client').Produit>} produit
+     */
     try {
-
         const products = await prisma.Produit.findMany({
             select:{
                 id: true,
@@ -19,6 +23,11 @@ const getAllProducts = async () => {
 }
 
 const getAll = async (id) => {
+      /**
+     * @description get all products in distributor with id from the database and return them as an array of objects or null if there is an error
+    * @param {number} (id)
+     * @returns {Promise<null| import('@prisma/client').ProduitDistributeur>} produitDistributeur
+     */
     try {
         const produits = await prisma.ProduitDistributeur.findMany({
             where: {
@@ -42,6 +51,11 @@ const getAll = async (id) => {
 }
 
 const getAllAvailable = async (id) => {
+    /**
+     * @description get all products avaialble in distributor with id from the database and return them as an array of objects or null if there is an error
+    * @param {number} (id)
+     * @returns {Promise<null| import('@prisma/client').ProduitDistributeur>} produitDistributeur
+     */
     try {
         const produits = await prisma.ProduitDistributeur.findMany({
             where: {
@@ -65,31 +79,14 @@ const getAllAvailable = async (id) => {
     }
 }
 
-const getAllProduitsBoisson = async (boissonId) => {
-    try {
-        const produits = await prisma.boissonProduit.findMany({
-            where: {
-              idBoisson:  parseInt(boissonId),
-            },
-            select: {
-              produit: {
-                select: {
-                  id: true,
-                  label: true,
-                }
-              },
-              quantite: true,
-            },
-          });
-          
-        return produits; //array of produits
-    } catch (error) {
-        return (catchPrismaClientError(error));
-    }
-}
+
 
 const getProductById = async (id) => {
-    
+        /**
+     * @description get the product with produitID from the database and return it as an object or null if there is an error
+     * @param {number} (id)
+     * @returns {Promise<null| import('@prisma/client').Produit>} produit
+    */
     try {
         const product = await prisma.Produit.findUnique({
             where: {
@@ -109,6 +106,11 @@ const getProductById = async (id) => {
 
 
 const getProductDistributeurById = async ( distributeurId,productId) => {
+      /**
+     * @description get the product with produitID in distributeur with distributeurId from the database and return it as an object or null if there is an error
+     * @param {number} ( distributeurId,productId)
+     * @returns {Promise<null| import('@prisma/client').ProduitDistributeur>} produitDistributeur
+    */
     try {
       const produit = await prisma.ProduitDistributeur.findUnique({
         where: {
@@ -135,35 +137,15 @@ const getProductDistributeurById = async ( distributeurId,productId) => {
     }
   };
 
-  const getProduitBoisson = async ( boissonId,productId) => {
-    try {
-      const produit = await prisma.boissonProduit.findUnique({
-        where: {
-          idBoisson_idProduit: {
-            idBoisson: parseInt(boissonId),
-            idProduit: parseInt(productId),
-          },
-        },
-        select: {
-          produit: {
-            select: {
-              id: true,
-              label: true,
-            },
-          },
-        },
-      });
-      
-      return produit;
-    } catch (error) {
-      console.log(error);
-      return (catchPrismaClientError(error));
-    }
-  };
 
 
 const createProduct = async (label) => {
-   
+         /**
+     * @description create a new product in the database and return it as an object or null if there is an error
+     * @param {number} (label)
+     * @returns {Promise<null| import('@prisma/client').Produit>} produit
+     * @throws {Error} if the product already exists
+    */
     try {
         const product = await prisma.Produit.create({
             data: {
@@ -183,6 +165,12 @@ const createProduct = async (label) => {
 
 
 const createProduitDistributeur = async (distributeurId,produitId,quantite) => {
+      /**
+     * @description create a new product in a disributeur in the database and return it as an object or null if there is an error
+     * @param {number} (distributeurId,produitId,quantite)
+     * @returns {Promise<null| import('@prisma/client').ProduitDistributeur>} produitDistributeur
+     * @throws {Error} if the product already exists
+    */
     try {
         const newProduitDistributeur = await prisma.ProduitDistributeur.create({
             data: {
@@ -211,36 +199,16 @@ const createProduitDistributeur = async (distributeurId,produitId,quantite) => {
     }
 }
 
-const createProduitBoisson = async (boissonId,produitId,quantite) => {
-    try {
-        const newProduitBoisson = await prisma.boissonProduit.create({
-            data: {
-                produit: { connect: { id: parseInt(produitId) } },
-                boisson: { connect: { id: parseInt(boissonId) } },//establish connection with an existing record
-                quantite:parseFloat(quantite),
-            },
-            select: {
-                idBoisson: true,
-                idProduit: true,
-                quantite: true,
-                produit: {
-                    select: {
-                        id: true,
-                        label: true,
-                    }
-                }
-            }
-        });
 
-        return newProduitBoisson;
-    } catch (error) {
-        console.log(error);
-        return (catchPrismaClientError(error));
-        
-    }
-}
 
 const updateProduct = async (productId, data) => {
+      /**
+     * @description update the product with produitID in the database and return it as an object or null if there is an error
+     * @param {number} (productId,data)
+     * @param {import('@prisma/client').Produit} product
+     * @returns {Promise<null| import('@prisma/client').Produit>} produit
+     * @throws {Error} if the product does not exist
+     */
     try {
         const updatedProduct = await prisma.Produit.update({
             where: {
@@ -262,6 +230,13 @@ const updateProduct = async (productId, data) => {
 }
 
 const updateProductDistributeur = async (distributeurId,productId, quantite) => {
+      /**
+     * @description update the product quantity with produitID and distributeur distributeurId in the database and return it as an object or null if there is an error
+     * @param {number} (distributeurId,productId,quantity)
+     * @param {import('@prisma/client').ProduitDistributeur} produitDistributeur
+     * @returns {Promise<null| import('@prisma/client').produitDistributeur>} produitDistributeur
+     * @throws {Error} if the product or distributeur does not exist
+     */
     try {
         const updatedProduitDistributeur = await prisma.ProduitDistributeur.update({
             where: {
@@ -293,41 +268,16 @@ const updateProductDistributeur = async (distributeurId,productId, quantite) => 
     }
 }
 
-const updateProduitBoisson = async (boissonId,productId, quantite) => {
-    try {
-        const updatedProduitBoisson = await prisma.boissonProduit.update({
-            where: {
-              idBoisson_idProduit: {
-                idProduit: parseInt(productId),
-                idBoisson: parseInt(boissonId),
-              },
-            },
-            data: {
-                quantite: quantite,
-              },
-            select: {
-              idBoisson: true,
-              idProduit: true,
-              quantite: true,
-              produit: {
-                  select: {
-                      id: true,
-                      label: true,
-                      }
-                    }
-                  }
-          });
-          return updatedProduitBoisson
-         
-    } catch (error) {
-        return (catchPrismaClientError(error));
-    }
-}
-  
+
 
 
 
 const deleteProduct = async (id) => {
+       /**
+     * @description delete the product with produitId from the database and return it as an object or null if there is an error
+     * @param {number} (produitId)
+     * @returns {Promise<null| import('@prisma/client').Produit>} produit
+    */
     try {
         const deletedProduct =await prisma.Produit.delete({
             where: {
@@ -342,6 +292,11 @@ const deleteProduct = async (id) => {
 
 
 const deleteProduitDistributeur = async (distributeurId,produitId) => {
+     /**
+     * @description delete the product with produitId from distributor with distributeurId from the database and return it as an object or null if there is an error
+     * @param {number} (distributeurId,produitId)
+     * @returns {Promise<null| import('@prisma/client').ProduitDistributeur>} produitDistributeur
+    */
     try {
         const deletedProduit =await prisma.ProduitDistributeur.delete({
           where: {
@@ -369,33 +324,7 @@ const deleteProduitDistributeur = async (distributeurId,produitId) => {
 }
 
 
-const deleteProduitBoisson = async (boissonId,produitId) => {
-    try {
-        const deletedProduit =await prisma.boissonProduit.delete({
-          where: {
-            idBoisson_idProduit: {
-              idProduit: parseInt(produitId),
-              idBoisson: parseInt(boissonId),
-            },
-          },
-            select: {
-              idBoisson: true,
-              idProduit: true,
-              quantite: true,
-              produit: {
-                  select: {
-                      id: true,
-                      label: true,
-                  }
-              }
-          }
-        });
-        return deletedProduit;
-    } catch (error) {
-      return (catchPrismaClientError(error));
-    }
-}
 
 
 
-module.exports = { getAllProducts, getProductById, createProduct, deleteProduct, updateProduct , getAll , getAllAvailable , getAllProduitsBoisson,getProductDistributeurById , getProduitBoisson ,createProduitDistributeur, createProduitBoisson , updateProductDistributeur , updateProduitBoisson , deleteProduitDistributeur , deleteProduitBoisson }
+module.exports = { getAllProducts, getProductById, createProduct, deleteProduct, updateProduct , getAll , getAllAvailable ,getProductDistributeurById  ,createProduitDistributeur , updateProductDistributeur  , deleteProduitDistributeur  }

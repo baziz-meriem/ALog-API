@@ -1,4 +1,4 @@
-const { getProductById, createProduct, deleteProduct, getAllProducts, updateProduct, getAll, getAllAvailable, getProductDistributeurById, getProduitBoisson, createProduitDistributeur, createProduitBoisson, updateProductDistributeur, updateProduitBoisson, deleteProduitDistributeur, deleteProduitBoisson, getAllProduitsBoisson } = require('../../services/resourceManagement/produitService');
+const { getProductById, createProduct, deleteProduct, getAllProducts, updateProduct, getAll, getAllAvailable, getProductDistributeurById, createProduitDistributeur, updateProductDistributeur, deleteProduitDistributeur } = require('../../services/resourceManagement/produitService');
 
 const getAllHandler = async (req, res) => {
    
@@ -31,17 +31,7 @@ const getAllAvailableHandler = async (req, res) => {
       }
 }
 
-const getAllProductsBoissonHandler = async (req, res) => {
-    try {
-        const { id } =  req.params;
-        const produits = await getAllProduitsBoisson(id);
-        
-        return res.status(200).json({ status: 'success', data: produits });
-      } catch (error) {
-        console.log(error);
-        return res.status(500).json({ status: 'Internal Server Error', message: 'an error occurred' });
-      }
-}
+
 const getOneHandler = async (req, res) => {
     const { id } = req.params;
     const product = await getProductById(id);
@@ -59,14 +49,7 @@ const getOneProductDistributeurHandler = async (req, res) => {
     return res.status(200).json({ status: 'success', data: produit });
 }
 
-const getOneProductBoissonHandler = async (req, res) => { 
-    const { boissonId, produitId } = req.params;
-    const produit = await getProduitBoisson(boissonId ,produitId);
-    if (!produit) {
-        return res.status(404).json({ status: 'Not Found', message: 'product not found' });
-    }
-    return res.status(200).json({ status: 'success', data: produit });
-}
+
 
 const postHandler = async (req, res) => {
     const {label} = req.body;
@@ -86,18 +69,7 @@ const postProduitDistributeurHandler = async (req, res) => {
     }
     return res.status(201).json({ status: 'success', data: newProduit });
 }
-const postProduitBoissonHandler = async (req, res) => { 
-    const {boissonId,produitId} = req.params;
-    const {quantite} = req.body;
 
-    const newProduit = await createProduitBoisson(boissonId,produitId,quantite);
-    
-    if( !newProduit )
-    {
-        return res.status(400).json({ status: 'Bad Request', message: "error adding product to drink" });
-    }
-    return res.status(201).json({ status: 'success', data: newProduit });
-}
 
 
 const putHandler = async (req, res) => {
@@ -129,21 +101,6 @@ const putProduitDistributeurHandler = async (req, res) => {
     }
     return res.status(201).json({ status: 'success', data: newProduit });
 }
-const putProduitBoissonHandler = async (req, res) => { 
-    const {boissonId,produitId} = req.params;
-    const {quantite} = req.body;
-    const produit = await getProduitBoisson(boissonId,produitId);
-    if (!produit) {
-        return res.status(404).json({ status: 'Not Found', message: 'product not found in specified drink' });
-    }
-    const newProduit = await updateProduitBoisson(boissonId,produitId,quantite);
-    
-    if( !newProduit )
-    {
-        return res.status(400).json({ status: 'Bad Request', message: "error updating product in drink" });
-    }
-    return res.status(201).json({ status: 'success', data: newProduit });
-}
 
 
 const deleteHandler = async (req, res) => {
@@ -163,28 +120,20 @@ const deleteProduitDistributeurHandler = async (req, res) => {
     return res.status(200).json({ status: 'success', data: deletedProduct });
 }
 
-const deleteProduitBoissonHandler = async (req, res) => {
-    const { boissonId,produitId } = req.params;
-    const deletedProduct = await deleteProduitBoisson(boissonId,produitId);
-    return res.status(200).json({ status: 'success', data: deletedProduct });
-}
+
 
 
 module.exports = {
     getAllHandler,
     getAllProductsDistributeurHandler,
     getAllAvailableHandler,
-    getAllProductsBoissonHandler,
     getOneHandler,
     getOneProductDistributeurHandler,
-    getOneProductBoissonHandler,
     postHandler,
     postProduitDistributeurHandler,
-    postProduitBoissonHandler, 
     putHandler,
     putProduitDistributeurHandler,
-    putProduitBoissonHandler,
     deleteHandler,
     deleteProduitDistributeurHandler,
-    deleteProduitBoissonHandler
+    
 }

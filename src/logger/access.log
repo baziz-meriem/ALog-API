@@ -3979,3 +3979,4 @@
 ::1 - - [24/Apr/2023:00:31:08 +0000] "GET /api/v1/ressourceMangement/produit/distributeur/5/2 HTTP/1.1" 404 52 "-" "PostmanRuntime/7.29.2"
 ::1 - - [24/Apr/2023:00:31:15 +0000] "GET /api/v1/ressourceMangement/produit/distributeur/5 HTTP/1.1" 200 79 "-" "PostmanRuntime/7.29.2"
 ::1 - - [24/Apr/2023:00:31:23 +0000] "GET /api/v1/ressourceMangement/produit HTTP/1.1" 200 79 "-" "PostmanRuntime/7.29.2"
+::1 - - [24/Apr/2023:13:34:24 +0000] "GET /api/v1/ressourceMangement/produit HTTP/1.1" 200 79 "-" "PostmanRuntime/7.29.2"
