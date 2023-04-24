@@ -25,7 +25,7 @@ describe("panne route", () => {
         });
     });
     describe("GET /:id", () => {
-        it("should return 200", async () => {
+        it("should return 200", async () => { 
             const response = await request.get(route + `/${panneTest.id}`);
             expect(response.status).toBe(200);
         });

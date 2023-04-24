@@ -19,7 +19,7 @@ const createReply = async (idReclamation,description) => {
             data: {
                 idReclamation,
                 description
-            }
+            } 
         })
         return reply;
     } catch (error) {
