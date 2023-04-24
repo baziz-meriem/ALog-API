@@ -4,7 +4,7 @@ const { paymentHandler ,cancelPayementHandler,confirmPayementHandler,webhookHand
 /**
  * @swagger
  *
- * /api/v1/payementManagement/payment/pay:
+ * /api/v1/paymentManagement/payment/pay:
  *   post:
  *     summary: Create a payment intent with Stripe API
  *     tags:
@@ -96,7 +96,7 @@ route.post('/pay', paymentHandler);
 
 /**
  * @swagger
- * /api/v1/payementManagement/payment/cancel:
+ * /api/v1/paymentManagement/payment/cancel:
  *   post:
  *     summary: Cancel a payment.
  *     description: Cancels a payment intent using the Stripe API. If the payment has already been captured, a refund will be issued automatically. Otherwise, the payment intent will be cancelled and the funds will not be collected.
@@ -161,8 +161,8 @@ route.post('/pay', paymentHandler);
 route.put('/cancel', cancelPayementHandler);
 /**
  * @swagger
- * /api/v1/payementManagement/payment/confirm:
- *   post:
+ * /api/v1/paymentManagement/payment/confirm:
+ *   put:
  *     summary: Confirms a payment using the provided paymentIntentId
  *     description: Confirms a payment using the provided paymentIntentId.
  *     tags:
@@ -221,7 +221,7 @@ route.post('/webhooks', webhookHandler);
 /**
  * @swagger
  *
- * /api/v1/payementManagement/payment/:
+ * /api/v1/paymentManagement/payment/:
  *   get:
  *     summary: Retrieve all payments
  *     description: Returns all payments inserted in the database
@@ -253,7 +253,7 @@ route.post('/webhooks', webhookHandler);
 route.get('/', getAllHandler); 
 /**
  * @swagger
- * /api/v1/payementManagement/payment/{id}:
+ * /api/v1/paymentManagement/payment/{id}:
  *   get:
  *     summary: Get a single payment by ID
  *     tags: [Payment] 
@@ -294,7 +294,7 @@ route.get('/', getAllHandler);
 route.get('/:id', getOneHandler);
 /**
  * @swagger
- * /api/v1/payementManagement/payment:
+ * /api/v1/paymentManagement/payment:
  *   post:
  *     summary: Create a new payment
  *     description: Creates a new payment with the provided data in the request body
@@ -361,7 +361,7 @@ route.get('/:id', getOneHandler);
 route.post('/', createHandler);
 /**
  * @swagger
- * /api/v1/payementManagement/payment/{id}:
+ * /api/v1/paymentManagement/payment/{id}:
  *   put:
  *     summary: Update a payment by ID
  *     description: Updates a payment's etat by ID in the database
@@ -412,7 +412,7 @@ route.post('/', createHandler);
 route.put('/:id', updateHandler);
 /**
  * @swagger
- * /api/v1/payementManagement/payment/{id}:
+ * /api/v1/paymentManagement/payment/{id}:
  *   delete:
  *     summary: Delete a payment by ID
  *     tags: [Payment]

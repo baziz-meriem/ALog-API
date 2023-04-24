@@ -194,6 +194,7 @@ const webhookHandler = async (req, res) => {
     const paymentIntent = event.data.object;
     const cardNumber = paymentIntent.metadata.cardNumber;
     const typeCarte = creditCardType(cardNumber)[0].niceType;
+    console.log(event.type);
 
     switch (event.type) {
 
@@ -211,6 +212,7 @@ const webhookHandler = async (req, res) => {
             typeCarte,
             monnaie,
             idCommande,
+            paymentIntentId:paymentIntent.id
           });
 
           if (!DBpayment) {
@@ -408,6 +410,7 @@ const createHandler = async (req, res) => {
     typeCarte,
     monnaie,
     idCommande,
+    paymentIntentId: null,
   });
   if (!payment) {
     return res.status(400).json({

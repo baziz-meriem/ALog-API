@@ -25,7 +25,7 @@ const getOnePayment = async (id) => {
   }
 }
 
-const createDBPayment = async ({ montant, etat, typeCarte, monnaie, idCommande }) => {
+const createDBPayment = async ({ montant, etat, typeCarte, monnaie, idCommande, paymentIntentId }) => {
   try {
       const payment = await prisma.Payment.create({
           data: {
@@ -33,6 +33,7 @@ const createDBPayment = async ({ montant, etat, typeCarte, monnaie, idCommande }
             etat,
             typeCarte,
             monnaie,
+            paymentIntentId,
             commande: {
               connect: {
                 id: idCommande
