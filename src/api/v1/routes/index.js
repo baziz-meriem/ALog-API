@@ -20,8 +20,6 @@ const stats = require('./stats')
 // client routes
 const specific_get = require('./specific_get');
 
-//authentication routes
-const authentication = require('./auth');
 //product routes
 const ressourceMangement = require('./resourceManagement');
 
