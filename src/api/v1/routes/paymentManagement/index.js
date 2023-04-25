@@ -65,6 +65,48 @@ route.use('/payment', paymentRoute);
  *           type: integer
  *           description: ID of the Boisson that was ordered
  */
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Commande_Details:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: Commande's ID
+ *         date:
+ *           type: string
+ *           format: date-time
+ *           description: Date the Commande was created
+ *         etat:
+ *           type: string
+ *           description: The state of the Commande
+ *         idConsommateur:
+ *           type: integer
+ *           description: ID of the Consommateur who made the Commande
+ *         idDistributeur:
+ *           type: integer
+ *           description: ID of the Distributeur who received the Commande
+ *         idBoisson:
+ *           type: integer
+ *           description: ID of the Boisson that was ordered
+ *         Boisson:
+ *           type: object
+ *           properties:
+ *              id:
+ *               type: integer
+ *               description: Boisson's ID
+ *              label:
+ *               type: string
+ *               description: Boisson's name
+ *              description:
+ *               type: string
+ *               description: Boisson's description
+ *         amount:
+ *           type: number
+ *           description: The amount To pay    
+ */
 
 route.use('/commande', commandeRoute);
 /**

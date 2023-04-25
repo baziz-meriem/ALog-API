@@ -87,7 +87,7 @@ route.get('/user/:id',getByUserHandler);
  *                 message:
  *                   type: string
  *                 data:
- *                   $ref: '#/components/schemas/Commande'
+ *                   $ref: '#/components/schemas/Commande_Details'
  *       '400':
  *         description: Bad Request
  *         content:
