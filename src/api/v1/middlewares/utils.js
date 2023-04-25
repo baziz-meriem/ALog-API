@@ -1,7 +1,49 @@
 const jwt = require("jsonwebtoken");
 const nodeMailer = require("nodemailer");
-const bcrypt = require('bcrypt');
+const creditCardType = require("credit-card-type");
+const bcrypt = require("bcrypt");
 const crypto = require("crypto");
+const fs = require("fs");
+
+async function sendBillingEmail(paymentIntent, reciept_email) {
+
+  // Create the transporter object to send emails
+  const transporter = nodeMailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
+    auth: {
+      user: process.env.SMPT_MAIL,
+      pass: process.env.SMPT_PASSWORD,
+    },
+  });
+  // Read the HTML file content
+  const invoiceTemplate = fs.readFileSync("./src/api/v1/templates/invoice.html","utf-8");
+  const cardNumber = paymentIntent.metadata.cardNumber;
+  const CardType = creditCardType(cardNumber)[0].niceType;
+  // Format the payment data
+  const paymentData = {
+    amount: (paymentIntent.amount / 100).toFixed(2),
+    currency: paymentIntent.currency.toUpperCase(),
+    date: new Date(paymentIntent.created * 1000).toLocaleString(),
+    cardType: CardType,
+    cardNumber:cardNumber,
+    boissonLabel: paymentIntent.metadata.boissonLabel,
+  };
+
+  // Replace variables in the template with payment data
+  const formattedInvoice = invoiceTemplate.replace(/{(\w+)}/g, (match, key) => {
+    return paymentData[key] || match;
+  });
+
+  // Send the email
+  const mailOptions = {
+    from: process.env.SMPT_MAIL,
+    to: reciept_email,
+    subject: "Votre reçu de paiement",
+    html: formattedInvoice,
+  };
+  await transporter.sendMail(mailOptions);
+}
 
 const sendEmail = async (options) => {
   const transporter = nodeMailer.createTransport({
@@ -22,7 +64,6 @@ const sendEmail = async (options) => {
   };
 
   await transporter.sendMail(mailOptions);
-
 };
 
 const getJWTToken = (user, role) => {
@@ -75,19 +116,23 @@ const getResetPasswordToken = (user) => {
 
   user.resetPasswordExpire = new Date(Date.now() + 24 * 60 * 60 * 1000);
   return { resetCode: resetToken, user: user };
-
 };
 
 const comparePassword = async function (addedPassword, userPassword) {
   try {
     return await bcrypt.compare(addedPassword, userPassword);
-
   } catch (error) {
     console.error(error);
-    throw new Error('Error comparing passwords');
+    throw new Error("Error comparing passwords");
   }
-
 };
 
-
-module.exports = { sendToken, getJWTToken, getResetPasswordCode, sendEmail, comparePassword, getResetPasswordToken }
+module.exports = {
+  sendBillingEmail,
+  sendToken,
+  getJWTToken,
+  getResetPasswordCode,
+  sendEmail,
+  comparePassword,
+  getResetPasswordToken,
+};
