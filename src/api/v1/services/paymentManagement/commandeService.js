@@ -14,6 +14,9 @@ const getOneCommande = async (id) => {
         const commande = await prisma.commande.findUnique({
             where: {
                 id
+            },
+            include:{
+                boisson:true,
             }
         });
         return commande;

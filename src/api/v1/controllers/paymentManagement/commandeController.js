@@ -9,6 +9,7 @@ const {
   updateCommandeEtat,
   deleteCommande,
 } = require("../../services/paymentManagement/commandeService");
+const { getboissonById } = require("../../services/resourceManagement/boissonService");
 
 const getAllHandler = async (req, res) => {
   const commandes = await getAllCommandes();
@@ -36,7 +37,7 @@ const getOneHandler = async (req, res) => {
       message: "Invalid id",
     });
   }
-  // call the service to get one annonce
+  // call the service to get one commande
   const commande = await getOneCommande(valideId);
   if (!commande) {
     return res.status(400).json({
@@ -45,6 +46,16 @@ const getOneHandler = async (req, res) => {
       data: null,
     });
   }
+  // get the price of the boisson from the boisson service
+  const {prix} = await getboissonById(commande.idDistributeur, commande.idBoisson)
+  if (!prix) {
+    return res.status(500).json({
+      status: "Internal Server Error",
+      message: "An error occured while trying to get all commandes",
+      data: null,
+    });
+  }
+  commande.amount = prix
   return res.status(200).json({
     status: "OK",
     message: "commande retrieved successfully",
