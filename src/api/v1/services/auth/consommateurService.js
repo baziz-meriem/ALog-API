@@ -110,7 +110,6 @@ const updateCostumerResetCode = async (email, costumer) => {
      * @param {import('@prisma/client').Consommateur} customer
      * @returns {Promise<null| import('@prisma/client').Consommateur>} customer
      * @throws {Error} if the email does not exist
-
      */
     try {
         const updatedCustomer = await prisma.Consommateur.update({

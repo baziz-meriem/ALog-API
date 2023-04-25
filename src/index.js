@@ -77,9 +77,10 @@ const socket = socketIO(server, {
 // call socket handler
 socketHandler(socket);
 // Starting the server
-const port = process.env.PORT || 8080;
-server.listen(port, () => {
-  console.log(`Server on port ${port}`);
+const port= process.env.PORT || 8080;
+app.listen(port, () => {
+    console.log(`Server on port ${port}` ) ;
+
 }
 );
 module.exports = server;

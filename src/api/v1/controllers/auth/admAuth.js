@@ -5,9 +5,9 @@ const {  validateEmail, validatePassword } = require('../../validators/inputVali
 const crypto = require("crypto");
 
 const login = async (req, res) => {
-    // retrieve the adm from the request
+    // retrieve the ac from the request
     const { email, password } = req.body;
-    // checking if adm has given password and email both
+    // checking if ac has given password and email both
     if (!email || !password) {
         return res.status(400).json({ status: 'Bad Request', message: 'Please Enter Email & Password' });
     }
@@ -15,19 +15,19 @@ const login = async (req, res) => {
     const valideAdm = validateEmail(email) && validatePassword(password) ;
     // if there is an error, return a 400 status code
     if (!valideAdm) {
-        return res.status(400).json({ status: 'Bad Request', message: "provided adm is not valid" });
+        return res.status(400).json({ status: 'Bad Request', message: "provided ac is not valid" });
     }
   
-    // call the service to get the adm by email
+    // call the service to get the ac by email
     const adm = await getAdmByEmail(email);
-    // return the adm
+    // return the ac
     if (!adm) {
-        return res.status(404).json({ status: 'Not Found', message: 'ADM not found, Invalid Email or Password' });
+        return res.status(404).json({ status: 'Not Found', message: 'AC not found, Invalid Email or Password' });
     }
     //compare between entered password and the one retrieved
-    const isPasswordMatched = await comparePassword(password,adm.mot_de_passe)
+    const isPasswordMatched = await comparePassword(password,adm.password)
     if (!isPasswordMatched) {
-        return res.status(401).json({ status: 'Not Found', message: 'ADM not found, Invalid Password' });
+        return res.status(401).json({ status: 'Not Found', message: 'AC not found, Invalid Password' });
     }
     //send auth token
     sendToken(adm,"ADM", 200, res);

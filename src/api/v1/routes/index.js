@@ -1,4 +1,5 @@
 const route = require('express').Router();
+
 //profile routes
 const profileManagement = require('./profileManagement');
 //resource routes
@@ -19,9 +20,12 @@ const stats = require('./stats')
 // client routes
 const specific_get = require('./specific_get');
 
-route.use('/profileManagement', profileManagement);
+//product routes
+const ressourceMangement = require('./resourceManagement');
 
-route.use('/resourceManagement', resourceManagement);
+
+route.use('/auth', authentication)
+route.use('/ressourceMangement', ressourceMangement)
 
 route.use('/paymentManagement', paymentManagement);
 

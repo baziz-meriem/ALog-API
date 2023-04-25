@@ -24,7 +24,7 @@ const login = async (req, res) => {
         return res.status(404).json({ status: 'Not Found', message: 'Decideur not found, Invalid Email or Password' });
     }
     //compare between entered password and the one retrieved
-    const isPasswordMatched = await comparePassword(password,decideur.mot_de_passe)
+    const isPasswordMatched = await comparePassword(password,decideur.password)
     if (!isPasswordMatched) {
         return res.status(401).json({ status: 'Not Found', message: 'Decideur not found, Invalid Password' });
     }

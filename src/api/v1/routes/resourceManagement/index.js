@@ -1,8 +1,11 @@
 const route = require('express').Router();
 
 const distributeurRoute = require('./distributeurRoute');
-const regionRoute = require('./regionRoute');
+
+const productRoute = require('./productRoute');
 const supplementRoute = require('./supplementRoute');
+
+const regionRoute = require('./regionRoute');
 const boissonRoute = require('./boissonRoute');
 const panneRoute = require('./panneRoute')
 const typePanneRoute = require('./typePanneRoute')
@@ -54,21 +57,10 @@ route.use('/distributeur', distributeurRoute)
  */
 route.use('/region', regionRoute)
 
-/**
- * @swagger
- * components:
- *  schemas:
- *    supplement:
- *      type: object
- *      properties:
- *        id:
- *          type: integer
- *          description: supplement's id
- *        label:
- *          type: string
- *          description: supplement's label
- */
+route.use('/produit', productRoute)
+
 route.use('/supplement', supplementRoute)
+
 
 /**
  * @swagger
