@@ -25,7 +25,7 @@ const ressourceMangement = require('./resourceManagement');
 
 
 route.use('/auth', authentication)
-route.use('/ressourceMangement', ressourceMangement)
+route.use('/resourceManagement', ressourceMangement)
 
 route.use('/paymentManagement', paymentManagement);
 
