@@ -42,5 +42,7 @@ route.use('/stats', stats);
 
 route.use('', specific_get);
 
+route.use('/profileManagement', profileManagement);
+
 
 module.exports = route;
