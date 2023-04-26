@@ -3,7 +3,7 @@ const paymentRoute= require('./paymentRoute')
 const commandeRoute= require('./commandeRoute')
 const creditCardRoute=require('./creditCardRoute')
 const creditCardTypeRoute=require('./creditCardTypeRoute')
-
+const {isAuth, isConsommateur}= require('../../middlewares/auth')
 
 
 /**
@@ -164,7 +164,7 @@ route.use('/commande', commandeRoute);
  *          type: integer
  *          description: Consommateur's id that the credit card is related to
  */
-route.use('/creditCard',creditCardRoute)
+route.use('/creditCard', isAuth, isConsommateur, creditCardRoute)
 /**
  * @swagger
  * components:
