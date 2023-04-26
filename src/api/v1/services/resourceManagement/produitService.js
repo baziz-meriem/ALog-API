@@ -1,6 +1,6 @@
 const prisma = require('../../../../config/dbConfig')
 const bcrypt = require('bcrypt');
-
+const { catchPrismaClientError } = require('../../validators/catchPrismaClientError');
 
 const getAllProducts = async () => {
       /**
