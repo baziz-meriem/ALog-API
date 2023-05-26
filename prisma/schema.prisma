@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:password@/5.tcp.eu.ngrok.io:12328/Alog_Drinks"
+  url      = "postgresql://postgres:password@5.tcp.eu.ngrok.io:12328/Alog_Drinks"
 }
 
 model TentativeVol {

@@ -45,3 +45,8 @@
 ::1 - - [25/Apr/2023:21:16:32 +0000] "GET /api/v1/paymentManagement/commande/7 HTTP/1.1" 200 245 "-" "PostmanRuntime/7.32.2"
 ::1 - - [26/May/2023:09:53:22 +0000] "POST /api/v1/paymentManagement/payment/pay HTTP/1.1" 200 186 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
 ::1 - - [26/May/2023:10:03:25 +0000] "POST /api/v1/paymentManagement/payment/pay HTTP/1.1" 200 186 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+::1 - - [26/May/2023:11:13:25 +0000] "POST /api/v1/paymentManagement/payment/pay HTTP/1.1" 200 186 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+::1 - - [26/May/2023:11:13:48 +0000] "PUT /api/v1/paymentManagement/payment/confirm HTTP/1.1" 400 64 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+::1 - - [26/May/2023:11:14:04 +0000] "PUT /api/v1/paymentManagement/payment/confirm HTTP/1.1" 200 77 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+::1 - - [26/May/2023:11:15:03 +0000] "POST /api/v1/paymentManagement/payment HTTP/1.1" 400 83 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+::1 - - [26/May/2023:11:15:17 +0000] "POST /api/v1/paymentManagement/payment HTTP/1.1" 400 83 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
