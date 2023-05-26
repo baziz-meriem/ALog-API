@@ -12,19 +12,6 @@ const getAllPayments = async () => {
   }
 };
 
-const getOnePayment = async (id) => {
-  try {
-      const payment = await prisma.payment.findUnique({
-          where: {
-              id
-          }
-      });
-      return payment;
-  } catch (error) {
-      return null;
-  }
-}
-
 const createDBPayment = async ({ montant, etat, typeCarte, monnaie,paymentIntentId }) => {
   try {
       const payment = await prisma.Payment.create({
@@ -61,7 +48,6 @@ const updatePayment = async (id, etat) => {
  
 module.exports = {
   getAllPayments,
-  getOnePayment,
   createDBPayment,
   updatePayment
 

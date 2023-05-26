@@ -4,7 +4,6 @@ const { sendBillingEmail } = require("../../middlewares/utils");
 const stripe = require("stripe")(process.env.STRIPE_API_KEY);
 const {
   getAllPayments,
-  getOnePayment,
   createDBPayment,
   updatePayment
 } = require("../../services/paymentManagement/paymentService");
@@ -238,30 +237,6 @@ const getAllHandler = async (req, res) => {
   });
 };
 
-const getOneHandler = async (req, res) => {
-  // get the id from the request params
-  const { id } = req.params;
-  // call validateId to validate the id
-  const valideId = validateId(id);
-  if (!valideId) {
-    return res.status(400).json({
-      status: "Bad Request",
-      message: "Invalid id",
-    });
-  }
-  const payment = await getOnePayment(valideId);
-  if (!payment) {
-    return res.status(400).json({
-      status: "Bad Request",
-      message: "Error while getting payment, invalid id",
-    });
-  }
-  return res.status(200).json({
-    status: "OK",
-    message: "payment retrieved successfully",
-    data: payment,
-  });
-};
 
 const createHandler = async (req, res) => {
   // get the data from the request body
@@ -315,7 +290,6 @@ module.exports = {
   confirmPayementHandler,
   webhookHandler,
   getAllHandler,
-  getOneHandler,
   createHandler,
   updateHandler
 };

@@ -19,7 +19,7 @@ const getAllAvailableHandler = async (req, res) => {
         const boissons = await getAllAvailable(id);
         if (!boissons) {
           return res.status(404).json({ status: 'Not Found', message: 'an error occured no available drink found' });
-        }
+        } 
         return res.status(200).json({ status: 'success', data: boissons });
       } catch (error) {
         console.log(error);
