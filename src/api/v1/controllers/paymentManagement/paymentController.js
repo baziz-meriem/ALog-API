@@ -117,19 +117,19 @@ const webhookHandler = async (req, res) => {
     const typeCarte = creditCardType(cardNumber)[0].niceType;
 
     switch (event.type) {
-
+      
       case "payment_intent.created":
         const monnaie = paymentIntent.currency;
         const montant = paymentIntent.amount;
 
         try {
-          
+          console.log("--------------payInt---------------",paymentIntent.id)
           const DBpayment = await createDBPayment({
             montant,
             etat: "en attente",
             typeCarte,
             monnaie,
-            paymentIntentId:paymentIntent.id
+            paymentIntentId:null
           });
 
           if (!DBpayment) {
