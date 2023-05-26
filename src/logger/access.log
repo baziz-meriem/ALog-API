@@ -56,3 +56,5 @@
 ::1 - - [26/May/2023:12:36:46 +0000] "POST /api/v1/paymentManagement/pay HTTP/1.1" 404 36 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
 ::1 - - [26/May/2023:12:37:18 +0000] "POST /api/v1/paymentManagement/payment/pay HTTP/1.1" 400 61 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
 ::1 - - [26/May/2023:12:41:51 +0000] "POST /api/v1/paymentManagement/payment HTTP/1.1" 201 214 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+::1 - - [26/May/2023:13:07:47 +0000] "POST /api/v1/paymentManagement/pay HTTP/1.1" 404 36 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+::1 - - [26/May/2023:13:09:15 +0000] "POST /api/v1/paymentManagement/pay HTTP/1.1" 404 36 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"

@@ -3,7 +3,6 @@ const { validatePaymentData } = require("../../validators/payementValidation");
 const creditCardType = require("credit-card-type");
 const { sendBillingEmail } = require("../../middlewares/utils");
 const stripe = require("stripe")(process.env.STRIPE_API_KEY);
-const axios = require('axios');
 const {
   getAllPayments,
   getOnePayment,
@@ -47,10 +46,7 @@ const paymentHandler = async (req, res) => {
         receipt_email: data.email, //the email where the receipt will be sent
         confirm: false, // set confirm to false to require manual confirmation
         metadata: {
-          // to store additionnal data
-          boissonLabel: data.boissonLabel,
           cardNumber: data.cardNumber,
-          boissonId: data.boissonId,
         },
       });
 
@@ -81,13 +77,6 @@ const cancelPayementHandler = async (req, res) => {
   try {
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
 
-    // Check if payment has already been captured
-    if (paymentIntent.status === "succeeded") {
-      // Payment has been captured, call the refunding function
-      await refundPaymentHandler(paymentIntent, res)
-
-    } else {
-      // Payment has not been captured, cancel the PaymentIntent
       const cancelledPaymentIntent = await stripe.paymentIntents.cancel(
         paymentIntent.id
       );
@@ -96,7 +85,7 @@ const cancelPayementHandler = async (req, res) => {
         message: "payment canceled successfully",
         data: cancelledPaymentIntent.status,
       });
-    }
+    
   } catch (error) {
 
     return res.status(400).json({
