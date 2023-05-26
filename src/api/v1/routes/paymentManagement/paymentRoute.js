@@ -1,11 +1,9 @@
 const route= require('express').Router();
-const { paymentHandler ,cancelPayementHandler,confirmPayementHandler,webhookHandler,updateHandler ,deleteHandler,createHandler,getAllHandler,getOneHandler} = require('../../controllers/paymentManagement/paymentController');
+const { paymentHandler ,cancelPayementHandler,confirmPayementHandler,webhookHandler,updateHandler ,createHandler,getAllHandler,getOneHandler} = require('../../controllers/paymentManagement/paymentController');
 
 
 
 route.post('/pay', paymentHandler);
-
-
 
 route.put('/cancel', cancelPayementHandler);
 
@@ -17,11 +15,9 @@ route.get('/', getAllHandler);
 
 route.get('/:id', getOneHandler);
 
+//creates a new payment in db
 route.post('/', createHandler);
 
 route.put('/:id', updateHandler);
-
-
-route.delete('/:id', deleteHandler);
 
 module.exports = route;

@@ -41,10 +41,10 @@ const createDBPayment = async ({ montant, etat, typeCarte, monnaie, idCommande, 
             }
             }
           });
-          console.log('payment',payment)
+         
       return payment;
   } catch (error) {
-    console.error(error)
+ 
       return null;
   }
 }
@@ -62,25 +62,12 @@ const updatePayment = async (id, etat) => {
     }
 }
 
-const deletePayment = async (id) => {
-  try {
-      const payment = await prisma.payment.delete({
-          where: {
-              id
-          }
-      });
-      return payment;
-  } catch (error) { 
-      return null;
-  }
-}
 
  
 module.exports = {
   getAllPayments,
   getOnePayment,
   createDBPayment,
-  updatePayment,
-  deletePayment
+  updatePayment
 
 };

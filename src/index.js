@@ -5,8 +5,6 @@ const cors = require('cors');
 const createError = require('http-errors');
 const fs = require('fs');
 const path = require('path');
-const swaggerUI = require('swagger-ui-express');
-const swaggerDocs = require('./config/swagger');
 const http = require('http');
 const socketIO = require('socket.io');
 const socketHandler = require('./api/v1/sockets');
@@ -38,8 +36,6 @@ app.set('views', path.join(__dirname, '/api/v1/views'));
 app.use(cors({
   origin: '*'
 }));
-
-app.use('/api/v1/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 // Routes
 app.get('/api/v1', (req, res) => {

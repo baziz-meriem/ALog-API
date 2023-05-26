@@ -38,37 +38,12 @@ model SADM {
   resetPasswordExpire DateTime @default(now())
 }
 
-model Consommateur {
-  id                  Int          @id @default(autoincrement())
-  nom                 String
-  prenom              String
-  email               String       @unique
-  mot_de_passe        String
-  numTel              String
-  resetPasswordCode   String       @default("")
-  resetPasswordExpire DateTime     @default(now())
-  Commande            Commande[]
-}
-
 model Boisson {
   id                  Int                   @id @default(autoincrement())
   label               String
   description         String
-  Commande            Commande[]
 }
 
-
-model Commande {
-  id             Int          @id @default(autoincrement())
-  date           DateTime     @default(now())
-  etat           String
-  idConsommateur Int?
-  idDistributeur Int
-  idBoisson      Int
-  boisson        Boisson      @relation(fields: [idBoisson], references: [id])
-  consommateur   Consommateur? @relation(fields: [idConsommateur], references: [id])
-  Payment        Payment[]    
-}
 
 model Payment {
   id          Int           @id @default(autoincrement())
@@ -78,8 +53,6 @@ model Payment {
   etat        String
   typeCarte   String
   monnaie     String
-  idCommande  Int
-  commande    Commande      @relation(fields: [idCommande], references: [id],onDelete: Cascade)
 }
 
 
