@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = "mysql://root:@localhost:3306/alog"
+  provider = "postgresql"
+  url      = "postgresql://postgres:password@/5.tcp.eu.ngrok.io:12328/Alog_Drinks"
 }
 
 model TentativeVol {
