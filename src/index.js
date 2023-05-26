@@ -60,7 +60,7 @@ app.use('*', (req, res) => {
   res.status(404).json({ message: 'Not Found' });
 });
 
-//whsec_769b58bcad36d9892c57272e2ff0f954fcce096f7b77c889ac0dabc38cde4a9d
+
 const server = http.createServer(app);
 // call socket.io
 const socket = socketIO(server, {

@@ -3,7 +3,6 @@ const creditCardType = require("credit-card-type");
 const { sendBillingEmail } = require("../../middlewares/utils");
 const stripe = require("stripe")(process.env.STRIPE_API_KEY);
 const {
-  getAllPayments,
   createDBPayment,
   updatePayment
 } = require("../../services/paymentManagement/paymentService");
@@ -58,32 +57,6 @@ const paymentHandler = async (req, res) => {
     }
   }
 
-const cancelPayementHandler = async (req, res) => {
-
-  const paymentIntentId = req.body.paymentIntentId;
-
-  try {
-    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
-
-      const cancelledPaymentIntent = await stripe.paymentIntents.cancel(
-        paymentIntent.id
-      );
-      return res.status(200).json({
-        status: "OK",
-        message: "payment canceled successfully",
-        data: cancelledPaymentIntent.status,
-      });
-    
-  } catch (error) {
-
-    return res.status(400).json({
-      status: "Bad Request",
-      message: "payment cancelation failed",
-      error: error.message,
-    });
-  }
-};
-
 const confirmPayementHandler = async (req, res) => {
 
   const paymentIntentId = req.body.paymentIntentId;
@@ -117,19 +90,21 @@ const webhookHandler = async (req, res) => {
     const typeCarte = creditCardType(cardNumber)[0].niceType;
 
     switch (event.type) {
-      
+      //stripe listen --forward-to http://localhost:3000/webhook
+      //stripe trigger payment_intent.created
       case "payment_intent.created":
+        const paymentIntentId=paymentIntent.id;
         const monnaie = paymentIntent.currency;
         const montant = paymentIntent.amount;
 
         try {
-          console.log("--------------payInt---------------",paymentIntent.id)
+          
           const DBpayment = await createDBPayment({
             montant,
             etat: "en attente",
             typeCarte,
             monnaie,
-            paymentIntentId:null
+            paymentIntentId
           });
 
           if (!DBpayment) {
@@ -153,6 +128,7 @@ const webhookHandler = async (req, res) => {
       case "payment_intent.succeeded":
 
         const id = parseInt(paymentIntent.metadata.paymentId);
+        
   
         try {
             const updateSucceedpayment = await updatePayment(id, "réussi");
@@ -162,11 +138,15 @@ const webhookHandler = async (req, res) => {
                 status: "Error",
                 message: "Error while updating payment",
               });
-            } else {
+            }
+          } catch (error) {
+            res.status(400).send("payment failed to update: " + error.message);
+          }
+             
 
               // Send billing email to the payer
-              try {
-
+ /*             try {
+                
                 await sendBillingEmail(
                   paymentIntent,
                   event.data.object.receipt_email
@@ -177,38 +157,14 @@ const webhookHandler = async (req, res) => {
                   message: "Payment succeeded and billing email sent",
                 });
               } catch (error) {
-                // console.log(error)
+                 console.log(error)
                 return res.status(500).json({
                   status: "Error",
                   message: `Email failed to send: ${error.message}`,
                 });
-              }
-            }
-          
-        } catch (error) {
-          res.status(400).send("payment failed to update: " + error.message);
-        }
+              }*/
+        
         break;
-      case "payment_intent.canceled":
-        try {
-
-            //update payment etat to annulée
-            const Paymentid = parseInt(paymentIntent.metadata.paymentId);
-
-            const updateCanceledpayment = await updatePayment(Paymentid, etatAnnulé);
-
-            if (!updateCanceledpayment) {
-              return res.status(400).json({
-                status: "Bad Request",
-                message: "Error while updating canceled payment",
-              });
-            
-          }
-          res.status(200).send("payment state updated in db successfully");
-
-        } catch (error) {
-          res.status(400).send("An error occurred while processing cancled payment: " + error.message);
-        }
 
       default:
         // Unexpected event type
@@ -221,22 +177,6 @@ const webhookHandler = async (req, res) => {
 };
 
 //----------------------------basic CRUD----------------------
-
-const getAllHandler = async (req, res) => {
-  const payments = await getAllPayments();
-  if (!payments) {
-    return res.status(500).json({
-      status: "Internal Server Error",
-      message: "An error occured while trying to get all payments",
-    });
-  }
-  return res.status(200).json({
-    status: "OK",
-    message: "All payments retrieved successfully",
-    data: payments,
-  });
-};
-
 
 const createHandler = async (req, res) => {
   // get the data from the request body
