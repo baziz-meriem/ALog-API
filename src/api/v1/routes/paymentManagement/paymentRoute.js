@@ -16,7 +16,7 @@ route.get('/', getAllHandler);
 route.get('/:id', getOneHandler);
 
 //creates a new payment in db
-route.post('/', createHandler);
+route.post('/', createHandler); 
 
 route.put('/:id', updateHandler);
 

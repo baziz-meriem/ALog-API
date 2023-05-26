@@ -8,7 +8,6 @@ const path = require('path');
 const http = require('http');
 const socketIO = require('socket.io');
 const socketHandler = require('./api/v1/sockets');
-const ejs=require('ejs');
 
 
 require('dotenv').config();

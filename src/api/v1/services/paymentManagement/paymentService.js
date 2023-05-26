@@ -33,7 +33,7 @@ const createDBPayment = async ({ montant, etat, typeCarte, monnaie,paymentIntent
             etat,
             typeCarte,
             monnaie,
-            paymentIntentId
+            paymentIntentId 
             }
           });
          
