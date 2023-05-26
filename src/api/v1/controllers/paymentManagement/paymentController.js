@@ -226,10 +226,8 @@ const updateHandler = async (req, res) => {
 
 module.exports = {
   paymentHandler,
-  cancelPayementHandler,
   confirmPayementHandler,
   webhookHandler,
-  getAllHandler,
   createHandler,
   updateHandler
 };
