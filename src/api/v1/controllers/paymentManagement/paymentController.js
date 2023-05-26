@@ -13,15 +13,6 @@ const {
 const paymentHandler = async (req, res) => {
   //get the payment data and validate it
   const data = req.body;
-
-  if (data != "valideData") {
-    return res.status(400).json({
-      status: "Bad Request",
-      message: data,
-    });
-
-  } else {
-    const data = req.body
     try {
       const paymentMethod = await stripe.paymentMethods.create({
         type: "card", //it supports various cards -> listed in the website with tests card numbers
@@ -67,7 +58,6 @@ const paymentHandler = async (req, res) => {
       });
     }
   }
-};
 
 const cancelPayementHandler = async (req, res) => {
 
