@@ -1,5 +1,4 @@
 const { validateId } = require("../../validators/inputValidation");
-const { validatePaymentData } = require("../../validators/payementValidation");
 const creditCardType = require("credit-card-type");
 const { sendBillingEmail } = require("../../middlewares/utils");
 const stripe = require("stripe")(process.env.STRIPE_API_KEY);
@@ -13,7 +12,7 @@ const {
 
 const paymentHandler = async (req, res) => {
   //get the payment data and validate it
-  const data = await validatePaymentData(req.body);
+  const data = req.body;
 
   if (data != "valideData") {
     return res.status(400).json({
