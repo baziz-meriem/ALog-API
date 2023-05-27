@@ -1,5 +1,4 @@
 const prisma = require('../../../../config/dbConfig')
-const bcrypt = require('bcrypt');
 
 const getAcById = async (id) => {
 
@@ -14,7 +13,6 @@ const getAcById = async (id) => {
                 prenom: true,
                 email: true,
                 numTel: true,
-                idClient: true,
                 mot_de_passe: false
             }
         });
@@ -37,10 +35,7 @@ const getAcByEmail = async (email) => {
                 prenom: true,
                 email: true,
                 numTel: true,
-                idClient: true,
-                mot_de_passe: true,
-                resetPasswordCode: true,
-                resetPasswordExpire: true,
+                mot_de_passe: true
             }
         });
         return ac;

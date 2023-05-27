@@ -20,9 +20,6 @@ route.use('/resourceManagement', resourceManagement)
 route.use('/paymentManagement', paymentManagement);
 
 
-route.use('/auth', authentication)
-
-
 route.use('/profileManagement', profileManagement);
 
 

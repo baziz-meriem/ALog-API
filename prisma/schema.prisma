@@ -14,28 +14,13 @@ model TentativeVol {
   idDistributeur Int
 }
 
-model ADM {
+model AC {
   id                  Int      @id @default(autoincrement())
   nom                 String
   prenom              String
   email               String   @unique
   mot_de_passe        String
   numTel              String
-  idClient            Int
-  resetPasswordCode   String   @default("")
-  resetPasswordExpire DateTime @default(now())
-}
-
-model SADM {
-  id                  Int      @id @default(autoincrement())
-  nom                 String
-  prenom              String
-  email               String   @unique
-  mot_de_passe        String
-  numTel              String
-  idClient            Int
-  resetPasswordCode   String   @default("")
-  resetPasswordExpire DateTime @default(now())
 }
 
 model Boisson {

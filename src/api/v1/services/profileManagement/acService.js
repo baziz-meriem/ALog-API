@@ -18,7 +18,7 @@ const getAllAcs = async () => {
         });
         return acs;
     } catch (error) {
-        return (catchPrismaClientError(error));
+        return (error);
     }
 }
 
@@ -34,17 +34,16 @@ const getAcById = async (id) => {
                 prenom: true,
                 email: true,
                 numTel: true,
-                idClient: true,
                 mot_de_passe: false
             }
         });
         return ac;
     } catch (error) {
-        return (catchPrismaClientError(error));
+        return (error);
     }
 }
 
-const createAc = async ({ nom, prenom, email, password, numTel, idClient }) => {
+const createAc = async ({ nom, prenom, email, password, numTel}) => {
 
     try {
         const acExists = await prisma.aC.findUnique({
@@ -55,14 +54,6 @@ const createAc = async ({ nom, prenom, email, password, numTel, idClient }) => {
         if (acExists) {
             throw new Error('AC already exists');
         }
-        const clientExists = await prisma.client.findFirst({
-            where: {
-                id: idClient
-            }
-        });
-        if (!clientExists) {
-            throw new Error('Client does not exist');
-        }
         const hashPassword = await bcrypt.hash(password, 10);
         const ac = await prisma.aC.create({
             data: {
@@ -70,8 +61,7 @@ const createAc = async ({ nom, prenom, email, password, numTel, idClient }) => {
                 prenom: prenom,
                 email: email,
                 mot_de_passe: hashPassword,
-                numTel: numTel,
-                idClient: idClient
+                numTel: numTel
             },
             select: {
                 id: true,
@@ -79,23 +69,24 @@ const createAc = async ({ nom, prenom, email, password, numTel, idClient }) => {
                 prenom: true,
                 email: true,
                 numTel: true,
-                idClient: true,
                 mot_de_passe: false
             }
         });
-        const message = `
-        Dear ${nom} ${prenom}
-        I am writing to provide you with your account credentials.
-        You ve been registered with email : ${email} and Password : ${password} \n\n .`;
-        try {
-            await sendEmail({
-              email: email,
-              subject: `Your Account Credentials`,
-              message,
-            });
-          } catch (error) {
-              return error;
-          }
+
+          console.log('-------ac-----------',ac)
+          /*const message = `
+          Dear ${nom} ${prenom}
+          I am writing to provide you with your account credentials.
+          You ve been registered with email : ${email} and Password : ${password} \n\n .`;
+          try {
+              await sendEmail({
+                email: email,
+                subject: `Your Account Credentials`,
+                message,
+              });
+            } catch (error) {
+                return error;
+            }*/
         return ac;
     } catch (error) {
         console.log(error)

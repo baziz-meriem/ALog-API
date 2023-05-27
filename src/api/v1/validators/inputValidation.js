@@ -1,10 +1,6 @@
 
 const validateId = (id) => {
-    /**
-     * @description validate the id and return it or null if it is not valid
-     * @param {number} id
-     * @returns {number|null}
-     */
+
     const idNumber = Number(id);
     if (Number.isNaN(idNumber)) {
         return null;
@@ -13,11 +9,7 @@ const validateId = (id) => {
 }
 
 const validateEmail = (email) => {
-    /**
-     * @description validate the email and return it or null if it is not valid
-     * @param {string} email
-     * @returns {string|null}
-     */
+
     if (typeof email !== 'string') {
         return null;
     }
@@ -33,11 +25,7 @@ const validateEmail = (email) => {
 }
 
 const validatePassword = (password) => {
-    /**
-     * @description validate the password and return it or null if it is not valid
-     * @param {string} password
-     * @returns {string|null}
-     */
+
     if (typeof password !== 'string') {
         return null;
     }
@@ -47,21 +35,7 @@ const validatePassword = (password) => {
     return password;
 }
 
-const validateInput = (input) => {
-    /**
-     * @description validate the input and return it or null if it is not valid
-     * @param {any} input
-     * @returns {any|null}
-     */
-    return input;
-}
-
 const validatePhoneNumber = (num) => {
-    /**
-     * @description validate the phone number and return it or null if it is not valid
-     * @param {string} num
-     * @returns {string|null}
-     */
     if (typeof num !== 'string') {
         return null;
     }
@@ -77,24 +51,10 @@ const validatePhoneNumber = (num) => {
     return num;
 }
 
-const validateDate = (date) => {
-    /**
-     * @description validate the date and return it or null if it is not valid
-     * @param {string} date
-     * @returns {String|null}
-    */
-    const valideDate = new Date(date)
-    if (isNaN(valideDate)) {
-        return null
-    }
-    return valideDate.toISOString()
-}
 
 module.exports = {
     validateId,
     validateEmail,
     validatePassword,
-    validateDate,
-    validateInput,
     validatePhoneNumber
 }
