@@ -1,5 +1,5 @@
-const { sendToken, comparePassword, sendEmail, getResetPasswordToken } = require('../../middlewares/utils');
-const { getAcByEmail, resetAcPassword , updateAcResetCode, getAcByResetToken } = require('../../services/auth/acService');
+const { sendToken, comparePassword } = require('../../middlewares/utils');
+const { getAcByEmail} = require('../../services/auth/acService');
 const {  validateEmail, validatePassword } = require('../../validators/inputValidation');
 const bcrypt = require('bcrypt');
 const crypto = require("crypto");
@@ -35,81 +35,6 @@ const login = async (req, res) => {
 }
 
 
-
-// Forgot Password
-const forgotPassword = async (req, res) => {
-    // call the validateEmail function
-    const valideAc = validateEmail(req.body.email)  ;
-    // if there is an error, return a 400 status code
-    if (!valideAc) {
-        return res.status(400).json({ status: 'Bad Request', message: "provided ac email is not valid" });
-    }
-  
-    // call the service to get the ac by email
-    let ac = await getAcByEmail(req.body.email);
-    // return error if the ac is not found
-    if (!ac) {
-        return res.status(404).json({ status: 'Not Found', message: 'AC not found, Invalid Email' });
-    }  
-    // Get ResetPassword code
-    let {resetCode , user:acUpdated } = getResetPasswordToken(ac);
-  //update the resetPassword code and expirePassword code 
-    acUpdated = await updateAcResetCode(req.body.email, acUpdated);
-    const resetPasswordUrl = `${req.protocol}://${req.get(
-      "host"
-    )}/resetPassword/${resetCode}`;
-  
-    const message = `Your password reset code is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
-  
-    try {
-      await sendEmail({
-        email: acUpdated.email,
-        subject: `Password Recovery`,
-        message,
-      });
-      return res.status(200).json({   
-        success: true,
-        message: `Email sent to ${acUpdated.email} successfully`,
-     });
-
-    } catch (error) {
-        acUpdated.resetPasswordCode = "";
-        acUpdatedc.resetPasswordExpire = undefined;
-  
-        acUpdated = await updateAcResetCode(req.body.email, acUpdated);
-  
-        return res.status(500).json({ status: 'Error', message: error });
-
-    }
-  };
-
-const resetPassword = async (req, res) => {
-    // getting reset code
-    const resetPasswordCode = crypto
-    .createHash("sha256")
-    .update(req.params.token)
-    .digest("hex");
-  
-    const ac = await getAcByResetToken(resetPasswordCode);
-
-  
-    if (!ac) {
-        return res.status(400).json({ status: 'Bad request', message: "Reset token invalid or has been expired" });
-    }
-
-  
-    if (req.body.password !== req.body.confirmPassword) {
-        return res.status(400).json({ status: 'Bad Request', message: "Password does not password" });
-    }
-    ac.password = req.body.password;
-    ac.resetPasswordCode = "";
-    ac.resetPasswordExpire = undefined;
-  
-    const acUpdated = await resetAcPassword(ac.id, ac);
-  
-    if(acUpdated)
-    {return res.status(200).json({ success: true});}  }
-
 // Logout Ac
 const logout = async (req, res, next) => {
     res.cookie("token", null, {
@@ -125,8 +50,6 @@ const logout = async (req, res, next) => {
 
 module.exports = {
     login,
-    forgotPassword,
-    resetPassword,
     logout
 
 }

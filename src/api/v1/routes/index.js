@@ -11,22 +11,17 @@ const paymentManagement = require('./paymentManagement');
 //authentication routes
 const authentication = require('./auth');
 
-const stats = require('./stats')
 
-
-//product routes
-const ressourceMangement = require('./resourceManagement');
 
 
 route.use('/auth', authentication)
-route.use('/resourceManagement', ressourceMangement)
+route.use('/resourceManagement', resourceManagement)
 
 route.use('/paymentManagement', paymentManagement);
 
 
 route.use('/auth', authentication)
 
-route.use('/stats', stats);
 
 route.use('/profileManagement', profileManagement);
 

@@ -52,57 +52,10 @@ const postHandler = async (req, res) => {
 
 }
 
-const putHandler = async (req, res) => {
-    // retrieve the id from the request
-    const { id } = req.params;
-    // call the validateId function
-    const valideId = validateId(id);
-    // if there is an error, return a 400 status code
-    if (!valideId) {
-        return res.status(400).json({ status: 'Bad Request', message: "provided id is not valid" });
-    }
-    // retrieve the ac from the request
-    const { nom, prenom, email, password, numTel, idClient } = req.body;
-    // call the validateAgent function
-    const valideAc = validateAgent({ nom, prenom, email, password, numTel, idClient });
-    if (!valideAc) {
-        return res.status(400).json({ status: 'Bad Request', message: "provided ac is not valid" });
-    }
-    // call the service to update the ac
-    const updatedAc = await updateAc(valideId, valideAc);
-    // if there is an error, return a 400 status code
-    if( typeof updatedAc === "string" )
-    {
-        return res.status(400).json({ status: 'Bad Request', message: updatedAc });
-    }
-    // return the updated ac
-    return res.status(200).json({ status: 'success', data: updatedAc });
-}
 
-const deleteHandler = async (req, res) => {
-    // retrieve the id from the request
-    const { id } = req.params;
-    // call the validateId function
-    const valideId = validateId(id);
-    // if there is an error, return a 400 status code
-    if (!valideId) {
-        return res.status(400).json({ status: 'Bad Request', message: "provided id is not valid" });
-    }
-    // call the service to delete the ac
-    const deletedAc = await deleteAc(valideId);
-    // if there is an error, return a 400 status code
-    if( typeof deletedAc === "string" )
-    {
-        return res.status(400).json({ status: 'Bad Request', message: deletedAc });
-    }
-    // return the deleted ac
-    return res.status(200).json({ status: 'success', data: deletedAc });
-}
 
 module.exports = {
     getAllHandler,
     getOneHandler,
-    postHandler,
-    putHandler,
-    deleteHandler
+    postHandler
 }
