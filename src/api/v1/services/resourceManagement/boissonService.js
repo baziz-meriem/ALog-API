@@ -3,16 +3,11 @@ const prisma = require('../../../../config/dbConfig')
 
 const getAll = async () => {
   try {
-    const boissons = await prisma.boissonDistributeur.findMany({
+    const boissons = await prisma.boisson.findMany({
       select: {
-        boisson: {
-          select: {
             id: true,
             label: true,
-            description: true,
-          },
-        },
-
+            description: true
       },
     });
     return boissons; // array of boissons

@@ -12,7 +12,6 @@ const getAllAcs = async () => {
                 prenom: true,
                 email: true,
                 numTel: true,
-                idClient: true,
                 mot_de_passe: false
             }
         });
